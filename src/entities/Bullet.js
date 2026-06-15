@@ -2,13 +2,15 @@ import * as THREE from 'three';
 
 export class Bullet {
   constructor(position, direction) {
-    const geometry = new THREE.BoxGeometry(0.1, 0.1, 0.1);
+    const geometry = new THREE.BoxGeometry(0.05, 0.05, 0.05);
     const material = new THREE.MeshBasicMaterial({ color: 0xffff00 });
 
     this.mesh = new THREE.Mesh(geometry, material);
 
     this.mesh.position.copy(position);
     this.mesh.position.y += 0.25;
+    this.mesh.position.x += direction.x;
+    this.mesh.position.z += direction.z;
     this.mesh.castShadow = true;
     this.distaceTraveled = 0;
     this.velocity = direction.clone().multiplyScalar(5);

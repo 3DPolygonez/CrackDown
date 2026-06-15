@@ -79,15 +79,15 @@ export class Game {
         fire: 'Space',
       },
     5);
-    this.player2.mesh.position.x = 2;
+    this.player2.group.position.x = 2;
 
     this.enemySpawner = new EnemySpawner(
       this.scene,
       [this.player1, this.player2]
     );
 
-    this.scene.add(this.player1.mesh);
-    this.scene.add(this.player2.mesh);
+    this.scene.add(this.player1.group);
+    this.scene.add(this.player2.group);
 
     this.clock = new THREE.Clock();
   }

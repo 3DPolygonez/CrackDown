@@ -9,16 +9,36 @@ export class Player {
     const geometry = new THREE.BoxGeometry(1, 1, 1);
     const material = new THREE.MeshPhongMaterial({ color });
 
+    this.group = new THREE.Group();
     this.direction = new THREE.Vector3(1, 0, 0);
     this.mesh = new THREE.Mesh(geometry, material);
     this.mesh.castShadow = true;
-
+    this.mesh.position.y = 0;
     this.speed = speed;
-
     this.bullets = [];
     this.blasts = [];
-
     this.shootCooldown = 0;
+    this.group.add(this.mesh);
+
+    this.meshGun = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.1, 0.50), material);
+    this.meshGun.castShadow = true;
+    this.meshGun.position.z = 0.5;
+    this.meshGun.position.y = 0.25;
+    this.group.add(this.meshGun);
+
+    this.meshLeftTrack = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.2, 0.8), material);
+    this.meshLeftTrack.castShadow = true;
+    this.meshLeftTrack.position.x = 0.6;
+    this.meshLeftTrack.position.y = 0.1;
+    this.meshLeftTrack.position.z = 0;
+    this.group.add(this.meshLeftTrack);
+
+    this.meshRightTrack = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.2, 0.8), material);
+    this.meshRightTrack.castShadow = true;
+    this.meshRightTrack.position.x = -0.6;
+    this.meshRightTrack.position.y = 0.1;
+    this.meshRightTrack.position.z = 0;
+    this.group.add(this.meshRightTrack);
   }
 
   update(delta, input, scene) {
@@ -69,11 +89,11 @@ export class Player {
 
     move.normalize();
 
-    this.mesh.position.add(
+    this.group.position.add(
       move.multiplyScalar(this.speed * delta)
     );
 
-    this.mesh.rotation.y = Math.atan2(this.direction.z, this.direction.x);
+    this.group.rotation.y = Math.atan2(this.direction.x, this.direction.z);
 
     this.shootCooldown -= delta;
 
@@ -102,7 +122,7 @@ export class Player {
 
   shoot(scene) {
     const bullet = new Bullet(
-      this.mesh.position.clone(),
+      this.group.position.clone(),
       this.direction
     );
 
