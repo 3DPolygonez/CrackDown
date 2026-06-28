@@ -5,6 +5,9 @@ import { EnemySpawner } from '../systems/EnemySpawner';
 
 export class Game {
   constructor() {
+    this.bullets = [];
+    this.blasts = [];
+
     this.scene = new THREE.Scene();
 
     this.camera = new THREE.OrthographicCamera(
@@ -101,9 +104,32 @@ export class Game {
 
     const delta = this.clock.getDelta();
 
-    this.player1.update(delta, this.input, this.scene);
-    this.player2.update(delta, this.input, this.scene);
+    this.player1.update(delta, this.input, this.scene, this.bullets, this.blasts);
+    this.player2.update(delta, this.input, this.scene, this.bullets, this.blasts);
     this.enemySpawner.update(delta);
+
+    for (const blast of this.blasts) {
+      blast.update(
+        delta, 
+        this.scene, 
+        this.blasts);
+    }
+
+    for (const bullet of this.bullets) {
+      bullet.update(
+        delta, 
+        this.scene, 
+        this.bullets, 
+        this.blasts);
+      const bulletBox = new THREE.Box3().setFromObject(bullet.mesh);
+      for (const enemy of this.enemySpawner.enemies) {
+        const enemyBox = new THREE.Box3().setFromObject(enemy.mesh);
+        if (bulletBox.intersectsBox(enemyBox)) {
+          bullet.die(this.scene, this.bullets, this.blasts);
+          this.enemySpawner.die(enemy);
+        }
+      }
+    }
 
     this.renderer.render(this.scene, this.camera);
   }

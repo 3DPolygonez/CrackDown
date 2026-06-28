@@ -24,7 +24,7 @@ export class Enemy {
 
     const direction = new THREE.Vector3()
       .subVectors(
-        target.mesh.position,
+        target.group.position,
         this.mesh.position
       )
       .normalize();
@@ -41,7 +41,7 @@ export class Enemy {
     for (const player of this.players) {
       const distance =
         this.mesh.position.distanceTo(
-          player.mesh.position
+          player.group.position
         );
 
       if (distance < nearestDistance) {

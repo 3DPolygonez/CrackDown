@@ -25,6 +25,13 @@ export class EnemySpawner {
     }
   }
 
+  die(enemy) {
+    this.scene.remove(enemy.mesh);
+    this.enemies.splice(this.enemies.indexOf(enemy), 1);
+    enemy.mesh.geometry.dispose();
+    enemy.mesh.material.dispose();
+  }
+
   spawnEnemy() {
     const enemy = new Enemy(this.players);
 

@@ -15,8 +15,6 @@ export class Player {
     this.mesh.castShadow = true;
     this.mesh.position.y = 0;
     this.speed = speed;
-    this.bullets = [];
-    this.blasts = [];
     this.shootCooldown = 0;
     this.group.add(this.mesh);
 
@@ -41,28 +39,9 @@ export class Player {
     this.group.add(this.meshRightTrack);
   }
 
-  update(delta, input, scene) {
+  update(delta, input, scene, bullets, blasts) {
     const move = new THREE.Vector3();
     const moveIncrement = 1;
-
-    for (const blast of this.blasts) {
-      blast.dispose();
-      scene.remove(blast.mesh);
-      this.blasts.splice(this.blasts.indexOf(blast), 1);
-    }
-
-    for (const bullet of this.bullets) {
-      bullet.update(delta);
-      if (bullet.distanceMaxed()) {
-        bullet.die();
-        scene.remove(bullet.mesh);
-        this.bullets.splice(this.bullets.indexOf(bullet), 1);
-        const blast = new Blast(
-          bullet.mesh.position.clone());
-        this.blasts.push(blast);
-        scene.add(blast.mesh);
-      }
-    }
 
     if (input.isDown(this.controls.left)) {
       this.direction.x = -moveIncrement;
@@ -101,33 +80,19 @@ export class Player {
       input.isDown(this.controls.fire) &&
       this.shootCooldown <= 0
     ) {
-      this.shoot(scene);
+      this.shoot(
+        scene, 
+        bullets);
       this.shootCooldown = 0.25;
-    }
-
-    for (const bullet of this.bullets) {
-      bullet.update(delta);
-      if (bullet.distanceMaxed()) {
-        bullet.die();
-        scene.remove(bullet.mesh);
-        this.bullets.splice(this.bullets.indexOf(bullet), 1);
-        const blast = new Blast(
-          bullet.mesh.position.clone(),
-          1);
-        this.blasts.push(blast);
-        scene.add(blast.mesh);
-      }
     }
   }
 
-  shoot(scene) {
+  shoot(scene, bullets) {
     const bullet = new Bullet(
       this.group.position.clone(),
-      this.direction
+      this.direction,
+      scene,
+      bullets
     );
-
-    this.bullets.push(bullet);
-
-    scene.add(bullet.mesh);
   }
 }
