@@ -1,9 +1,11 @@
 import { Enemy } from '../entities/Enemy';
+import { Blast } from '../entities/Blast';
 
 export class EnemySpawner {
-  constructor(scene, players) {
+  constructor(scene, players, blasts) {
     this.scene = scene;
     this.players = players;
+    this.blasts = blasts;
 
     this.enemies = [];
 
@@ -14,7 +16,7 @@ export class EnemySpawner {
   update(delta) {
     this.spawnTimer -= delta;
 
-    if (this.spawnTimer <= 0) {
+    if (this.spawnTimer <= 0 && this.enemies.length < 1) {
       this.spawnEnemy();
 
       this.spawnTimer = this.spawnInterval;
@@ -26,55 +28,26 @@ export class EnemySpawner {
   }
 
   die(enemy) {
-    this.scene.remove(enemy.mesh);
+    const blast = new Blast(
+      enemy.group.position.clone(),
+      0.25,
+      this.scene,
+      this.blasts);
+    this.scene.remove(enemy.group);
     this.enemies.splice(this.enemies.indexOf(enemy), 1);
-    enemy.mesh.geometry.dispose();
-    enemy.mesh.material.dispose();
+    enemy.group.geometry.dispose();
+    enemy.group.material.dispose();
   }
 
   spawnEnemy() {
-    const enemy = new Enemy(this.players);
-
-    const edge = Math.floor(Math.random() * 4);
-
-    const range = 20;
-
-    switch (edge) {
-      case 0:
-        enemy.mesh.position.set(
-          -range,
-          0.5,
-          Math.random() * range * 2 - range
-        );
-        break;
-
-      case 1:
-        enemy.mesh.position.set(
-          range,
-          0.5,
-          Math.random() * range * 2 - range
-        );
-        break;
-
-      case 2:
-        enemy.mesh.position.set(
-          Math.random() * range * 2 - range,
-          0.5,
-          -range
-        );
-        break;
-
-      case 3:
-        enemy.mesh.position.set(
-          Math.random() * range * 2 - range,
-          0.5,
-          range
-        );
-        break;
-    }
-
-    this.scene.add(enemy.mesh);
-
+    const enemy = new Enemy(this.players, [[2, 2], [2, 20], [10, 20], [10, 2]]);
+    enemy.group.position.set(
+      enemy.waypoints[enemy.currentWaypointIndex][0], 
+      0, 
+      enemy.waypoints[enemy.currentWaypointIndex][1]);
+      
+    this.scene.add(enemy.group);
     this.enemies.push(enemy);
+    return;
   }
 }

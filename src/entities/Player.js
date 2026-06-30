@@ -3,16 +3,20 @@ import { Bullet } from './Bullet';
 import { Blast } from './Blast';
 
 export class Player {
-  constructor(color, controls, speed) {
+  constructor(color, controls, speed, input, scene, bullets, blasts) {
     this.controls = controls;
+    this.input = input;
+    this.scene = scene;
+    this.bullets = bullets;
+    this.blasts = blasts;
 
     const geometry = new THREE.BoxGeometry(1, 1, 1);
     const material = new THREE.MeshPhongMaterial({ color });
-
     this.group = new THREE.Group();
     this.direction = new THREE.Vector3(1, 0, 0);
     this.mesh = new THREE.Mesh(geometry, material);
     this.mesh.castShadow = true;
+    this.mesh.receiveShadow = true;
     this.mesh.position.y = 0;
     this.speed = speed;
     this.shootCooldown = 0;
@@ -20,12 +24,14 @@ export class Player {
 
     this.meshGun = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.1, 0.50), material);
     this.meshGun.castShadow = true;
+    this.meshGun.receiveShadow = true;
     this.meshGun.position.z = 0.5;
     this.meshGun.position.y = 0.25;
     this.group.add(this.meshGun);
 
     this.meshLeftTrack = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.2, 0.8), material);
     this.meshLeftTrack.castShadow = true;
+    this.meshLeftTrack.receiveShadow = true;
     this.meshLeftTrack.position.x = 0.6;
     this.meshLeftTrack.position.y = 0.1;
     this.meshLeftTrack.position.z = 0;
@@ -33,29 +39,30 @@ export class Player {
 
     this.meshRightTrack = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.2, 0.8), material);
     this.meshRightTrack.castShadow = true;
+    this.meshRightTrack.receiveShadow = true;
     this.meshRightTrack.position.x = -0.6;
     this.meshRightTrack.position.y = 0.1;
     this.meshRightTrack.position.z = 0;
     this.group.add(this.meshRightTrack);
   }
 
-  update(delta, input, scene, bullets, blasts) {
+  update(delta) {
     const move = new THREE.Vector3();
     const moveIncrement = 1;
 
-    if (input.isDown(this.controls.left)) {
+    if (this.input.isDown(this.controls.left)) {
       this.direction.x = -moveIncrement;
       move.x -= moveIncrement;
     }
-    if (input.isDown(this.controls.right)) {
+    if (this.input.isDown(this.controls.right)) {
       this.direction.x = moveIncrement;
       move.x += moveIncrement;
     }
-    if (input.isDown(this.controls.up)) {
+    if (this.input.isDown(this.controls.up)) {
       this.direction.z = -moveIncrement;
       move.z -= moveIncrement;
     }
-    if (input.isDown(this.controls.down)) {
+    if (this.input.isDown(this.controls.down)) {
       this.direction.z = moveIncrement;
       move.z += moveIncrement;
     }
@@ -77,22 +84,24 @@ export class Player {
     this.shootCooldown -= delta;
 
     if (
-      input.isDown(this.controls.fire) &&
+      this.input.isDown(this.controls.fire) &&
       this.shootCooldown <= 0
     ) {
       this.shoot(
-        scene, 
-        bullets);
+        this.scene, 
+        this.bullets,
+        this.blasts);
       this.shootCooldown = 0.25;
     }
   }
 
-  shoot(scene, bullets) {
+  shoot() {
     const bullet = new Bullet(
       this.group.position.clone(),
       this.direction,
-      scene,
-      bullets
+      this.scene,
+      this.bullets,
+      this.blasts 
     );
   }
 }
