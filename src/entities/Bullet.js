@@ -31,7 +31,7 @@ export class Bullet {
   die() {
     const blast = new Blast(
       this.mesh.position.clone(),
-      0.1,
+      0.05,
       this.scene,
       this.blasts);
     this.scene.remove(this.mesh);

@@ -1,75 +1,101 @@
 import * as THREE from 'three';
+import { Person } from '../mesh/Person';
 
 export class Enemy {
   constructor(players, waypoints) {
     this.players = players;
+
     this.waypoints = waypoints;
+    this.previousWaypointIndex = 0;
     this.currentWaypointIndex = 0;
-    this.pauseTime = 0;
-    this.pauseDuration = 1;
+  
+    this.pauseTime = this.pauseDuration;
 
-    const geometry = new THREE.BoxGeometry(1, 1, 1);
-    const material = new THREE.MeshPhongMaterial({ color: 0xff3333 });
-    this.group = new THREE.Group();
+    this.maxSpeed = [2, 4, 8][Math.floor(Math.random() * 3)];
+    this.speed = this.maxSpeed;
+    this.waypointProximity = this.maxSpeed / 4;
+    this.pauseDuration = this.maxSpeed == 2 ? 3 : (this.maxSpeed == 4 ? 2 : 1);
+
     this.direction = new THREE.Vector3(1, 0, 0);
-    this.mesh = new THREE.Mesh(geometry, material);
-    this.mesh.castShadow = true;
-    this.mesh.receiveShadow = true;
-    this.mesh.position.y = 0;
-    this.group.add(this.mesh);
 
-    this.meshGun = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.1, 0.50), material);
-    this.meshGun.castShadow = true;
-    this.meshGun.receiveShadow = true;
-    this.meshGun.position.z = 0.5;
-    this.meshGun.position.y = 0.25;
-    this.group.add(this.meshGun);
-
-    this.meshLeftTrack = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.2, 0.8), material);
-    this.meshLeftTrack.castShadow = true;
-    this.meshLeftTrack.receiveShadow = true;
-    this.meshLeftTrack.position.x = 0.6;
-    this.meshLeftTrack.position.y = 0.1;
-    this.meshLeftTrack.position.z = 0;
-    this.group.add(this.meshLeftTrack);
-
-    this.meshRightTrack = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.2, 0.8), material);
-    this.meshRightTrack.castShadow = true;
-    this.meshRightTrack.receiveShadow = true;
-    this.meshRightTrack.position.x = -0.6;
-    this.meshRightTrack.position.y = 0.1;
-    this.meshRightTrack.position.z = 0;
-    this.group.add(this.meshRightTrack);
-
-    this.speed = 2;
+    this.mesh = new Person(this.maxSpeed);
   }
 
   update(delta) {
-    if (Math.abs(this.group.position.x - this.waypoints[this.currentWaypointIndex][0]) <= 0.5
-      && Math.abs(this.group.position.z - this.waypoints[this.currentWaypointIndex][1]) <= 0.5) {
+    // waypoint navigation
+    if (Math.abs(this.mesh.group.position.x - this.waypoints[this.currentWaypointIndex][0]) <= this.waypointProximity
+      && Math.abs(this.mesh.group.position.z - this.waypoints[this.currentWaypointIndex][1]) <= this.waypointProximity) {
+      this.previousWaypointIndex = this.currentWaypointIndex;
       this.currentWaypointIndex++;
       this.pauseTime = 0;
     }
     if (this.currentWaypointIndex >= this.waypoints.length) {
       this.currentWaypointIndex = 0;
     };
+
+    // pause at waypoints
     if (this.pauseTime < this.pauseDuration) {
       this.pauseTime += delta;
-      return;
+      if (this.speed > 0) {
+        this.speed -= delta * this.maxSpeed * 4;
+      }
+      if (this.speed < 0) {
+        this.speed = 0;
+      }
+      // move towards the previous waypoint
+      this.direction = new THREE.Vector3()
+        .subVectors(
+          new THREE.Vector3(
+            this.waypoints[this.previousWaypointIndex][0], 
+            this.mesh.group.position.y, 
+            this.waypoints[this.previousWaypointIndex][1]),
+          this.mesh.group.position
+        )
+        .normalize();
     }
-    const direction = new THREE.Vector3()
-      .subVectors(
-        new THREE.Vector3(
-          this.waypoints[this.currentWaypointIndex][0], 
-          this.group.position.y, 
-          this.waypoints[this.currentWaypointIndex][1]),
-        this.group.position
-      )
-      .normalize();
-    this.group.rotation.y = Math.atan2(direction.x, direction.z);
-    this.group.position.add(
-      direction.multiplyScalar(this.speed * delta)
-    );
+    else {
+      // Accelerate to max speed
+      if (this.speed < this.maxSpeed) {
+        this.speed += delta * this.maxSpeed;
+      }
+      // move towards the next waypoint
+      this.direction = new THREE.Vector3()
+        .subVectors(
+          new THREE.Vector3(
+            this.waypoints[this.currentWaypointIndex][0], 
+            this.mesh.group.position.y, 
+            this.waypoints[this.currentWaypointIndex][1]),
+          this.mesh.group.position
+        )
+        .normalize();
+    }
+
+    // update the mesh (arms and legs swinging)
+    this.mesh.update(
+      delta, 
+      this.speed === 0);
+
+    // Rotate the enemy to face the direction of movement
+    const targetY = Math.atan2(this.direction.x, this.direction.z);
+    if (Math.abs(this.mesh.group.rotation.y - targetY) < 0.1) {
+      this.mesh.group.position.add(
+        this.direction.multiplyScalar(this.speed * (this.mesh.group.scale.x / 1.25) * delta));
+    }
+    else {
+      // Smoothly rotate towards the target direction
+      const directionDifference = targetY - this.mesh.group.rotation.y;
+      
+      if (targetY > this.mesh.group.rotation.y) {
+        this.mesh.group.rotation.y += this.maxSpeed / 100;
+      }
+      else {
+        this.mesh.group.rotation.y -= this.maxSpeed / 100;
+      }
+      const rotationDifference = Math.abs(targetY - this.mesh.group.rotation.y);
+      if (rotationDifference < this.maxSpeed / 50) {
+        this.mesh.group.rotation.y = targetY;
+      }
+    }
     return;
 
 
@@ -91,7 +117,7 @@ export class Enemy {
 
     for (const player of this.players) {
       const distance =
-        this.mesh.position.distanceTo(
+        this.group.position.distanceTo(
           player.group.position
         );
 

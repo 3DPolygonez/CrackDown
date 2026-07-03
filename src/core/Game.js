@@ -27,7 +27,7 @@ export class Game {
       1000
     );
 
-    this.camera.position.set(0, 20, 20);
+    this.camera.position.set(30, 30, 30);
     this.camera.lookAt(0, 0, 0);
 
     this.renderer = new THREE.WebGLRenderer({
@@ -63,7 +63,7 @@ export class Game {
     light.shadow.mapSize.height = 2048;
     this.scene.add(light);
 
-    const frontLight = new THREE.DirectionalLight(
+const frontLight = new THREE.DirectionalLight(
       0xffffff,
       1);
     frontLight.position.set(100, 50, 25);
@@ -96,7 +96,8 @@ export class Game {
       this.scene,
       this.bullets,
       this.blasts);
-
+    this.player1.group.position.x = 5;
+    
     this.player2 = new Player(
       0x00ff00, 
       {
@@ -111,7 +112,6 @@ export class Game {
       this.scene,
       this.bullets,
       this.blasts);
-    this.player2.group.position.x = 2;
 
     this.enemySpawner = new EnemySpawner(
       this.scene,
@@ -152,7 +152,7 @@ export class Game {
         this.blasts);
       const bulletBox = new THREE.Box3().setFromObject(bullet.mesh);
       for (const enemy of this.enemySpawner.enemies) {
-        const enemyBox = new THREE.Box3().setFromObject(enemy.mesh);
+        const enemyBox = new THREE.Box3().setFromObject(enemy.mesh.group);
         if (bulletBox.intersectsBox(enemyBox)) {
           bullet.die(this.scene, this.bullets, this.blasts);
           this.enemySpawner.die(
@@ -162,8 +162,8 @@ export class Game {
     }
 
     // faffing with the camera position and target to follow a player
-    this.camera.position.set(this.player1.group.position.x, 20, this.player1.group.position.z + 20);
-    this.camera.lookAt(this.player1.group.position);
+    //this.camera.position.set(this.player1.group.position.x, 20, this.player1.group.position.z + 20);
+    this.camera.lookAt(this.enemySpawner.enemies[0].mesh.group.position);
 
     this.renderer.render(this.scene, this.camera);
   }
