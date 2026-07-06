@@ -1,7 +1,7 @@
 import { Enemy } from '../entities/Enemy';
 import { Blast } from '../entities/Blast';
 
-export class EnemySpawner {
+export class EnemySystem {
   constructor(scene, players, blasts) {
     this.scene = scene;
     this.players = players;
@@ -10,7 +10,7 @@ export class EnemySpawner {
     this.enemies = [];
 
     this.spawnTimer = 0;
-    this.spawnInterval = 0.01;
+    this.spawnInterval = 0;
   }
 
   update(delta) {
@@ -35,8 +35,10 @@ export class EnemySpawner {
       this.blasts);
     this.scene.remove(enemy.mesh.group);
     this.enemies.splice(this.enemies.indexOf(enemy), 1);
-    enemy.mesh.group.geometry.dispose();
-    enemy.mesh.group.material.dispose();
+    enemy.mesh.group.children.forEach(mesh => {
+      mesh.geometry.dispose();
+      mesh.material.dispose();     
+    });
   }
 
   spawnEnemy() {

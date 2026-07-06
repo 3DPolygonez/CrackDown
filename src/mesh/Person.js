@@ -1,9 +1,22 @@
 import * as THREE from 'three';
+import { LegIdleAnimation } from '../entities/animations/person/legs/LegIdleAnimation.js';
+import { LegMovingAnimation } from '../entities/animations/person/legs/LegsMovingAnimation.js';
+import { ArmIdleAnimation } from '../entities/animations/person/arm/ArmIdleAnimation.js';
+import { ArmMovingAnimation } from '../entities/animations/person/arm/ArmMovingAnimation.js';  
+import { HeadIdleAnimation } from '../entities/animations/person/head/HeadIdleAnimation.js';
+import { HeadMovingAnimation } from '../entities/animations/person/head/HeadMovingAnimation.js';
+import { ChestIdleAnimation } from '../entities/animations/person/chest/ChestIdleAnimation.js';
+import { ChestMovingAnimation } from '../entities/animations/person/chest/ChestMovingAnimation.js';
+import { BackpackIdleAnimation } from '../entities/animations/person/backpack/BackpackIdleAnimation.js';
+import { BackpackMovingAnimation } from '../entities/animations/person/backpack/BackpackMovingAnimation.js';
 
 export class Person {
     constructor(maxSpeed) {
         this.deltaSum = 0;
+        this.headDeltaSum = 0;
         this.maxSpeed = maxSpeed;
+        this.state = "Idle"; // Default state
+        this.animations = this.idleAnimations(); // Default animations
 
         const textureLoader = new THREE.TextureLoader();
         const textures = [
@@ -17,7 +30,7 @@ export class Person {
         const materials = textures.map(t => new THREE.MeshStandardMaterial({ map: t }));
         
         const material = new THREE.MeshPhongMaterial({ color: this.maxSpeed == 2 ? "green" : (this.maxSpeed == 4 ? "orange" : "red") });
-        const faceMaterial = new THREE.MeshPhongMaterial({ color: "white" });
+        const faceMaterial = new THREE.MeshPhongMaterial({ color: "pink" });
 
         this.group = new THREE.Group();
     
@@ -96,26 +109,58 @@ export class Person {
         this.leftLeg.rotateZ(-Math.PI / 32); // Slightly rotate the left leg for a more natural stance
         this.group.add(this.leftLeg);
     
-        const scale = Math.floor(Math.random() * 3) + 1; // Random scale between 1 and 3
-        //this.group.scale.set(scale, scale, scale);
+        this.backpack = new THREE.Mesh(
+          new THREE.BoxGeometry(0.30, 0.30, 0.2), new THREE.MeshPhongMaterial({ color: "brown" }));
+        this.backpack.position.y = 0.65;
+        this.backpack.position.z = -(0.30 / 2 + 0.2 / 2);
+        this.backpack.castShadow = true;
+        this.backpack.receiveShadow = true;
+        [Math.floor(Math.random() * 3)] + 1 == 1 ? this.group.add(this.backpack) : null;
     }
-    update(delta, paused){
-      this.deltaSum += delta;
-
+    update(delta, state){
       const swingSpeed = this.maxSpeed * (this.maxSpeed <= 2 ? 4 : (this.maxSpeed <= 4 ? 3 : 1.5));
       const maxSwingAngle = Math.PI / (this.maxSpeed <= 2 ? 8 : (this.maxSpeed <= 4 ? 4 : 2)); // 45 degrees
-      const angle = paused ? 0 : Math.sin(this.deltaSum * swingSpeed) * maxSwingAngle;
+      const headSwingSpeed = this.maxSpeed;
+      const maxHeadSwingAngle = Math.PI / 8; // 45 degrees
+      const armsAndLegsAngle = state === "Idle" ? 0 : Math.sin(this.deltaSum * swingSpeed) * maxSwingAngle;
+      const centralBodyAngle = state === "Idle" ? Math.sin(this.headDeltaSum * headSwingSpeed) * maxHeadSwingAngle : Math.sin(this.deltaSum * swingSpeed) * (maxSwingAngle / 8);
+      const headAngle = Math.sin(this.headDeltaSum * headSwingSpeed) * maxHeadSwingAngle;
+      this.deltaSum += delta;
+      if (state === "Idle"){
+        this.headDeltaSum += delta;
+      }
+      else {
+        this.headDeltaSum = 0;
+      }
 
-      this.rightArm.rotation.x = angle;
-      this.leftArm.rotation.x = -angle;
-      this.rightLeg.rotation.x = -angle;
-      this.leftLeg.rotation.x = angle;
-
-      this.head.rotation.y = -angle / 8;
-      this.face.rotation.y = -angle/ 8;
-
-      this.head.rotation.z = paused ? 0 :Math.sin(this.deltaSum * swingSpeed) * (maxSwingAngle / 8);  
-      this.face.rotation.z = paused ? 0 :Math.sin(this.deltaSum * swingSpeed) * (maxSwingAngle / 8);  
-      this.chest.rotation.z = paused ? 0 :Math.sin(this.deltaSum * swingSpeed) * (maxSwingAngle / 8);
+      // I guess this is where we check the state of the person and apply the appropriate animations. 
+      // For example, if the person is walking, we might want to swing their arms and legs. 
+      // If they are idle, we might want to have them sway slightly or look around.
+      if (this.state !== state) {
+        this.state = state;
+        this.animations = state === "Idle" ? this.idleAnimations() : this.movingAnimations();
+      }
+      //  run the animations
+      this.animations.forEach(animation => {
+        animation.animate(armsAndLegsAngle, headAngle, centralBodyAngle);
+      });
+    }
+    idleAnimations() {
+      return [
+        new LegIdleAnimation(this),
+        new ArmIdleAnimation(this),
+        new HeadIdleAnimation(this),
+        new ChestIdleAnimation(this),
+        new BackpackIdleAnimation(this)
+      ];
+    }
+    movingAnimations() {
+      return [
+        new LegMovingAnimation(this),
+        new ArmMovingAnimation(this),
+        new HeadMovingAnimation(this),
+        new ChestMovingAnimation(this),
+        new BackpackMovingAnimation(this)
+      ];
     }
 }

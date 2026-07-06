@@ -1,8 +1,10 @@
 import * as THREE from 'three';
 import { Input } from './Input';
 import { Player } from '../entities/Player';
-import { EnemySpawner } from '../systems/EnemySpawner';
-import { ThreeMFLoader } from 'three/examples/jsm/Addons.js';
+import { BlastSystem } from '../systems/BlastSystem';
+import { BulletSystem } from '../systems/BulletSystem';
+import { CollisionSystem } from '../systems/CollisionSystem';
+import { EnemySystem } from '../systems/EnemySystem';
 
 /*
 TO DO:
@@ -13,7 +15,6 @@ If the player is too far away, the enemy should return to its patrol path.
 
 export class Game {
   constructor() {
-    this.bullets = [];
     this.blasts = [];
 
     this.scene = new THREE.Scene();
@@ -27,7 +28,7 @@ export class Game {
       1000
     );
 
-    this.camera.position.set(30, 30, 30);
+    this.camera.position.set(50, 50, 50);
     this.camera.lookAt(0, 0, 0);
 
     this.renderer = new THREE.WebGLRenderer({
@@ -63,24 +64,30 @@ export class Game {
     light.shadow.mapSize.height = 2048;
     this.scene.add(light);
 
-const frontLight = new THREE.DirectionalLight(
-      0xffffff,
-      1);
+    const frontLight = new THREE.DirectionalLight(
+        0xffffff,
+        1);
     frontLight.position.set(100, 50, 25);
     this.scene.add(frontLight);
 
     const floor = new THREE.Mesh(
-      new THREE.PlaneGeometry(50, 50),
-      new THREE.MeshPhongMaterial({
-        color: 0x999999,
-      })
-    );
+        new THREE.PlaneGeometry(50, 50),
+        new THREE.MeshPhongMaterial({
+          color: 0x999999,
+        })
+      );
     floor.receiveShadow = true;
     floor.rotation.x = -Math.PI / 2;
     this.scene.add(floor);
 
     const gridHelper = new THREE.GridHelper(50, 50);
     this.scene.add(gridHelper);
+
+    this.blastSystem = new BlastSystem(
+      this.scene);
+    this.bulletSystem = new BulletSystem(
+      this.scene,
+      this.blastSystem);
 
     this.player1 = new Player(
       0x00aaff, 
@@ -94,8 +101,8 @@ const frontLight = new THREE.DirectionalLight(
       5,
       this.input,
       this.scene,
-      this.bullets,
-      this.blasts);
+      this.bulletSystem.bullets,
+      this.blastSystem.blasts);
     this.player1.group.position.x = 5;
     
     this.player2 = new Player(
@@ -110,18 +117,24 @@ const frontLight = new THREE.DirectionalLight(
       5,
       this.input,
       this.scene,
-      this.bullets,
-      this.blasts);
+      this.bulletSystem.bullets,
+      this.blastSystem.blasts);
 
-    this.enemySpawner = new EnemySpawner(
+    this.enemySystem = new EnemySystem(
       this.scene,
       [this.player1, this.player2],
       this.blasts);
 
+    this.collisionSystem = new CollisionSystem(
+      this.scene,
+      this.bulletSystem,
+      this.blastSystem,
+      this.enemySystem);
+
     this.scene.add(this.player1.group);
     this.scene.add(this.player2.group);
 
-    this.clock = new THREE.Clock();
+    this.timer = new THREE.Timer();
   }
 
   start() {
@@ -129,42 +142,30 @@ const frontLight = new THREE.DirectionalLight(
   }
 
   animate() {
+    //  The requestAnimationFrame() method of the DedicatedWorkerGlobalScope 
+    //  interface tells the browser you wish to perform an animation frame 
+    //  request and call a user-supplied callback function before the next repaint.
     requestAnimationFrame(() => this.animate());
+     
+    //  update the timer
+    this.timer.update();
 
-    const delta = this.clock.getDelta();
+    //  get the delta time since the last update
+    const delta = this.timer.getDelta();
 
+    //  update all game components
     this.player1.update(delta);
     this.player2.update(delta);
-    this.enemySpawner.update(delta);
+    this.blastSystem.update(delta);
+    this.bulletSystem.update(delta);
+    this.enemySystem.update(delta);
+    this.collisionSystem.update(delta);
 
-    for (const blast of this.blasts) {
-      blast.update(
-        delta, 
-        this.scene, 
-        this.blasts);
-    }
-
-    for (const bullet of this.bullets) {
-      bullet.update(
-        delta, 
-        this.scene, 
-        this.bullets, 
-        this.blasts);
-      const bulletBox = new THREE.Box3().setFromObject(bullet.mesh);
-      for (const enemy of this.enemySpawner.enemies) {
-        const enemyBox = new THREE.Box3().setFromObject(enemy.mesh.group);
-        if (bulletBox.intersectsBox(enemyBox)) {
-          bullet.die(this.scene, this.bullets, this.blasts);
-          this.enemySpawner.die(
-            enemy);
-        }
-      }
-    }
-
-    // faffing with the camera position and target to follow a player
+    //  camera management
     //this.camera.position.set(this.player1.group.position.x, 20, this.player1.group.position.z + 20);
-    this.camera.lookAt(this.enemySpawner.enemies[0].mesh.group.position);
+    this.camera.lookAt(this.enemySystem.enemies[0].mesh.group.position);
 
+    //  render all output
     this.renderer.render(this.scene, this.camera);
   }
 }

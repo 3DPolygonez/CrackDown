@@ -11,7 +11,7 @@ export class Enemy {
   
     this.pauseTime = this.pauseDuration;
 
-    this.maxSpeed = [2, 4, 8][Math.floor(Math.random() * 3)];
+    this.maxSpeed = [2, 4, 6][Math.floor(Math.random() * 3)];
     this.speed = this.maxSpeed;
     this.waypointProximity = this.maxSpeed / 4;
     this.pauseDuration = this.maxSpeed == 2 ? 3 : (this.maxSpeed == 4 ? 2 : 1);
@@ -73,7 +73,7 @@ export class Enemy {
     // update the mesh (arms and legs swinging)
     this.mesh.update(
       delta, 
-      this.speed === 0);
+      this.speed === 0 ? "Idle" : "Moving");
 
     // Rotate the enemy to face the direction of movement
     const targetY = Math.atan2(this.direction.x, this.direction.z);
@@ -83,6 +83,7 @@ export class Enemy {
     }
     else {
       // Smoothly rotate towards the target direction
+      this.speed = 0;
       const directionDifference = targetY - this.mesh.group.rotation.y;
       
       if (targetY > this.mesh.group.rotation.y) {
