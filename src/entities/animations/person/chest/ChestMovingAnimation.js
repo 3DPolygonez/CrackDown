@@ -5,6 +5,6 @@ export class ChestMovingAnimation extends BaseAnimation {
         super(mesh);
     }
     animate(angleX, angleY, angleZ) {
-        this.mesh.chest.rotation.z = 0;
+        this.mesh.chest.rotation.z = angleZ;
     }
 }

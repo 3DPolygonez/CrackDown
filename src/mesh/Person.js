@@ -30,7 +30,7 @@ export class Person {
         const materials = textures.map(t => new THREE.MeshStandardMaterial({ map: t }));
         
         const material = new THREE.MeshPhongMaterial({ color: this.maxSpeed == 2 ? "green" : (this.maxSpeed == 4 ? "orange" : "red") });
-        const faceMaterial = new THREE.MeshPhongMaterial({ color: "pink" });
+        const faceMaterial = new THREE.MeshPhongMaterial({ color: "#ffffff" });
 
         this.group = new THREE.Group();
     
@@ -110,7 +110,7 @@ export class Person {
         this.group.add(this.leftLeg);
     
         this.backpack = new THREE.Mesh(
-          new THREE.BoxGeometry(0.30, 0.30, 0.2), new THREE.MeshPhongMaterial({ color: "brown" }));
+          new THREE.BoxGeometry(0.30, 0.30, 0.2), material);
         this.backpack.position.y = 0.65;
         this.backpack.position.z = -(0.30 / 2 + 0.2 / 2);
         this.backpack.castShadow = true;
@@ -119,7 +119,7 @@ export class Person {
     }
     update(delta, state){
       const swingSpeed = this.maxSpeed * (this.maxSpeed <= 2 ? 4 : (this.maxSpeed <= 4 ? 3 : 1.5));
-      const maxSwingAngle = Math.PI / (this.maxSpeed <= 2 ? 8 : (this.maxSpeed <= 4 ? 4 : 2)); // 45 degrees
+      const maxSwingAngle = (Math.PI / (this.maxSpeed <= 2 ? 8 : (this.maxSpeed <= 4 ? 4 : 2))) * (this.state === "Turning" ? 0.25 : 1);
       const headSwingSpeed = this.maxSpeed;
       const maxHeadSwingAngle = Math.PI / 8; // 45 degrees
       const armsAndLegsAngle = state === "Idle" ? 0 : Math.sin(this.deltaSum * swingSpeed) * maxSwingAngle;
@@ -127,6 +127,7 @@ export class Person {
       const headAngle = Math.sin(this.headDeltaSum * headSwingSpeed) * maxHeadSwingAngle;
       this.deltaSum += delta;
       if (state === "Idle"){
+        this.deltaSum = 0;
         this.headDeltaSum += delta;
       }
       else {
@@ -137,8 +138,21 @@ export class Person {
       // For example, if the person is walking, we might want to swing their arms and legs. 
       // If they are idle, we might want to have them sway slightly or look around.
       if (this.state !== state) {
+        this.deltaSum = 0;
+        this.headDeltaSum = 0;
         this.state = state;
-        this.animations = state === "Idle" ? this.idleAnimations() : this.movingAnimations();
+        switch (this.state){
+          case "Idle":
+            this.animations = this.idleAnimations();
+            break;
+          case "Turning":
+            this.animations = this.turningAnimations();
+            break;
+          case "Moving":
+            this.animations = this.movingAnimations();
+            break;
+          default:
+        }
       }
       //  run the animations
       this.animations.forEach(animation => {
@@ -161,6 +175,15 @@ export class Person {
         new HeadMovingAnimation(this),
         new ChestMovingAnimation(this),
         new BackpackMovingAnimation(this)
+      ];
+    }
+    turningAnimations() {
+      return [
+        new LegMovingAnimation(this),
+        new ArmMovingAnimation(this),
+        new HeadIdleAnimation(this),
+        new ChestIdleAnimation(this),
+        new BackpackIdleAnimation(this)
       ];
     }
 }

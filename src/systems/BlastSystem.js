@@ -6,9 +6,7 @@ export class BlastSystem {
     update(delta) {
         for (const blast of this.blasts) {
             blast.update(
-                delta, 
-                this.scene, 
-                this.blasts);
+                delta);
         }
     }
 }

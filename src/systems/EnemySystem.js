@@ -10,13 +10,13 @@ export class EnemySystem {
     this.enemies = [];
 
     this.spawnTimer = 0;
-    this.spawnInterval = 0;
+    this.spawnInterval = 10;
   }
 
   update(delta) {
     this.spawnTimer -= delta;
 
-    if (this.spawnTimer <= 0 && this.enemies.length < 100) {
+    if (this.spawnTimer <= 0 && this.enemies.length < 1) {
       this.spawnEnemy();
 
       this.spawnTimer = this.spawnInterval;
@@ -43,15 +43,24 @@ export class EnemySystem {
 
   spawnEnemy() {
     const spawnPositions = [];
-    for (let i = 0; i < 10; i++) {
-      spawnPositions.push([Math.floor(Math.random() * (20 - -20)) + -20, Math.floor(Math.random() * (20 - -20)) + -20]);
+    if (true) {
+      spawnPositions.push([-17, -17]);
+      spawnPositions.push([17, -17]);
+      spawnPositions.push([17, 17]);
+      spawnPositions.push([-17, 17]);
     }
-    const enemy = new Enemy(this.players, spawnPositions);
+    else {
+      for (let i = 0; i < 10; i++) {
+        spawnPositions.push([Math.floor(Math.random() * (20 - -20)) + -20, Math.floor(Math.random() * (20 - -20)) + -20]);
+      }
+    }
+    const enemy = new Enemy(this.enemies.length, this.players, spawnPositions);
     enemy.mesh.group.position.set(
-      enemy.waypoints[enemy.currentWaypointIndex][0], 
+      enemy.waypointManager.waypoints[enemy.waypointManager.currentWaypointIndex][0], 
       0, 
-      enemy.waypoints[enemy.currentWaypointIndex][1]);
-      
+      enemy.waypointManager.waypoints[enemy.waypointManager.currentWaypointIndex][1]);
+    
+
     this.scene.add(enemy.mesh.group);
     this.enemies.push(enemy);
     return;

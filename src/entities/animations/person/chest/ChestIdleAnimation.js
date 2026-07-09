@@ -5,6 +5,6 @@ export class ChestIdleAnimation extends BaseAnimation {
         super(mesh);
     }
     animate(angleX, angleY, angleZ) {
-        this.mesh.chest.rotation.z = angleZ;
+        this.mesh.chest.rotation.z = 0;
     }
 }

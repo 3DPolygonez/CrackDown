@@ -5,6 +5,7 @@ import { BlastSystem } from '../systems/BlastSystem';
 import { BulletSystem } from '../systems/BulletSystem';
 import { CollisionSystem } from '../systems/CollisionSystem';
 import { EnemySystem } from '../systems/EnemySystem';
+import { EnvironmentSystem } from '../systems/EnvironmentSystem';
 
 /*
 TO DO:
@@ -19,6 +20,7 @@ export class Game {
 
     this.scene = new THREE.Scene();
 
+    /*
     this.camera = new THREE.OrthographicCamera(
       window.innerWidth / -50,
       window.innerWidth / 50,
@@ -27,8 +29,19 @@ export class Game {
       0.1,
       1000
     );
+    */
 
-    this.camera.position.set(50, 50, 50);
+    this.camera = new THREE.PerspectiveCamera(
+      45,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
+
+    this.cameraX = 0;
+    this.cameraY = 25;
+    this.cameraZ = 25;
+    this.camera.position.set(0, this.cameraY, this.cameraZ);
     this.camera.lookAt(0, 0, 0);
 
     this.renderer = new THREE.WebGLRenderer({
@@ -64,24 +77,25 @@ export class Game {
     light.shadow.mapSize.height = 2048;
     this.scene.add(light);
 
-    const frontLight = new THREE.DirectionalLight(
+    const ambientLight = new THREE.AmbientLight(
         0xffffff,
-        1);
-    frontLight.position.set(100, 50, 25);
-    this.scene.add(frontLight);
+        0.5);
+    this.scene.add(ambientLight);
 
+    const textureLoader = new THREE.TextureLoader();
+    const map = textureLoader.load("../resources/textures/floor/tile.png");
+    map.wrapS = THREE.RepeatWrapping;
+    map.wrapT = THREE.RepeatWrapping;
+    map.repeat.set(40, 40);
     const floor = new THREE.Mesh(
-        new THREE.PlaneGeometry(50, 50),
-        new THREE.MeshPhongMaterial({
-          color: 0x999999,
+        new THREE.PlaneGeometry(40, 40),
+        new THREE.MeshStandardMaterial({
+          map: map
         })
       );
     floor.receiveShadow = true;
     floor.rotation.x = -Math.PI / 2;
     this.scene.add(floor);
-
-    const gridHelper = new THREE.GridHelper(50, 50);
-    this.scene.add(gridHelper);
 
     this.blastSystem = new BlastSystem(
       this.scene);
@@ -103,7 +117,8 @@ export class Game {
       this.scene,
       this.bulletSystem.bullets,
       this.blastSystem.blasts);
-    this.player1.group.position.x = 5;
+    this.player1.group.position.x = -19;
+    this.player1.group.position.z = -17;
     
     this.player2 = new Player(
       0x00ff00, 
@@ -125,14 +140,18 @@ export class Game {
       [this.player1, this.player2],
       this.blasts);
 
+    this.environmentSystem = new EnvironmentSystem(
+      this.scene);
+
     this.collisionSystem = new CollisionSystem(
       this.scene,
       this.bulletSystem,
       this.blastSystem,
-      this.enemySystem);
+      this.enemySystem,
+      this.environmentSystem);
 
     this.scene.add(this.player1.group);
-    this.scene.add(this.player2.group);
+    //this.scene.add(this.player2.group);
 
     this.timer = new THREE.Timer();
   }
@@ -159,10 +178,25 @@ export class Game {
     this.blastSystem.update(delta);
     this.bulletSystem.update(delta);
     this.enemySystem.update(delta);
+    this.environmentSystem.update(delta);
     this.collisionSystem.update(delta);
 
     //  camera management
-    //this.camera.position.set(this.player1.group.position.x, 20, this.player1.group.position.z + 20);
+    /*
+    this.camera.position.set(
+      this.enemySystem.enemies[0].mesh.group.position.x, 
+      this.cameraY, 
+      this.enemySystem.enemies[0].mesh.group.position.z + this.cameraZ);
+    */
+    /*
+    this.camera.position.set(
+      this.player1.group.position.x, 
+      this.cameraY, 
+      this.player1.group.position.z + this.cameraZ);
+    */
+    //this.camera.lookAt(this.player1.group.position);
+    this.camera.position.x = this.enemySystem.enemies[0].mesh.group.position.x;
+    this.camera.position.z = this.enemySystem.enemies[0].mesh.group.position.z + 30;
     this.camera.lookAt(this.enemySystem.enemies[0].mesh.group.position);
 
     //  render all output

@@ -1,36 +1,42 @@
 import * as THREE from 'three';
 import { Person } from '../mesh/Person';
+import { WaypointManager } from './managers/WaypointManager';
 
 export class Enemy {
-  constructor(players, waypoints) {
+  constructor(name, players, waypoints) {
+    this.name = name;
     this.players = players;
+    this.waypointManager = new WaypointManager(waypoints);
 
-    this.waypoints = waypoints;
-    this.previousWaypointIndex = 0;
-    this.currentWaypointIndex = 0;
-  
     this.pauseTime = this.pauseDuration;
 
     this.maxSpeed = [2, 4, 6][Math.floor(Math.random() * 3)];
     this.speed = this.maxSpeed;
-    this.waypointProximity = this.maxSpeed / 4;
+    this.waypointProximity = this.maxSpeed / 8;
     this.pauseDuration = this.maxSpeed == 2 ? 3 : (this.maxSpeed == 4 ? 2 : 1);
 
     this.direction = new THREE.Vector3(1, 0, 0);
 
     this.mesh = new Person(this.maxSpeed);
   }
-
+  bounce(delta, x, y, z) {
+    this.direction.x += (this.direction.x < 0 ? x : -x) * this.speed;
+    this.direction.z += (this.direction.z < 0 ? z : -z) * this.speed;
+    this.mesh.group.position.add(
+        this.direction.multiplyScalar(this.speed * (this.mesh.group.scale.x / 1.25) * delta));
+    this.waypointManager.currentWaypointIndex = this.waypointManager.previousWaypointIndex;
+  }
   update(delta) {
     // waypoint navigation
-    if (Math.abs(this.mesh.group.position.x - this.waypoints[this.currentWaypointIndex][0]) <= this.waypointProximity
-      && Math.abs(this.mesh.group.position.z - this.waypoints[this.currentWaypointIndex][1]) <= this.waypointProximity) {
-      this.previousWaypointIndex = this.currentWaypointIndex;
-      this.currentWaypointIndex++;
+    if ((Math.abs(this.mesh.group.position.x - this.waypointManager.waypoints[this.waypointManager.currentWaypointIndex][0]) <= this.waypointProximity
+      && Math.abs(this.mesh.group.position.z - this.waypointManager.waypoints[this.waypointManager.currentWaypointIndex][1]) <= this.waypointProximity)
+      || this.forceChangeWaypoint === true) {
+      this.waypointManager.previousWaypointIndex = this.waypointManager.currentWaypointIndex;
+      this.waypointManager.currentWaypointIndex++;
       this.pauseTime = 0;
     }
-    if (this.currentWaypointIndex >= this.waypoints.length) {
-      this.currentWaypointIndex = 0;
+    if (this.waypointManager.currentWaypointIndex >= this.waypointManager.waypoints.length) {
+      this.waypointManager.currentWaypointIndex = 0;
     };
 
     // pause at waypoints
@@ -46,9 +52,9 @@ export class Enemy {
       this.direction = new THREE.Vector3()
         .subVectors(
           new THREE.Vector3(
-            this.waypoints[this.previousWaypointIndex][0], 
+            this.waypointManager.waypoints[this.waypointManager.previousWaypointIndex][0], 
             this.mesh.group.position.y, 
-            this.waypoints[this.previousWaypointIndex][1]),
+            this.waypointManager.waypoints[this.waypointManager.previousWaypointIndex][1]),
           this.mesh.group.position
         )
         .normalize();
@@ -62,22 +68,25 @@ export class Enemy {
       this.direction = new THREE.Vector3()
         .subVectors(
           new THREE.Vector3(
-            this.waypoints[this.currentWaypointIndex][0], 
-            this.mesh.group.position.y, 
-            this.waypoints[this.currentWaypointIndex][1]),
+            this.waypointManager.waypoints[this.waypointManager.currentWaypointIndex][0], //x
+            this.mesh.group.position.y,                   //y 
+            this.waypointManager.waypoints[this.waypointManager.currentWaypointIndex][1]),//z
           this.mesh.group.position
         )
         .normalize();
     }
 
+    // Calculate how much we have to turn the character towards the waypoint
+    const targetY = Math.atan2(this.direction.x, this.direction.z);
+    const turning = Math.abs(this.mesh.group.rotation.y - targetY) < 0.1;
+
     // update the mesh (arms and legs swinging)
     this.mesh.update(
       delta, 
-      this.speed === 0 ? "Idle" : "Moving");
+      this.pauseTime < this.pauseDuration === true ? "Idle" : (turning === false ? "Turning" : "Moving"));
 
     // Rotate the enemy to face the direction of movement
-    const targetY = Math.atan2(this.direction.x, this.direction.z);
-    if (Math.abs(this.mesh.group.rotation.y - targetY) < 0.1) {
+    if (turning) {
       this.mesh.group.position.add(
         this.direction.multiplyScalar(this.speed * (this.mesh.group.scale.x / 1.25) * delta));
     }
@@ -98,36 +107,5 @@ export class Enemy {
       }
     }
     return;
-
-
-
-
-
-
-
-
-
-
-    const target = this.getNearestPlayer();
-    if (!target) return;
-  }
-
-  getNearestPlayer() {
-    let nearest = null;
-    let nearestDistance = Infinity;
-
-    for (const player of this.players) {
-      const distance =
-        this.group.position.distanceTo(
-          player.group.position
-        );
-
-      if (distance < nearestDistance) {
-        nearestDistance = distance;
-        nearest = player;
-      }
-    }
-
-    return nearest;
   }
 }
