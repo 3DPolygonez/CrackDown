@@ -196,7 +196,7 @@ export class Game {
     */
     //this.camera.lookAt(this.player1.group.position);
     this.camera.position.x = this.enemySystem.enemies[0].mesh.group.position.x;
-    this.camera.position.z = this.enemySystem.enemies[0].mesh.group.position.z + 30;
+    this.camera.position.z = this.enemySystem.enemies[0].mesh.group.position.z + 20;
     this.camera.lookAt(this.enemySystem.enemies[0].mesh.group.position);
 
     //  render all output
