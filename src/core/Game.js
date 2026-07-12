@@ -133,6 +133,7 @@ export class Game {
         cameraZoomIn: 'Digit3',
         cameraZoomOut: 'Digit4'
       },
+      this.renderer,
       this.input,
       this.player1.group,
       25);

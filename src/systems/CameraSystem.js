@@ -9,10 +9,12 @@ export class CameraSystem {
     #cameraMovementSnapMultiplier;
     constructor(
         controls,
+        renderer,
         input, 
         target, 
         cameraDefaultYZ){
         this.controls = controls;
+        this.renderer = renderer;
         this.input = input;
         this.target = target;
         this.#cameraDefaultYZ = cameraDefaultYZ;
@@ -27,6 +29,13 @@ export class CameraSystem {
         this.camera.position.z = this.target.position.z + this.#cameraDefaultYZ;
         this.#cameraTargetX = this.camera.position.x;
         this.#cameraTargetZ = this.camera.position.z;
+
+        window.addEventListener('resize', () => {
+            // Update camera aspect, projection matrix, and renderer size
+            this.camera.aspect = window.innerWidth / window.innerHeight;
+            this.camera.updateProjectionMatrix();
+            this.renderer.setSize(window.innerWidth, window.innerHeight);
+        });
     }
     update(delta) {
         let cameraX = 0;
