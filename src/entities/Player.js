@@ -46,26 +46,189 @@ export class Player {
     this.group.add(this.meshRightTrack);
   }
 
-  update(delta) {
+  update(delta, cameraRotationPosition) {
     const move = new THREE.Vector3();
     const moveIncrement = 1;
+    switch (cameraRotationPosition){
+        case 0: // camera bottom pointing to top
+            if (this.input.isDown(this.controls.left)) {//left
+              this.direction.x = -moveIncrement;
+              move.x -= moveIncrement;
+            }
+            if (this.input.isDown(this.controls.right)) {//right
+              this.direction.x = moveIncrement;
+              move.x += moveIncrement;
+            }
+            if (this.input.isDown(this.controls.up)) {//up
+              this.direction.z = -moveIncrement;
+              move.z -= moveIncrement;
+            }
+            if (this.input.isDown(this.controls.down)) {//down
+              this.direction.z = moveIncrement;
+              move.z += moveIncrement;
+            }
+            break;
+        case 1: // camera bottom left pointing to top right
+            if (this.input.isDown(this.controls.left)) {//up and left
+              this.direction.x = -moveIncrement;
+              this.direction.z = -moveIncrement;
+              move.x -= moveIncrement;
+              move.z -= moveIncrement;
+            }
+            if (this.input.isDown(this.controls.right)) {//down and right
+              this.direction.x = moveIncrement;
+              this.direction.z = moveIncrement;
+              move.x += moveIncrement;
+              move.z += moveIncrement;
+            }
+            if (this.input.isDown(this.controls.up)) {//up and right
+              this.direction.x = moveIncrement;
+              this.direction.z = -moveIncrement;
+              move.x += moveIncrement;
+              move.z -= moveIncrement;
+            }
+            if (this.input.isDown(this.controls.down)) {//down and left
+              this.direction.x = -moveIncrement;
+              this.direction.z = moveIncrement;
+              move.x -= moveIncrement;
+              move.z += moveIncrement;
+            }
+            break;
+        case 2: // camera left pointing to right
+            if (this.input.isDown(this.controls.left)) {//up
+              this.direction.z = -moveIncrement;
+              move.z -= moveIncrement;
+            }
+            if (this.input.isDown(this.controls.right)) {//down
+              this.direction.z = moveIncrement;
+              move.z += moveIncrement;
+            }
+            if (this.input.isDown(this.controls.up)) {//right
+              this.direction.x = moveIncrement;
+              move.x += moveIncrement;
+            }
+            if (this.input.isDown(this.controls.down)) {//left
+              this.direction.x = -moveIncrement;
+              move.x -= moveIncrement;
+            }
+            break;
+        case 3: // camera top left pointing to bottom right
+            if (this.input.isDown(this.controls.left)) {//up and right
+              this.direction.x = moveIncrement;
+              this.direction.z = -moveIncrement;
+              move.x += moveIncrement;
+              move.z -= moveIncrement;
+            }
+            if (this.input.isDown(this.controls.right)) {//down and left
+              this.direction.x = -moveIncrement;
+              this.direction.z = moveIncrement;
+              move.x -= moveIncrement;
+              move.z += moveIncrement;
+            }
+            if (this.input.isDown(this.controls.up)) {//down and right
+              this.direction.x = moveIncrement;
+              this.direction.z = moveIncrement;
+              move.x += moveIncrement;
+              move.z += moveIncrement;
+            }
+            if (this.input.isDown(this.controls.down)) {//up and left
+              this.direction.x = -moveIncrement;
+              this.direction.z = -moveIncrement;
+              move.x -= moveIncrement;
+              move.z -= moveIncrement;
+            }
+            break;
+            break;
+        case 4: // camera top pointing to bottom
+            if (this.input.isDown(this.controls.left)) {//right
+              this.direction.x = moveIncrement;
+              move.x += moveIncrement;
+            }
+            if (this.input.isDown(this.controls.right)) {//left
+              this.direction.x = -moveIncrement;
+              move.x -= moveIncrement;
+            }
+            if (this.input.isDown(this.controls.up)) {//down
+              this.direction.z = moveIncrement;
+              move.z += moveIncrement;
+            }
+            if (this.input.isDown(this.controls.down)) {//up
+              this.direction.z = -moveIncrement;
+              move.z -= moveIncrement;
+            }
+            break;
+        case 5: // camera top right pointing to bottom left
+            if (this.input.isDown(this.controls.left)) {//down and right
+              this.direction.x = moveIncrement;
+              this.direction.z = moveIncrement;
+              move.x += moveIncrement;
+              move.z += moveIncrement;
+            }
+            if (this.input.isDown(this.controls.right)) {//up and left
+              this.direction.x = -moveIncrement;
+              this.direction.z = -moveIncrement;
+              move.x -= moveIncrement;
+              move.z -= moveIncrement;
+            }
+            if (this.input.isDown(this.controls.up)) {//down and left
+              this.direction.x = -moveIncrement;
+              this.direction.z = moveIncrement;
+              move.x -= moveIncrement;
+              move.z += moveIncrement;
+            }
+            if (this.input.isDown(this.controls.down)) {//up and right
+              this.direction.x = moveIncrement;
+              this.direction.z = -moveIncrement;
+              move.x += moveIncrement;
+              move.z -= moveIncrement;
+            }
+            break;
+        case 6: // camera right pointing to left
+            if (this.input.isDown(this.controls.left)) {//down
+              this.direction.z = moveIncrement;
+              move.z += moveIncrement;
+            }
+            if (this.input.isDown(this.controls.right)) {//up
+              this.direction.z = -moveIncrement;
+              move.z -= moveIncrement;
+            }
+            if (this.input.isDown(this.controls.up)) {//left
+              this.direction.x = -moveIncrement;
+              move.x -= moveIncrement;
+            }
+            if (this.input.isDown(this.controls.down)) {//right
+              this.direction.x = moveIncrement;
+              move.x += moveIncrement;
+            }
+            break;
+        case 7: // camera bottom right pointing to top left
+            if (this.input.isDown(this.controls.left)) {//down and left
+              this.direction.x = -moveIncrement;
+              this.direction.z = moveIncrement;
+              move.x -= moveIncrement;
+              move.z += moveIncrement;
+            }
+            if (this.input.isDown(this.controls.right)) {//up and right
+              this.direction.x = moveIncrement;
+              this.direction.z = -moveIncrement;
+              move.x += moveIncrement;
+              move.z -= moveIncrement;
+            }
+            if (this.input.isDown(this.controls.up)) {//up and left
+              this.direction.x = -moveIncrement;
+              this.direction.z = -moveIncrement;
+              move.x -= moveIncrement;
+              move.z -= moveIncrement;
+            }
+            if (this.input.isDown(this.controls.down)) {//down and right
+              this.direction.x = moveIncrement;
+              this.direction.z = moveIncrement;
+              move.x += moveIncrement;
+              move.z += moveIncrement;
+            }
+            break;
+    }
 
-    if (this.input.isDown(this.controls.left)) {
-      this.direction.x = -moveIncrement;
-      move.x -= moveIncrement;
-    }
-    if (this.input.isDown(this.controls.right)) {
-      this.direction.x = moveIncrement;
-      move.x += moveIncrement;
-    }
-    if (this.input.isDown(this.controls.up)) {
-      this.direction.z = -moveIncrement;
-      move.z -= moveIncrement;
-    }
-    if (this.input.isDown(this.controls.down)) {
-      this.direction.z = moveIncrement;
-      move.z += moveIncrement;
-    }
     if (move.x == 0 && move.z != 0) {
       this.direction.x = 0;
     }

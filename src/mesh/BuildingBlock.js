@@ -4,18 +4,33 @@ export class BuildingBlock {
     constructor(x, z, width, height, depth, recessed) {
         this.group = new THREE.Group();
         
+        const textureLoader = new THREE.TextureLoader();
+        const map = textureLoader.load("/resources/textures/floor/tile.png");
+        map.wrapS = THREE.RepeatWrapping;
+        map.wrapT = THREE.RepeatWrapping;
+        map.repeat.set(width - 2, depth - 2);
         const material = new THREE.MeshStandardMaterial({ color: "silver" });
+        const mapMaterial = new THREE.MeshStandardMaterial({ map: map });
         if (recessed){
             //  box shape with roof recessed
             //  (could probably do this better with a cut out)
             const centralBox = new THREE.Mesh(
-                new THREE.BoxGeometry(width - 2, height - 0.25, depth - 2), material);
+                new THREE.BoxGeometry(width - 2, height - 0.25, depth - 2), mapMaterial);
             centralBox.position.x = width / 2;
             centralBox.position.y = height / 2;
             centralBox.position.z = depth / 2;
             centralBox.castShadow = true;
             centralBox.receiveShadow = true;
             this.group.add(centralBox);
+
+            const acBox = new THREE.Mesh(
+                new THREE.BoxGeometry(1, 0.5, 1), material);
+            acBox.position.x = width - 2;
+            acBox.position.y = height - 0.25;
+            acBox.position.z = 2;
+            acBox.castShadow = true;
+            acBox.receiveShadow = true;
+            this.group.add(acBox);
 
             const topWall = new THREE.Mesh(
                 new THREE.BoxGeometry(width, height, 1), material);

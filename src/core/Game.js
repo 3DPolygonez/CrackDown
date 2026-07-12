@@ -6,6 +6,7 @@ import { BulletSystem } from '../systems/BulletSystem';
 import { CollisionSystem } from '../systems/CollisionSystem';
 import { EnemySystem } from '../systems/EnemySystem';
 import { EnvironmentSystem } from '../systems/EnvironmentSystem';
+import { CameraSystem } from '../systems/CameraSystem';
 
 /*
 TO DO:
@@ -16,43 +17,15 @@ If the player is too far away, the enemy should return to its patrol path.
 
 export class Game {
   constructor() {
-    this.blasts = [];
-
     this.scene = new THREE.Scene();
 
-    /*
-    this.camera = new THREE.OrthographicCamera(
-      window.innerWidth / -50,
-      window.innerWidth / 50,
-      window.innerHeight / 50,
-      window.innerHeight / -50,
-      0.1,
-      1000
-    );
-    */
-
-    this.camera = new THREE.PerspectiveCamera(
-      45,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    );
-
-    this.cameraX = 0;
-    this.cameraY = 25;
-    this.cameraZ = 25;
-    this.camera.position.set(0, this.cameraY, this.cameraZ);
-    this.camera.lookAt(0, 0, 0);
-
     this.renderer = new THREE.WebGLRenderer({
-      antialias: true,
+      antialias: true
     });
-
     this.renderer.setSize(
       window.innerWidth,
       window.innerHeight
     );
-
     this.renderer.shadowMap.enabled = true;
     
     document.body.appendChild(this.renderer.domElement);
@@ -83,7 +56,7 @@ export class Game {
     this.scene.add(ambientLight);
 
     const textureLoader = new THREE.TextureLoader();
-    const map = textureLoader.load("../resources/textures/floor/tile.png");
+    const map = textureLoader.load("/resources/textures/floor/tile.png");
     map.wrapS = THREE.RepeatWrapping;
     map.wrapT = THREE.RepeatWrapping;
     map.repeat.set(40, 40);
@@ -153,6 +126,17 @@ export class Game {
     this.scene.add(this.player1.group);
     //this.scene.add(this.player2.group);
 
+    this.cameraSystem = new CameraSystem(
+      {
+        nextCameraPosition: 'Digit2',
+        prevCameraPosition: 'Digit1',
+        cameraZoomIn: 'Digit3',
+        cameraZoomOut: 'Digit4'
+      },
+      this.input,
+      this.player1.group,
+      25);
+
     this.timer = new THREE.Timer();
   }
 
@@ -173,33 +157,16 @@ export class Game {
     const delta = this.timer.getDelta();
 
     //  update all game components
-    this.player1.update(delta);
-    this.player2.update(delta);
+    this.player1.update(delta, this.cameraSystem.cameraRotationPosition());
+    this.player2.update(delta, this.cameraSystem.cameraRotationPosition());
     this.blastSystem.update(delta);
     this.bulletSystem.update(delta);
     this.enemySystem.update(delta);
     this.environmentSystem.update(delta);
     this.collisionSystem.update(delta);
-
-    //  camera management
-    /*
-    this.camera.position.set(
-      this.enemySystem.enemies[0].mesh.group.position.x, 
-      this.cameraY, 
-      this.enemySystem.enemies[0].mesh.group.position.z + this.cameraZ);
-    */
-    /*
-    this.camera.position.set(
-      this.player1.group.position.x, 
-      this.cameraY, 
-      this.player1.group.position.z + this.cameraZ);
-    */
-    //this.camera.lookAt(this.player1.group.position);
-    this.camera.position.x = this.enemySystem.enemies[0].mesh.group.position.x;
-    this.camera.position.z = this.enemySystem.enemies[0].mesh.group.position.z + 20;
-    this.camera.lookAt(this.enemySystem.enemies[0].mesh.group.position);
+    this.cameraSystem.update(delta);
 
     //  render all output
-    this.renderer.render(this.scene, this.camera);
+    this.renderer.render(this.scene, this.cameraSystem.camera);
   }
 }

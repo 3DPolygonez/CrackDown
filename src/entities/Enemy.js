@@ -69,7 +69,7 @@ export class Enemy {
         .subVectors(
           new THREE.Vector3(
             this.waypointManager.waypoints[this.waypointManager.currentWaypointIndex][0], //x
-            this.mesh.group.position.y,                   //y 
+            this.mesh.group.position.y,                                                   //y 
             this.waypointManager.waypoints[this.waypointManager.currentWaypointIndex][1]),//z
           this.mesh.group.position
         )

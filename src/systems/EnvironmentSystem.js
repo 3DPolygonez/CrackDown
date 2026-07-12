@@ -24,11 +24,11 @@ export class EnvironmentSystem {
             new Room(
                 "main room TL", 
                 -15, -15, 
-                10, 1.5, 10),
+                10, 2, 10),
             new Room(
                 "main room TR", 
                 5, -15, 
-                10, 1.5, 10),
+                10, 3, 10),
             new Room(
                 "main room BL", 
                 -15, 5, 
@@ -36,7 +36,7 @@ export class EnvironmentSystem {
             new Room(
                 "main room BR", 
                 5, 5, 
-                10, 1.5, 10)
+                10, 5, 10)
         ];
         for (const item of this.items) {
             this.scene.add(item.mesh.group); 
