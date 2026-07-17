@@ -108,6 +108,9 @@ export class Game {
       this.bulletSystem.bullets,
       this.blastSystem.blasts);
 
+    this.scene.add(this.player1.group);
+    this.scene.add(this.player2.group);
+
     this.enemySystem = new EnemySystem(
       this.scene,
       [this.player1, this.player2],
@@ -122,9 +125,6 @@ export class Game {
       this.blastSystem,
       this.enemySystem,
       this.environmentSystem);
-
-    this.scene.add(this.player1.group);
-    //this.scene.add(this.player2.group);
 
     this.cameraSystem = new CameraSystem(
       {

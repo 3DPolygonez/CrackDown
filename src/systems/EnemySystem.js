@@ -10,7 +10,7 @@ export class EnemySystem {
     this.enemies = [];
 
     this.spawnTimer = 0;
-    this.spawnInterval = 1;
+    this.spawnInterval = 4;
 
     this.spawnEnemy();
   }
@@ -47,6 +47,10 @@ export class EnemySystem {
     const spawnPositions = [];
     if (true) {
       spawnPositions.push([-17, -17]);
+      spawnPositions.push([-3, -17]);
+      spawnPositions.push([-3, -6]);
+      spawnPositions.push([3, -6]);
+      spawnPositions.push([3, -17]);
       spawnPositions.push([17, -17]);
       spawnPositions.push([17, 17]);
       spawnPositions.push([-17, 17]);
