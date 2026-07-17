@@ -5,7 +5,7 @@ export class BuildingBlock {
         this.group = new THREE.Group();
         
         const textureLoader = new THREE.TextureLoader();
-        const map = textureLoader.load("/resources/textures/floor/tile.png");
+        const map = textureLoader.load("./resources/textures/floor/tile.png");
         map.wrapS = THREE.RepeatWrapping;
         map.wrapT = THREE.RepeatWrapping;
         map.repeat.set(width - 2, depth - 2);

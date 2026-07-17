@@ -56,7 +56,7 @@ export class Game {
     this.scene.add(ambientLight);
 
     const textureLoader = new THREE.TextureLoader();
-    const map = textureLoader.load("/resources/textures/floor/tile.png");
+    const map = textureLoader.load("./resources/textures/floor/tile.png");
     map.wrapS = THREE.RepeatWrapping;
     map.wrapT = THREE.RepeatWrapping;
     map.repeat.set(40, 40);
