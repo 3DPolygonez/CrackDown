@@ -20,12 +20,12 @@ export class Person {
 
         const textureLoader = new THREE.TextureLoader();
         const textures = [
-            textureLoader.load("../resources/textures/person/soldier/head/right.png"),
-            textureLoader.load("../resources/textures/person/soldier/head/left.png"),
-            textureLoader.load("../resources/textures/person/soldier/head/top.png"),
-            textureLoader.load("../resources/textures/person/soldier/head/bottom.png"),
-            textureLoader.load("../resources/textures/person/soldier/head/front.png"),
-            textureLoader.load("../resources/textures/person/soldier/head/back.png")
+            textureLoader.load("./resources/textures/person/soldier/head/right.png"),
+            textureLoader.load("./resources/textures/person/soldier/head/left.png"),
+            textureLoader.load("./resources/textures/person/soldier/head/top.png"),
+            textureLoader.load("./resources/textures/person/soldier/head/bottom.png"),
+            textureLoader.load("./resources/textures/person/soldier/head/front.png"),
+            textureLoader.load("./resources/textures/person/soldier/head/back.png")
         ];
         const materials = textures.map(t => new THREE.MeshStandardMaterial({ map: t }));
         
