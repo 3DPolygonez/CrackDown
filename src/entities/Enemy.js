@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { Person } from '../mesh/Person';
+import { Soldier } from '../mesh/Soldier';
 import { WaypointManager } from './managers/WaypointManager';
 
 export class Enemy {
@@ -17,7 +17,7 @@ export class Enemy {
 
     this.direction = new THREE.Vector3(1, 0, 0);
 
-    this.mesh = new Person(this.maxSpeed);
+    this.mesh = new Soldier(this.maxSpeed);
   }
   bounce(delta, x, y, z) {
     this.direction.x += (this.direction.x < 0 ? x : -x) * this.speed;

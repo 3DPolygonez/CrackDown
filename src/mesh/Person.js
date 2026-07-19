@@ -11,7 +11,9 @@ import { BackpackIdleAnimation } from '../entities/animations/person/backpack/Ba
 import { BackpackMovingAnimation } from '../entities/animations/person/backpack/BackpackMovingAnimation.js';
 
 export class Person {
-    constructor(maxSpeed) {
+    constructor(
+      maxSpeed, 
+      baseTexturePath) {
         this.deltaSum = 0;
         this.headDeltaSum = 0;
         this.maxSpeed = maxSpeed;
@@ -20,60 +22,60 @@ export class Person {
 
         const textureLoader = new THREE.TextureLoader();
         const faceTextures = [
-            textureLoader.load("./resources/textures/person/soldier/face/right.png"),
-            textureLoader.load("./resources/textures/person/soldier/face/left.png"),
-            textureLoader.load("./resources/textures/person/soldier/face/top.png"),
-            textureLoader.load("./resources/textures/person/soldier/face/bottom.png"),
-            textureLoader.load("./resources/textures/person/soldier/face/front.png"),
-            textureLoader.load("./resources/textures/person/soldier/face/back.png")
+            textureLoader.load(baseTexturePath + "/face/right.png"),
+            textureLoader.load(baseTexturePath + "/face/left.png"),
+            textureLoader.load(baseTexturePath + "/face/top.png"),
+            textureLoader.load(baseTexturePath + "/face/bottom.png"),
+            textureLoader.load(baseTexturePath + "/face/front.png"),
+            textureLoader.load(baseTexturePath + "/face/back.png")
         ];
         const chestTextures = [
-            textureLoader.load("./resources/textures/person/soldier/chest/right.png"),
-            textureLoader.load("./resources/textures/person/soldier/chest/left.png"),
-            textureLoader.load("./resources/textures/person/soldier/chest/top.png"),
-            textureLoader.load("./resources/textures/person/soldier/chest/bottom.png"),
-            textureLoader.load("./resources/textures/person/soldier/chest/front.png"),
-            textureLoader.load("./resources/textures/person/soldier/chest/back.png")
+            textureLoader.load(baseTexturePath + "/chest/right.png"),
+            textureLoader.load(baseTexturePath + "/chest/left.png"),
+            textureLoader.load(baseTexturePath + "/chest/top.png"),
+            textureLoader.load(baseTexturePath + "/chest/bottom.png"),
+            textureLoader.load(baseTexturePath + "/chest/front.png"),
+            textureLoader.load(baseTexturePath + "/chest/back.png")
         ];
         const rightArmTextures = [
-            textureLoader.load("./resources/textures/person/soldier/rightArm/right.png"),
-            textureLoader.load("./resources/textures/person/soldier/rightArm/left.png"),
-            textureLoader.load("./resources/textures/person/soldier/rightArm/top.png"),
-            textureLoader.load("./resources/textures/person/soldier/rightArm/bottom.png"),
-            textureLoader.load("./resources/textures/person/soldier/rightArm/front.png"),
-            textureLoader.load("./resources/textures/person/soldier/rightArm/back.png")
+            textureLoader.load(baseTexturePath + "/rightArm/right.png"),
+            textureLoader.load(baseTexturePath + "/rightArm/left.png"),
+            textureLoader.load(baseTexturePath + "/rightArm/top.png"),
+            textureLoader.load(baseTexturePath + "/rightArm/bottom.png"),
+            textureLoader.load(baseTexturePath + "/rightArm/front.png"),
+            textureLoader.load(baseTexturePath + "/rightArm/back.png")
         ];
         const leftArmTextures = [
-            textureLoader.load("./resources/textures/person/soldier/leftArm/right.png"),
-            textureLoader.load("./resources/textures/person/soldier/leftArm/left.png"),
-            textureLoader.load("./resources/textures/person/soldier/leftArm/top.png"),
-            textureLoader.load("./resources/textures/person/soldier/leftArm/bottom.png"),
-            textureLoader.load("./resources/textures/person/soldier/leftArm/front.png"),
-            textureLoader.load("./resources/textures/person/soldier/leftArm/back.png")
+            textureLoader.load(baseTexturePath + "/leftArm/right.png"),
+            textureLoader.load(baseTexturePath + "/leftArm/left.png"),
+            textureLoader.load(baseTexturePath + "/leftArm/top.png"),
+            textureLoader.load(baseTexturePath + "/leftArm/bottom.png"),
+            textureLoader.load(baseTexturePath + "/leftArm/front.png"),
+            textureLoader.load(baseTexturePath + "/leftArm/back.png")
         ];
         const waistTextures = [
-            textureLoader.load("./resources/textures/person/soldier/waist/right.png"),
-            textureLoader.load("./resources/textures/person/soldier/waist/left.png"),
-            textureLoader.load("./resources/textures/person/soldier/waist/top.png"),
-            textureLoader.load("./resources/textures/person/soldier/waist/bottom.png"),
-            textureLoader.load("./resources/textures/person/soldier/waist/front.png"),
-            textureLoader.load("./resources/textures/person/soldier/waist/back.png")
+            textureLoader.load(baseTexturePath + "/waist/right.png"),
+            textureLoader.load(baseTexturePath + "/waist/left.png"),
+            textureLoader.load(baseTexturePath + "/waist/top.png"),
+            textureLoader.load(baseTexturePath + "/waist/bottom.png"),
+            textureLoader.load(baseTexturePath + "/waist/front.png"),
+            textureLoader.load(baseTexturePath + "/waist/back.png")
         ];
         const rightLegTextures = [
-            textureLoader.load("./resources/textures/person/soldier/rightLeg/right.png"),
-            textureLoader.load("./resources/textures/person/soldier/rightLeg/left.png"),
-            textureLoader.load("./resources/textures/person/soldier/rightLeg/top.png"),
-            textureLoader.load("./resources/textures/person/soldier/rightLeg/bottom.png"),
-            textureLoader.load("./resources/textures/person/soldier/rightLeg/front.png"),
-            textureLoader.load("./resources/textures/person/soldier/rightLeg/back.png")
+            textureLoader.load(baseTexturePath + "/rightLeg/right.png"),
+            textureLoader.load(baseTexturePath + "/rightLeg/left.png"),
+            textureLoader.load(baseTexturePath + "/rightLeg/top.png"),
+            textureLoader.load(baseTexturePath + "/rightLeg/bottom.png"),
+            textureLoader.load(baseTexturePath + "/rightLeg/front.png"),
+            textureLoader.load(baseTexturePath + "/rightLeg/back.png")
         ];
         const leftLegTextures = [
-            textureLoader.load("./resources/textures/person/soldier/leftLeg/right.png"),
-            textureLoader.load("./resources/textures/person/soldier/leftLeg/left.png"),
-            textureLoader.load("./resources/textures/person/soldier/leftLeg/top.png"),
-            textureLoader.load("./resources/textures/person/soldier/leftLeg/bottom.png"),
-            textureLoader.load("./resources/textures/person/soldier/leftLeg/front.png"),
-            textureLoader.load("./resources/textures/person/soldier/leftLeg/back.png")
+            textureLoader.load(baseTexturePath + "/leftLeg/right.png"),
+            textureLoader.load(baseTexturePath + "/leftLeg/left.png"),
+            textureLoader.load(baseTexturePath + "/leftLeg/top.png"),
+            textureLoader.load(baseTexturePath + "/leftLeg/bottom.png"),
+            textureLoader.load(baseTexturePath + "/leftLeg/front.png"),
+            textureLoader.load(baseTexturePath + "/leftLeg/back.png")
         ];
         const faceMaterial = faceTextures.map(t => new THREE.MeshStandardMaterial({ map: t }));
         const chestMaterial = chestTextures.map(t => new THREE.MeshStandardMaterial({ map: t }));
