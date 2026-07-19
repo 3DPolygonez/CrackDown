@@ -11,9 +11,7 @@ import { BackpackIdleAnimation } from '../entities/animations/person/backpack/Ba
 import { BackpackMovingAnimation } from '../entities/animations/person/backpack/BackpackMovingAnimation.js';
 
 export class Person {
-    constructor(
-      maxSpeed, 
-      baseTexturePath) {
+    constructor(maxSpeed, baseTexturePath) {
         this.deltaSum = 0;
         this.headDeltaSum = 0;
         this.maxSpeed = maxSpeed;
