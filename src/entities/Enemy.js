@@ -23,7 +23,7 @@ export class Enemy {
     this.direction.x += (this.direction.x < 0 ? x : -x) * this.speed;
     this.direction.z += (this.direction.z < 0 ? z : -z) * this.speed;
     this.mesh.group.position.add(
-        this.direction.multiplyScalar(this.speed * (this.mesh.group.scale.x / 1.25) * delta));
+        this.direction.multiplyScalar(this.speed * (1.25) * delta));
     this.waypointManager.currentWaypointIndex = this.waypointManager.previousWaypointIndex;
   }
   update(delta) {
@@ -88,7 +88,7 @@ export class Enemy {
     // Rotate the enemy to face the direction of movement
     if (turning) {
       this.mesh.group.position.add(
-        this.direction.multiplyScalar(this.speed * (this.mesh.group.scale.x / 1.25) * delta));
+        this.direction.multiplyScalar(this.speed * 1.25 * delta));
     }
     else {
       // Smoothly rotate towards the target direction

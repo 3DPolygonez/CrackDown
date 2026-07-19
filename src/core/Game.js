@@ -17,6 +17,7 @@ If the player is too far away, the enemy should return to its patrol path.
 
 export class Game {
   constructor() {
+    this.cameraEnemyTarget = -1;
     this.scene = new THREE.Scene();
 
     this.renderer = new THREE.WebGLRenderer({
@@ -52,7 +53,7 @@ export class Game {
 
     const ambientLight = new THREE.AmbientLight(
         0xffffff,
-        0.5);
+        1);
     this.scene.add(ambientLight);
 
     const textureLoader = new THREE.TextureLoader();
@@ -156,6 +157,14 @@ export class Game {
 
     //  get the delta time since the last update
     const delta = this.timer.getDelta();
+
+    if (this.input.isDown('KeyT')){
+      this.cameraEnemyTarget++;
+      if (this.cameraEnemyTarget > this.enemySystem.enemies.length){
+        this.cameraEnemyTarget = 0;
+      }
+      this.cameraSystem.target = this.enemySystem.enemies[this.cameraEnemyTarget].mesh.group;
+    }
 
     //  update all game components
     this.player1.update(delta, this.cameraSystem.cameraRotationPosition());

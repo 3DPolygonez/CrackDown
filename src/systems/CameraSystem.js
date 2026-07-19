@@ -25,7 +25,7 @@ export class CameraSystem {
             0.1,
             1000);
         this.camera.position.x = this.target.position.x;
-        this.camera.position.y = this.#cameraDefaultYZ
+        this.camera.position.y = this.#cameraDefaultYZ;
         this.camera.position.z = this.target.position.z + this.#cameraDefaultYZ;
         this.#cameraTargetX = this.camera.position.x;
         this.#cameraTargetZ = this.camera.position.z;
