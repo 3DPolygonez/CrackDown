@@ -7,6 +7,8 @@ import { HeadIdleAnimation } from '../entities/animations/person/head/HeadIdleAn
 import { HeadMovingAnimation } from '../entities/animations/person/head/HeadMovingAnimation.js';
 import { ChestIdleAnimation } from '../entities/animations/person/chest/ChestIdleAnimation.js';
 import { ChestMovingAnimation } from '../entities/animations/person/chest/ChestMovingAnimation.js';
+import { WaistIdleAnimation } from '../entities/animations/person/waist/WaistIdleAnimation.js';
+import { WaistMovingAnimation } from '../entities/animations/person/waist/WaistMovingAnimation.js';
 import { BackpackIdleAnimation } from '../entities/animations/person/backpack/BackpackIdleAnimation.js';
 import { BackpackMovingAnimation } from '../entities/animations/person/backpack/BackpackMovingAnimation.js';
 
@@ -222,6 +224,7 @@ export class Person {
         new ArmIdleAnimation(this),
         new HeadIdleAnimation(this),
         new ChestIdleAnimation(this),
+        new WaistIdleAnimation(this),
         new BackpackIdleAnimation(this)
       ];
     }
@@ -231,6 +234,7 @@ export class Person {
         new ArmMovingAnimation(this),
         new HeadMovingAnimation(this),
         new ChestMovingAnimation(this),
+        new WaistMovingAnimation(this),
         new BackpackMovingAnimation(this)
       ];
     }
@@ -240,6 +244,7 @@ export class Person {
         new ArmMovingAnimation(this),
         new HeadIdleAnimation(this),
         new ChestIdleAnimation(this),
+        new WaistIdleAnimation(this),
         new BackpackIdleAnimation(this)
       ];
     }

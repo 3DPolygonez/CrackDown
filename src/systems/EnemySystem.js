@@ -18,7 +18,7 @@ export class EnemySystem {
   update(delta) {
     this.spawnTimer -= delta;
 
-    if (this.spawnTimer <= 0 && this.enemies.length < 32) {
+    if (this.spawnTimer <= 0 && this.enemies.length < 1) {
       this.spawnEnemy();
       this.spawnTimer = this.spawnInterval;
     }
