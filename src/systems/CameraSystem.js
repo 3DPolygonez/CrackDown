@@ -13,6 +13,7 @@ export class CameraSystem {
         input, 
         target, 
         cameraDefaultYZ){
+        this.distance = 0;
         this.controls = controls;
         this.renderer = renderer;
         this.input = input;
@@ -141,6 +142,7 @@ export class CameraSystem {
         }
         this.camera.position.y = cameraY;
         this.camera.lookAt(this.target.position);
+        this.distance = this.camera.position.distanceTo(this.target.position);
     }
     cameraRotationPosition(){
         return this.#cameraRotationPosition;

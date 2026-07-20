@@ -22,61 +22,82 @@ export class Person {
 
         const textureLoader = new THREE.TextureLoader();
         const faceTextures = [
-            textureLoader.load(baseTexturePath + "/face/right.png"),
-            textureLoader.load(baseTexturePath + "/face/left.png"),
-            textureLoader.load(baseTexturePath + "/face/top.png"),
-            textureLoader.load(baseTexturePath + "/face/bottom.png"),
-            textureLoader.load(baseTexturePath + "/face/front.png"),
-            textureLoader.load(baseTexturePath + "/face/back.png")
+          textureLoader.load(baseTexturePath + "/face/right.png"),
+          textureLoader.load(baseTexturePath + "/face/left.png"),
+          textureLoader.load(baseTexturePath + "/face/top.png"),
+          textureLoader.load(baseTexturePath + "/face/bottom.png"),
+          textureLoader.load(baseTexturePath + "/face/front.png"),
+          textureLoader.load(baseTexturePath + "/face/back.png")
         ];
+        faceTextures.forEach(texture => {
+          texture.colorSpace = THREE.SRGBColorSpace;
+        });
         const chestTextures = [
-            textureLoader.load(baseTexturePath + "/chest/right.png"),
-            textureLoader.load(baseTexturePath + "/chest/left.png"),
-            textureLoader.load(baseTexturePath + "/chest/top.png"),
-            textureLoader.load(baseTexturePath + "/chest/bottom.png"),
-            textureLoader.load(baseTexturePath + "/chest/front.png"),
-            textureLoader.load(baseTexturePath + "/chest/back.png")
+          textureLoader.load(baseTexturePath + "/chest/right.png"),
+          textureLoader.load(baseTexturePath + "/chest/left.png"),
+          textureLoader.load(baseTexturePath + "/chest/top.png"),
+          textureLoader.load(baseTexturePath + "/chest/bottom.png"),
+          textureLoader.load(baseTexturePath + "/chest/front.png"),
+          textureLoader.load(baseTexturePath + "/chest/back.png")
         ];
+        chestTextures.forEach(texture => {
+          texture.colorSpace = THREE.SRGBColorSpace;
+        });
         const rightArmTextures = [
-            textureLoader.load(baseTexturePath + "/rightArm/right.png"),
-            textureLoader.load(baseTexturePath + "/rightArm/left.png"),
-            textureLoader.load(baseTexturePath + "/rightArm/top.png"),
-            textureLoader.load(baseTexturePath + "/rightArm/bottom.png"),
-            textureLoader.load(baseTexturePath + "/rightArm/front.png"),
-            textureLoader.load(baseTexturePath + "/rightArm/back.png")
+          textureLoader.load(baseTexturePath + "/rightArm/right.png"),
+          textureLoader.load(baseTexturePath + "/rightArm/left.png"),
+          textureLoader.load(baseTexturePath + "/rightArm/top.png"),
+          textureLoader.load(baseTexturePath + "/rightArm/bottom.png"),
+          textureLoader.load(baseTexturePath + "/rightArm/front.png"),
+          textureLoader.load(baseTexturePath + "/rightArm/back.png")
         ];
+        rightArmTextures.forEach(texture => {
+          texture.colorSpace = THREE.SRGBColorSpace;
+        });
         const leftArmTextures = [
-            textureLoader.load(baseTexturePath + "/leftArm/right.png"),
-            textureLoader.load(baseTexturePath + "/leftArm/left.png"),
-            textureLoader.load(baseTexturePath + "/leftArm/top.png"),
-            textureLoader.load(baseTexturePath + "/leftArm/bottom.png"),
-            textureLoader.load(baseTexturePath + "/leftArm/front.png"),
-            textureLoader.load(baseTexturePath + "/leftArm/back.png")
+          textureLoader.load(baseTexturePath + "/leftArm/right.png"),
+          textureLoader.load(baseTexturePath + "/leftArm/left.png"),
+          textureLoader.load(baseTexturePath + "/leftArm/top.png"),
+          textureLoader.load(baseTexturePath + "/leftArm/bottom.png"),
+          textureLoader.load(baseTexturePath + "/leftArm/front.png"),
+          textureLoader.load(baseTexturePath + "/leftArm/back.png")
         ];
+        leftArmTextures.forEach(texture => {
+          texture.colorSpace = THREE.SRGBColorSpace;
+        });
         const waistTextures = [
-            textureLoader.load(baseTexturePath + "/waist/right.png"),
-            textureLoader.load(baseTexturePath + "/waist/left.png"),
-            textureLoader.load(baseTexturePath + "/waist/top.png"),
-            textureLoader.load(baseTexturePath + "/waist/bottom.png"),
-            textureLoader.load(baseTexturePath + "/waist/front.png"),
-            textureLoader.load(baseTexturePath + "/waist/back.png")
+          textureLoader.load(baseTexturePath + "/waist/right.png"),
+          textureLoader.load(baseTexturePath + "/waist/left.png"),
+          textureLoader.load(baseTexturePath + "/waist/top.png"),
+          textureLoader.load(baseTexturePath + "/waist/bottom.png"),
+          textureLoader.load(baseTexturePath + "/waist/front.png"),
+          textureLoader.load(baseTexturePath + "/waist/back.png")
         ];
+        waistTextures.forEach(texture => {
+          texture.colorSpace = THREE.SRGBColorSpace;
+        });
         const rightLegTextures = [
-            textureLoader.load(baseTexturePath + "/rightLeg/right.png"),
-            textureLoader.load(baseTexturePath + "/rightLeg/left.png"),
-            textureLoader.load(baseTexturePath + "/rightLeg/top.png"),
-            textureLoader.load(baseTexturePath + "/rightLeg/bottom.png"),
-            textureLoader.load(baseTexturePath + "/rightLeg/front.png"),
-            textureLoader.load(baseTexturePath + "/rightLeg/back.png")
+          textureLoader.load(baseTexturePath + "/rightLeg/right.png"),
+          textureLoader.load(baseTexturePath + "/rightLeg/left.png"),
+          textureLoader.load(baseTexturePath + "/rightLeg/top.png"),
+          textureLoader.load(baseTexturePath + "/rightLeg/bottom.png"),
+          textureLoader.load(baseTexturePath + "/rightLeg/front.png"),
+          textureLoader.load(baseTexturePath + "/rightLeg/back.png")
         ];
+        rightLegTextures.forEach(texture => {
+          texture.colorSpace = THREE.SRGBColorSpace;
+        });
         const leftLegTextures = [
-            textureLoader.load(baseTexturePath + "/leftLeg/right.png"),
-            textureLoader.load(baseTexturePath + "/leftLeg/left.png"),
-            textureLoader.load(baseTexturePath + "/leftLeg/top.png"),
-            textureLoader.load(baseTexturePath + "/leftLeg/bottom.png"),
-            textureLoader.load(baseTexturePath + "/leftLeg/front.png"),
-            textureLoader.load(baseTexturePath + "/leftLeg/back.png")
+          textureLoader.load(baseTexturePath + "/leftLeg/right.png"),
+          textureLoader.load(baseTexturePath + "/leftLeg/left.png"),
+          textureLoader.load(baseTexturePath + "/leftLeg/top.png"),
+          textureLoader.load(baseTexturePath + "/leftLeg/bottom.png"),
+          textureLoader.load(baseTexturePath + "/leftLeg/front.png"),
+          textureLoader.load(baseTexturePath + "/leftLeg/back.png")
         ];
+        leftLegTextures.forEach(texture => {
+          texture.colorSpace = THREE.SRGBColorSpace;
+        });
         const faceMaterial = faceTextures.map(t => new THREE.MeshStandardMaterial({ map: t }));
         const chestMaterial = chestTextures.map(t => new THREE.MeshStandardMaterial({ map: t }));
         const rightArmMaterial = rightArmTextures.map(t => new THREE.MeshStandardMaterial({ map: t }));
@@ -99,7 +120,7 @@ export class Person {
     
         this.face = new THREE.Mesh(
           new THREE.BoxGeometry(10, 10, 10), faceMaterial);
-        this.face.position.y = 24;
+        this.face.position.y = 25;
         this.face.position.z = 2;
         this.face.castShadow = true;
         this.face.receiveShadow = true;

@@ -1,4 +1,9 @@
 import * as THREE from 'three';
+/*
+  import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+  import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+  import { BokehPass } from 'three/addons/postprocessing/BokehPass.js';
+*/
 import { Input } from './Input';
 import { Player } from '../entities/Player';
 import { BlastSystem } from '../systems/BlastSystem';
@@ -17,9 +22,10 @@ If the player is too far away, the enemy should return to its patrol path.
 
 export class Game {
   constructor() {
-    this.cameraEnemyTarget = -1;
+    //  configure scene
     this.scene = new THREE.Scene();
 
+    //  configure renderer
     this.renderer = new THREE.WebGLRenderer({
       antialias: true
     });
@@ -28,11 +34,9 @@ export class Game {
       window.innerHeight
     );
     this.renderer.shadowMap.enabled = true;
-    
     document.body.appendChild(this.renderer.domElement);
 
-    this.input = new Input();
-
+    //  configure scene lights
     const light = new THREE.DirectionalLight(
       0xffffff,
       1);
@@ -56,8 +60,10 @@ export class Game {
         1);
     this.scene.add(ambientLight);
 
+    //  configure floor
     const textureLoader = new THREE.TextureLoader();
     const map = textureLoader.load("./resources/textures/floor/tile.png");
+    map.colorSpace = THREE.SRGBColorSpace;
     map.wrapS = THREE.RepeatWrapping;
     map.wrapT = THREE.RepeatWrapping;
     map.repeat.set(40, 40);
@@ -70,6 +76,10 @@ export class Game {
     floor.receiveShadow = true;
     floor.rotation.x = -Math.PI / 2;
     this.scene.add(floor);
+
+    //  configure systems
+    this.cameraEnemyTarget = -1;
+    this.input = new Input();
 
     this.blastSystem = new BlastSystem(
       this.scene);
@@ -109,9 +119,6 @@ export class Game {
       this.bulletSystem.bullets,
       this.blastSystem.blasts);
 
-    this.scene.add(this.player1.group);
-    this.scene.add(this.player2.group);
-
     this.enemySystem = new EnemySystem(
       this.scene,
       [this.player1, this.player2],
@@ -139,6 +146,8 @@ export class Game {
       this.player1.group,
       25);
 
+    this.scene.add(this.player1.group);
+    this.scene.add(this.player2.group);
     this.timer = new THREE.Timer();
   }
 

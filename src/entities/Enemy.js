@@ -13,7 +13,7 @@ export class Enemy {
 
     this.maxSpeed = [2, 4, 6][Math.floor(Math.random() * 3)];
     this.speed = this.maxSpeed;
-    this.waypointProximity = this.maxSpeed / 8;
+    this.waypointProximity = this.maxSpeed / 4;
     this.pauseDuration = this.maxSpeed == 2 ? 3 : (this.maxSpeed == 4 ? 2 : 1);
 
     this.direction = new THREE.Vector3(1, 0, 0);

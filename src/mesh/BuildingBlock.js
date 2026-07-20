@@ -6,10 +6,11 @@ export class BuildingBlock {
         
         const textureLoader = new THREE.TextureLoader();
         const map = textureLoader.load("./resources/textures/floor/tile.png");
+        map.colorSpace = THREE.SRGBColorSpace;
         map.wrapS = THREE.RepeatWrapping;
         map.wrapT = THREE.RepeatWrapping;
         map.repeat.set(width - 2, depth - 2);
-        const material = new THREE.MeshStandardMaterial({ color: "silver" });
+        const material = new THREE.MeshStandardMaterial({ color: "grey" });
         const mapMaterial = new THREE.MeshStandardMaterial({ map: map });
         if (recessed){
             //  box shape with roof recessed
