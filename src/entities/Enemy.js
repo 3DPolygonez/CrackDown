@@ -13,7 +13,7 @@ export class Enemy {
 
     this.maxSpeed = [2, 4, 6][Math.floor(Math.random() * 3)];
     this.speed = this.maxSpeed;
-    this.waypointProximity = 1;
+    this.waypointProximity = 0.5;
     this.pauseDuration = this.maxSpeed == 2 ? 3 : (this.maxSpeed == 4 ? 2 : 1);
 
     this.direction = new THREE.Vector3(1, 0, 0);
@@ -94,7 +94,7 @@ export class Enemy {
     // Rotate the enemy to face the direction of movement
     if (turning) {
       this.mesh.group.position.add(
-        this.direction.multiplyScalar(this.speed * 1.25 * delta));
+        this.direction.multiplyScalar(this.speed * (0.5) * 1.25 * delta));
     }
     else {
       // Smoothly rotate towards the target direction
