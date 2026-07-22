@@ -2,6 +2,11 @@ import * as THREE from 'three';
 
 export class BuildingBlock {
     constructor(x, z, width, height, depth, recessed) {
+        this.x = x;
+        this.z = z;
+        this.width = width;
+        this.height = height;
+        this.depth = depth;
         this.group = new THREE.Group();
         
         const textureLoader = new THREE.TextureLoader();

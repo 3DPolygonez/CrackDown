@@ -12,6 +12,7 @@ import { CollisionSystem } from '../systems/CollisionSystem';
 import { EnemySystem } from '../systems/EnemySystem';
 import { EnvironmentSystem } from '../systems/EnvironmentSystem';
 import { CameraSystem } from '../systems/CameraSystem';
+import { NodeSystem } from '../systems/NodeSystem';
 
 /*
 TO DO:
@@ -145,6 +146,13 @@ export class Game {
       this.input,
       this.player1.group,
       25);
+
+    this.nodeSystem = new NodeSystem(40, 40, this.environmentSystem);
+    this.nodeSystem.setStartNode(2, 2);
+    this.nodeSystem.setGoalNode(20, 20);
+    this.nodeSystem.setNodeCosts();
+    this.nodeSystem.autoSearch();
+    this.nodeSystem.logNodes();
 
     this.scene.add(this.player1.group);
     this.scene.add(this.player2.group);

@@ -193,9 +193,9 @@ export class Person {
         this.backpack.receiveShadow = true;
         //this.group.add(this.backpack);
 
-        this.group.scale.x = 0.05;
-        this.group.scale.y = 0.05;
-        this.group.scale.z = 0.05;
+        this.group.scale.x = 0.025;
+        this.group.scale.y = 0.025;
+        this.group.scale.z = 0.025;
     }
     update(delta, state){
       const swingSpeed = this.maxSpeed * (this.maxSpeed <= 2 ? 4 : (this.maxSpeed <= 4 ? 3 : 1.5));
