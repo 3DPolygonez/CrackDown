@@ -13,7 +13,7 @@ export class Enemy {
 
     this.maxSpeed = [2, 4, 6][Math.floor(Math.random() * 3)];
     this.speed = this.maxSpeed;
-    this.waypointProximity = 0.25;
+    this.waypointProximity = 0.05;
     this.pauseDuration = this.maxSpeed == 2 ? 3 : (this.maxSpeed == 4 ? 2 : 1);
 
     this.direction = new THREE.Vector3(1, 0, 0);
@@ -37,6 +37,8 @@ export class Enemy {
     if ((Math.abs(this.mesh.group.position.x - this.waypointManager.waypoints[this.waypointManager.currentWaypointIndex][0]) <= this.waypointProximity
       && Math.abs(this.mesh.group.position.z - this.waypointManager.waypoints[this.waypointManager.currentWaypointIndex][1]) <= this.waypointProximity)
       || this.forceChangeWaypoint === true) {
+      this.mesh.group.position.x = this.waypointManager.waypoints[this.waypointManager.currentWaypointIndex][0];
+      this.mesh.group.position.z = this.waypointManager.waypoints[this.waypointManager.currentWaypointIndex][1];
       this.waypointManager.previousWaypointIndex = this.waypointManager.currentWaypointIndex;
       this.waypointManager.currentWaypointIndex++;
       this.pauseTime = 0;
