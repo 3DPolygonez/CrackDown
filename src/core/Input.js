@@ -99,6 +99,16 @@ export class Input {
       this.keys["ArrowDown"] = false;
       this.keys["ArrowRight"] = false;
     });
+    const randomBtn = document.getElementById('dpad-random');
+    randomBtn.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      this.#lastKey = "KeyR";
+      this.keys["KeyR"] = true;
+    });
+    randomBtn.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      this.keys["KeyR"] = false;
+    });
     const camZoomInBtn = document.getElementById('cam-zoomin');
     camZoomInBtn.addEventListener('touchstart', (e) => {
       e.preventDefault();
@@ -138,6 +148,16 @@ export class Input {
     prevCameraPosition.addEventListener('touchend', (e) => {
       e.preventDefault();
       this.keys["Digit2"] = false;
+    });
+    const changeCameraPosition = document.getElementById('cam-change');
+    changeCameraPosition.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      this.#lastKey = "KeyT";
+      this.keys["KeyT"] = true;
+    });
+    changeCameraPosition.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      this.keys["KeyT"] = false;
     });
   }
   isDown(key) {

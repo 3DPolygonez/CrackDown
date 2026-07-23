@@ -13,6 +13,7 @@ import { EnemySystem } from '../systems/EnemySystem';
 import { EnvironmentSystem } from '../systems/EnvironmentSystem';
 import { CameraSystem } from '../systems/CameraSystem';
 import { NodeSystem } from '../systems/NodeSystem';
+import { WaypointManager } from '../entities//managers/WaypointManager'
 
 /*
 TO DO:
@@ -147,15 +148,8 @@ export class Game {
       this.player1.group,
       25);
 
-    this.nodeSystem = new NodeSystem(40, 40, this.environmentSystem);
-    this.nodeSystem.setStartNode(2, 2);
-    this.nodeSystem.setGoalNode(20, 20);
-    this.nodeSystem.setNodeCosts();
-    this.nodeSystem.autoSearch();
-    this.nodeSystem.logNodes();
-
-    this.scene.add(this.player1.group);
-    this.scene.add(this.player2.group);
+    //this.scene.add(this.player1.group);
+    //this.scene.add(this.player2.group);
     this.timer = new THREE.Timer();
   }
 
@@ -181,6 +175,17 @@ export class Game {
         this.cameraEnemyTarget = 0;
       }
       this.cameraSystem.target = this.enemySystem.enemies[this.cameraEnemyTarget].mesh.group;
+    }
+    if (this.input.isDown('KeyR')){
+      for (let i = 0; i < this.enemySystem.enemies.length; i++){
+        const nodeSystem = new NodeSystem(40, 40, this.environmentSystem);
+        nodeSystem.setStartWaypoint(this.enemySystem.enemies[i].mesh.group.position.x, this.enemySystem.enemies[i].mesh.group.position.z);
+        nodeSystem.setGoalNode(Math.floor(Math.random() * 40), Math.floor(Math.random() * 40));
+        nodeSystem.setNodeCosts();
+        nodeSystem.autoSearch();
+        this.enemySystem.enemies[i].waypointManager = new WaypointManager(nodeSystem.getPathWaypoints());
+        this.enemySystem.enemies[i].pauseDuration = 0;
+      }
     }
 
     //  update all game components

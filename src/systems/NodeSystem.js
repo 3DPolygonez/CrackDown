@@ -24,8 +24,8 @@ export class NodeSystem{
             }
         }
         //  read from the environment system to build the solid objects
-        let xOffset = maxCol / 2;
-        let zOffset = maxRow / 2;
+        let xOffset = this.maxCol / 2;
+        let zOffset = this.maxRow / 2;
         for (const item of environmentSystem.items) {
             for (let x = 0; x < item.mesh.width; x++){
                 for (let z = 0; z < item.mesh.depth; z++){
@@ -34,12 +34,34 @@ export class NodeSystem{
             }
         }
     }
+    getPathWaypoints(){
+        let xOffset = this.maxCol / 2;
+        let zOffset = this.maxRow / 2;
+        const waypointPositions = [];
+        this.pathNodes.toReversed().forEach(node => {
+            waypointPositions.push([node.col - xOffset + 0.5, node.row - zOffset + 0.5]); 
+        });
+        return waypointPositions;
+    }
+    setStartWaypoint(x, z){
+        let xOffset = this.maxCol / 2;
+        let zOffset = this.maxRow / 2;
+        this.setStartNode(Math.round(x) + xOffset, Math.round(z) + zOffset);
+    }
     setStartNode(col, row){
+        if (this.nodes[row][col].solid || this.nodes[row][col].goal){
+            this.setStartNode(Math.floor(Math.random() * this.maxCol), Math.floor(Math.random() * this.maxRow));
+            return;
+        }
         this.nodes[row][col].setAsStart();
         this.startNode = this.nodes[row][col];
         this.currentNode = this.startNode;
     }
     setGoalNode(col, row){
+        if (this.nodes[row][col].solid || this.nodes[row][col].start){
+            this.setGoalNode(Math.floor(Math.random() * this.maxCol), Math.floor(Math.random() * this.maxRow));
+            return;
+        }
         this.nodes[row][col].setAsGoal();
         this.goalNode = this.nodes[row][col];
     }
@@ -71,6 +93,7 @@ export class NodeSystem{
         node.fCost = node.gCost + node.hCost;
     }
     logNodes(){
+        console.clear();
         for (let row = 0; row < this.maxRow; row++){
             let output = ("0" + row.toString() + " ").slice(-3);
             for (let col = 0; col < this.maxCol; col++){

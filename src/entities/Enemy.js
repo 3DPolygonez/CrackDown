@@ -13,7 +13,7 @@ export class Enemy {
 
     this.maxSpeed = [2, 4, 6][Math.floor(Math.random() * 3)];
     this.speed = this.maxSpeed;
-    this.waypointProximity = 0.5;
+    this.waypointProximity = 0.25;
     this.pauseDuration = this.maxSpeed == 2 ? 3 : (this.maxSpeed == 4 ? 2 : 1);
 
     this.direction = new THREE.Vector3(1, 0, 0);
@@ -42,6 +42,7 @@ export class Enemy {
       this.pauseTime = 0;
     }
     if (this.waypointManager.currentWaypointIndex >= this.waypointManager.waypoints.length) {
+      this.waypointManager.waypoints = this.waypointManager.waypoints.toReversed();
       this.waypointManager.currentWaypointIndex = 0;
     };
 

@@ -6,21 +6,29 @@ export class EnvironmentSystem {
         this.scene = scene;
         this.items = [
             new Wall(
+                "mid horiz wall", 
+                -15, 0, 
+                30, 1, 1),
+            new Wall(
+                "mid vert wall", 
+                0, -15, 
+                1, 1, 30),
+            new Wall(
                 "top wall", 
                 -20, -20, 
-                40, 1.5, 1),
+                40, 1, 1),
             new Wall(
                 "right wall", 
                 19, -20, 
-                1, 1.5, 40),
+                1, 1, 40),
             new Wall(
                 "bottom wall", 
                 -20, 19, 
-                40, 1.5, 1),
+                40, 1, 1),
             new Wall(
                 "left wall", 
                 -20, -15, 
-                1, 1.5, 34),
+                1, 1, 34),
             new Room(
                 "main room TL", 
                 -15, -15, 
