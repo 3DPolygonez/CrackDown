@@ -1,9 +1,18 @@
 import { EnvironmentSystem } from "./EnvironmentSystem";
 
 export class NodeSystem{
+    /**
+     * Prepares the NodeSystem class to ultimately return an array of coordinators to get from a start position to a goal position.
+     * 
+     * @param {number} maxCol - The width (x) of the area to be mapped by nodes of equal size.
+     * @param {number} maxRow - The depth (z) of the area to be mapped by nodex of equal size.
+     * @param {EnvironmentSystem} environmentSystem - The pre-configured environment system that contains buildings, walls and other objects.
+     */
     constructor(maxCol, maxRow, environmentSystem){
         this.maxCol = maxCol;
         this.maxRow = maxRow;
+        this.xOffset = this.maxCol / 2;
+        this.zOffset = this.maxRow / 2;
         this.nodes = Array(this.maxRow).fill(null).map(() => Array(this.maxCol).fill(null));
         this.startNode = null;
         this.goalNode = null;
@@ -24,29 +33,48 @@ export class NodeSystem{
             }
         }
         //  read from the environment system to build the solid objects
-        let xOffset = this.maxCol / 2;
-        let zOffset = this.maxRow / 2;
         for (const item of environmentSystem.items) {
             for (let x = 0; x < item.mesh.width; x++){
                 for (let z = 0; z < item.mesh.depth; z++){
-                    this.setSolidNode(x + item.mesh.x + xOffset, z + item.mesh.z + zOffset)
+                    this.setSolidNode(x + item.mesh.x + this.xOffset, z + item.mesh.z + this.zOffset)
                 }
             }
         }
     }
     getPathWaypoints(){
-        let xOffset = this.maxCol / 2;
-        let zOffset = this.maxRow / 2;
         const waypointPositions = [];
         this.pathNodes.toReversed().forEach(node => {
-            waypointPositions.push([node.col - xOffset + 0.5, node.row - zOffset + 0.5]); 
+            waypointPositions.push([node.col - this.xOffset + 0.5, node.row - this.zOffset + 0.5]); 
         });
         return waypointPositions;
     }
+    getSimplifiedPathWaypoints(){
+        const waypointPositions = this.getPathWaypoints();
+        if (waypointPositions.length <= 2){
+            return waypointPositions;
+        }
+        const optimised = [waypointPositions[0]];
+        let lastDirection = null;
+
+        for (let i = 1; i < waypointPositions.length - 1; i++){
+            const p1 = waypointPositions[i]
+            const p2 = waypointPositions[i + 1];
+            //  calculate the vector of the current segment
+            const currentDirection = { x: p2[0] - p1[0], z: p2[1] - p1[1] };
+            //  if the direction changes, this is a required turning points
+            if (lastDirection != null){
+                if (currentDirection.x !== lastDirection.x || currentDirection.z !== lastDirection.z){
+                    optimised.push(p1);
+                }
+            }
+            lastDirection = currentDirection;
+        }
+        //  always keep the final destination
+        optimised.push(waypointPositions[waypointPositions.length - 1]);
+        return optimised;
+    }
     setStartWaypoint(x, z){
-        let xOffset = this.maxCol / 2;
-        let zOffset = this.maxRow / 2;
-        this.setStartNode(Math.round(x) + xOffset, Math.round(z) + zOffset);
+        this.setStartNode(Math.round(x) + this.xOffset, Math.round(z) + this.zOffset);
     }
     setStartNode(col, row){
         if (this.nodes[row][col].solid || this.nodes[row][col].goal){
@@ -57,8 +85,12 @@ export class NodeSystem{
         this.startNode = this.nodes[row][col];
         this.currentNode = this.startNode;
     }
+    setGoalWaypoint(x, z){
+        this.setGoalNode(Math.round(x) + this.xOffset, Math.round(z) + this.zOffset);
+    }
     setGoalNode(col, row){
         if (this.nodes[row][col].solid || this.nodes[row][col].start){
+            console.log("oops found solid");
             this.setGoalNode(Math.floor(Math.random() * this.maxCol), Math.floor(Math.random() * this.maxRow));
             return;
         }

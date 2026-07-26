@@ -193,6 +193,18 @@ export class Person {
         this.backpack.receiveShadow = true;
         //this.group.add(this.backpack);
 
+        this.coneOfVision = new THREE.Mesh(
+          new THREE.ConeGeometry(250, 500, 32), 
+          new THREE.MeshStandardMaterial({ 
+              color: "red", 
+              transparent: true, 
+              opacity: 0.1 
+          }));
+        this.coneOfVision.position.y = 25;
+        this.coneOfVision.position.z = 250;
+        this.coneOfVision.rotateX(-Math.PI / 2);
+        this.group.add(this.coneOfVision);
+
         this.group.scale.x = 0.025;
         this.group.scale.y = 0.025;
         this.group.scale.z = 0.025;

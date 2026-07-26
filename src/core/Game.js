@@ -123,6 +123,7 @@ export class Game {
 
     this.enemySystem = new EnemySystem(
       this.scene,
+      32,
       [this.player1, this.player2],
       this.blasts);
 
@@ -148,7 +149,7 @@ export class Game {
       this.player1.group,
       25);
 
-    //this.scene.add(this.player1.group);
+    this.scene.add(this.player1.group);
     //this.scene.add(this.player2.group);
     this.timer = new THREE.Timer();
   }
@@ -180,10 +181,10 @@ export class Game {
       for (let i = 0; i < this.enemySystem.enemies.length; i++){
         const nodeSystem = new NodeSystem(40, 40, this.environmentSystem);
         nodeSystem.setStartWaypoint(this.enemySystem.enemies[i].mesh.group.position.x, this.enemySystem.enemies[i].mesh.group.position.z);
-        nodeSystem.setGoalNode(Math.floor(Math.random() * 40), Math.floor(Math.random() * 40));
+        nodeSystem.setGoalWaypoint(this.player1.group.position.x, this.player1.group.position.z);
         nodeSystem.setNodeCosts();
         nodeSystem.autoSearch();
-        this.enemySystem.enemies[i].waypointManager = new WaypointManager(nodeSystem.getPathWaypoints());
+        this.enemySystem.enemies[i].waypointManager = new WaypointManager(nodeSystem.getSimplifiedPathWaypoints());
         this.enemySystem.enemies[i].pauseDuration = 0;
       }
     }

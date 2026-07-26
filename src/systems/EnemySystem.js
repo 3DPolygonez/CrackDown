@@ -2,15 +2,16 @@ import { Enemy } from '../entities/Enemy';
 import { Blast } from '../entities/Blast';
 
 export class EnemySystem {
-  constructor(scene, players, blasts) {
+  constructor(scene, maxEnemies, players, blasts) {
     this.scene = scene;
+    this.maxEnemies = maxEnemies;
     this.players = players;
     this.blasts = blasts;
 
     this.enemies = [];
 
     this.spawnTimer = 0;
-    this.spawnInterval = 0;
+    this.spawnInterval = 2;
 
     this.spawnEnemy();
   }
@@ -18,7 +19,7 @@ export class EnemySystem {
   update(delta) {
     this.spawnTimer -= delta;
 
-    if (this.spawnTimer <= 0 && this.enemies.length < 32) {
+    if (this.spawnTimer <= 0 && this.enemies.length < this.maxEnemies) {
       this.spawnEnemy();
       this.spawnTimer = this.spawnInterval;
     }
