@@ -2,7 +2,8 @@ import { Enemy } from '../entities/Enemy';
 import { Blast } from '../entities/Blast';
 
 export class EnemySystem {
-  constructor(scene, maxEnemies, players, blasts) {
+  constructor(debugSystem, scene, maxEnemies, players, blasts) {
+    this.debugSystem = debugSystem;
     this.scene = scene;
     this.maxEnemies = maxEnemies;
     this.players = players;
@@ -56,7 +57,7 @@ export class EnemySystem {
         spawnPositions.push([Math.floor(Math.random() * (20 - -20)) + -20, Math.floor(Math.random() * (20 - -20)) + -20]);
       }
     }
-    const enemy = new Enemy(this.enemies.length, this.players, spawnPositions);
+    const enemy = new Enemy(this.debugSystem, this.enemies.length, this.players, spawnPositions);
     enemy.mesh.group.position.set(
       enemy.waypointManager.waypoints[enemy.waypointManager.currentWaypointIndex][0], 
       0, 

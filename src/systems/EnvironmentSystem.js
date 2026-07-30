@@ -1,12 +1,13 @@
 import { Room } from "../entities/Room";
 import { Wall } from "../entities/Wall";
+import { Window } from "../entities/Window";
 
 export class EnvironmentSystem {
     constructor(scene) {
         this.scene = scene;
         this.items = [
             new Wall(
-                "mid horiz wall", 
+                "mid horiz window", 
                 -15, 0, 
                 30, 1, 1),
             new Wall(

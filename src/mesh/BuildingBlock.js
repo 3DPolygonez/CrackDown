@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 export class BuildingBlock {
-    constructor(x, z, width, height, depth, recessed) {
+    constructor(x, z, width, height, depth, recessed, opacity, baseColor) {
         this.x = x;
         this.z = z;
         this.width = width;
@@ -15,7 +15,7 @@ export class BuildingBlock {
         map.wrapS = THREE.RepeatWrapping;
         map.wrapT = THREE.RepeatWrapping;
         map.repeat.set(width - 2, depth - 2);
-        const material = new THREE.MeshStandardMaterial({ color: "grey" });
+        const material = new THREE.MeshStandardMaterial({ color: baseColor, transparent: opacity == 1 ? false : true, opacity: opacity });
         const mapMaterial = new THREE.MeshStandardMaterial({ map: map });
         if (recessed){
             //  box shape with roof recessed

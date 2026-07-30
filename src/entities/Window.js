@@ -1,9 +1,9 @@
 import { BuildingBlock } from "../mesh/BuildingBlock";
 
-export class Wall {
+export class Window {
     constructor(name, x, z, width, height, depth) {
         this.name = name;
-        this.mesh = new BuildingBlock(x, z, width, height, depth, false, 1, "grey");
+        this.mesh = new BuildingBlock(x, z, width, height, depth, false, 0.3, "orange");
     }
     update(delta) {
 

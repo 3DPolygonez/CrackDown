@@ -4,7 +4,7 @@ import { Engineer } from '../mesh/Engineer';
 import { WaypointManager } from './managers/WaypointManager';
 
 export class Enemy {
-  constructor(name, players, waypoints) {
+  constructor(debugSystem, name, players, waypoints) {
     this.name = name;
     this.players = players;
     this.waypointManager = new WaypointManager(waypoints);
@@ -19,10 +19,10 @@ export class Enemy {
     this.direction = new THREE.Vector3(1, 0, 0);
 
     if (Math.floor(Math.random() * 2) + 1 == 1){
-      this.mesh = new Engineer(this.maxSpeed);
+      this.mesh = new Engineer(debugSystem, this.maxSpeed);
     }
     else{
-      this.mesh = new Soldier(this.maxSpeed);
+      this.mesh = new Soldier(debugSystem, this.maxSpeed);
     }
   }
   bounce(delta, x, y, z) {
@@ -87,15 +87,15 @@ export class Enemy {
 
     // Calculate how much we have to turn the character towards the waypoint
     const targetY = Math.atan2(this.direction.x, this.direction.z);
-    const turning = Math.abs(this.mesh.group.rotation.y - targetY) < 0.1;
+    const turning = Math.abs(this.mesh.group.rotation.y - targetY) > 0.1;
 
     // update the mesh (arms and legs swinging)
     this.mesh.update(
       delta, 
-      this.pauseTime < this.pauseDuration === true ? "Idle" : (turning === false ? "Turning" : "Moving"));
+      this.pauseTime < this.pauseDuration === true ? "Idle" : (turning ? "Turning" : "Moving"));
 
     // Rotate the enemy to face the direction of movement
-    if (turning) {
+    if (!turning) {
       this.mesh.group.position.add(
         this.direction.multiplyScalar(this.speed * (0.5) * 1.25 * delta));
     }

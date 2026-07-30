@@ -6,6 +6,7 @@ import * as THREE from 'three';
 */
 import { Input } from './Input';
 import { Player } from '../entities/Player';
+import { DebugSystem } from '../systems/DebugSystem'
 import { BlastSystem } from '../systems/BlastSystem';
 import { BulletSystem } from '../systems/BulletSystem';
 import { CollisionSystem } from '../systems/CollisionSystem';
@@ -81,6 +82,9 @@ export class Game {
 
     //  configure systems
     this.cameraEnemyTarget = -1;
+
+    this.debugSystem = new DebugSystem();
+
     this.input = new Input();
 
     this.blastSystem = new BlastSystem(
@@ -122,8 +126,9 @@ export class Game {
       this.blastSystem.blasts);
 
     this.enemySystem = new EnemySystem(
+      this.debugSystem,
       this.scene,
-      32,
+      50,
       [this.player1, this.player2],
       this.blasts);
 
@@ -149,7 +154,7 @@ export class Game {
       this.player1.group,
       25);
 
-    this.scene.add(this.player1.group);
+    //this.scene.add(this.player1.group);
     //this.scene.add(this.player2.group);
     this.timer = new THREE.Timer();
   }
@@ -181,11 +186,15 @@ export class Game {
       for (let i = 0; i < this.enemySystem.enemies.length; i++){
         const nodeSystem = new NodeSystem(40, 40, this.environmentSystem);
         nodeSystem.setStartWaypoint(this.enemySystem.enemies[i].mesh.group.position.x, this.enemySystem.enemies[i].mesh.group.position.z);
-        nodeSystem.setGoalWaypoint(this.player1.group.position.x, this.player1.group.position.z);
+        nodeSystem.setGoalNode(Math.floor(Math.random() * 40), Math.floor(Math.random() * 40));
+        //nodeSystem.setGoalWaypoint(this.player1.group.position.x, this.player1.group.position.z);
         nodeSystem.setNodeCosts();
         nodeSystem.autoSearch();
+        if (this.debugSystem.debugNodeSystemPath){
+          this.debugSystem.log(nodeSystem.logNodes(), this.debugSystem.debugNodeSystemPath);
+        }
         this.enemySystem.enemies[i].waypointManager = new WaypointManager(nodeSystem.getSimplifiedPathWaypoints());
-        this.enemySystem.enemies[i].pauseDuration = 0;
+        //this.enemySystem.enemies[i].pauseDuration = 0;
       }
     }
 

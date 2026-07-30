@@ -1,8 +1,9 @@
 import { Person } from './Person.js';
 
 export class Scientist extends Person {
-    constructor(maxSpeed) {
+    constructor(debugSystem, maxSpeed) {
         super(
+            debugSystem,
             maxSpeed,
             "./resources/textures/person/scientist");
     }

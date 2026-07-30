@@ -5,7 +5,6 @@ export class HeadIdleAnimation extends BaseAnimation {
         super(mesh);
     }
     animate(angleX, angleY, angleZ) {
-        this.mesh.head.rotation.y = angleY;
-        this.mesh.face.rotation.y = angleY;
+        this.mesh.headGroup.rotation.y = angleY;
     }
 }

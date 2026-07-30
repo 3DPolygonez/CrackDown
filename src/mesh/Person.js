@@ -13,7 +13,8 @@ import { BackpackIdleAnimation } from '../entities/animations/person/backpack/Ba
 import { BackpackMovingAnimation } from '../entities/animations/person/backpack/BackpackMovingAnimation.js';
 
 export class Person {
-    constructor(maxSpeed, baseTexturePath) {
+    constructor(debugSystem, maxSpeed, baseTexturePath) {
+        this.debugSystem = debugSystem;
         this.deltaSum = 0;
         this.headDeltaSum = 0;
         this.maxSpeed = maxSpeed;
@@ -109,6 +110,7 @@ export class Person {
         const material = new THREE.MeshPhongMaterial({ color: this.maxSpeed == 2 ? "green" : (this.maxSpeed == 4 ? "orange" : "red") });
 
         this.group = new THREE.Group();
+        this.headGroup = new THREE.Group;
     
         this.head = new THREE.Mesh(
           new THREE.BoxGeometry(12, 12, 12), material);
@@ -116,7 +118,7 @@ export class Person {
         this.head.position.z = 2;
         this.head.castShadow = true;
         this.head.receiveShadow = true;
-        //this.group.add(this.head);
+        //this.headGroup.add(this.head);
     
         this.face = new THREE.Mesh(
           new THREE.BoxGeometry(10, 10, 10), faceMaterial);
@@ -125,7 +127,7 @@ export class Person {
         this.face.castShadow = true;
         this.face.receiveShadow = true;
         this.face.geometry.translate(0, 0, 0); // Translate geometry to rotate around the back  
-        this.group.add(this.face);
+        this.headGroup.add(this.face);
     
         this.chest = new THREE.Mesh(
           new THREE.BoxGeometry(16, 6, 10), chestMaterial);
@@ -194,17 +196,18 @@ export class Person {
         //this.group.add(this.backpack);
 
         this.coneOfVision = new THREE.Mesh(
-          new THREE.ConeGeometry(250, 500, 32), 
+          new THREE.ConeGeometry(this.maxSpeed == 2 ? 250 : (this.maxSpeed == 4 ? 200 : 150), 500, 32), 
           new THREE.MeshStandardMaterial({ 
               color: "red", 
               transparent: true, 
-              opacity: 0.1 
+              opacity: this.debugSystem.showNpcFov ? 0.1 : 0.0 
           }));
         this.coneOfVision.position.y = 25;
         this.coneOfVision.position.z = 250;
         this.coneOfVision.rotateX(-Math.PI / 2);
-        this.group.add(this.coneOfVision);
+        this.headGroup.add(this.coneOfVision);
 
+        this.group.add(this.headGroup);
         this.group.scale.x = 0.025;
         this.group.scale.y = 0.025;
         this.group.scale.z = 0.025;
