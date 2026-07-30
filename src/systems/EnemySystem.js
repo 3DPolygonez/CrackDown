@@ -47,10 +47,30 @@ export class EnemySystem {
   spawnEnemy() {
     const spawnPositions = [];
     if (true) {
-      spawnPositions.push([-17, -17]);
-      spawnPositions.push([17, -17]);
-      spawnPositions.push([17, 17]);
-      spawnPositions.push([-17, 17]);
+      if (this.enemies.length < this.maxEnemies / 4 * 1){
+        spawnPositions.push([-16, -16]);
+        spawnPositions.push([-4, -16]);
+        spawnPositions.push([-4, -4]);
+        spawnPositions.push([-16, -4]);
+      }
+      else if (this.enemies.length < this.maxEnemies / 4 * 2){
+        spawnPositions.push([4, -16]);
+        spawnPositions.push([16, -16]);
+        spawnPositions.push([16, -4]);
+        spawnPositions.push([4, -4]);
+      }
+      else if (this.enemies.length < this.maxEnemies / 4 * 3){
+        spawnPositions.push([4, 4]);
+        spawnPositions.push([16, 4]);
+        spawnPositions.push([16, 16]);
+        spawnPositions.push([4, 16]);
+      }
+      else{
+        spawnPositions.push([-16, 4]);
+        spawnPositions.push([-4, 4]);
+        spawnPositions.push([-4, 16]);
+        spawnPositions.push([-16, 16]);
+      }
     }
     else {
       for (let i = 0; i < 10; i++) {
@@ -59,9 +79,9 @@ export class EnemySystem {
     }
     const enemy = new Enemy(this.debugSystem, this.enemies.length, this.players, spawnPositions);
     enemy.mesh.group.position.set(
-      enemy.waypointManager.waypoints[enemy.waypointManager.currentWaypointIndex][0], 
+      enemy.waypointManager.getCurrentWaypointX(), 
       0, 
-      enemy.waypointManager.waypoints[enemy.waypointManager.currentWaypointIndex][1]);
+      enemy.waypointManager.getCurrentWaypointZ());
     
 
     this.scene.add(enemy.mesh.group);

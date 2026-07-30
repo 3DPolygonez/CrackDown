@@ -45,7 +45,9 @@ export class Player {
     this.meshRightTrack.position.z = 0;
     this.group.add(this.meshRightTrack);
   }
-
+  getPosition(){
+    return this.group.position;
+  }
   update(delta, cameraRotationPosition) {
     const move = new THREE.Vector3();
     const moveIncrement = 1;
