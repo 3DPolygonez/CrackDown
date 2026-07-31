@@ -14,6 +14,7 @@ import { EnemySystem } from '../systems/EnemySystem';
 import { EnvironmentSystem } from '../systems/EnvironmentSystem';
 import { CameraSystem } from '../systems/CameraSystem';
 import { NodeSystem } from '../systems/NodeSystem';
+import { VisionSystem } from '../systems/VisionSystem';
 import { WaypointManager } from '../entities//managers/WaypointManager'
 
 /*
@@ -94,6 +95,7 @@ export class Game {
       this.blastSystem);
 
     this.player1 = new Player(
+      "Player 1",
       0x00aaff, 
       {
         up: 'ArrowUp',
@@ -111,6 +113,7 @@ export class Game {
     this.player1.group.position.z = -17;
     
     this.player2 = new Player(
+      "Player 2",
       0x00ff00, 
       {
         up: 'KeyW',
@@ -128,7 +131,7 @@ export class Game {
     this.enemySystem = new EnemySystem(
       this.debugSystem,
       this.scene,
-      32,
+      2,
       [this.player1, this.player2],
       this.blasts);
 
@@ -141,6 +144,13 @@ export class Game {
       this.blastSystem,
       this.enemySystem,
       this.environmentSystem);
+
+    this.visionSystem = new VisionSystem(
+      this.debugSystem,
+      this.environmentSystem,
+      this.enemySystem,
+      [this.player1, this.player2]
+    );
 
     this.cameraSystem = new CameraSystem(
       {
@@ -183,18 +193,17 @@ export class Game {
       this.cameraSystem.target = this.enemySystem.enemies[this.cameraEnemyTarget].mesh.group;
     }
     if (this.input.isDown('KeyR')){
-      for (let i = 0; i < this.enemySystem.enemies.length; i++){
+      for (const enemy of this.enemySystem.enemies){
         const nodeSystem = new NodeSystem(40, 40, this.environmentSystem);
-        nodeSystem.setStartWaypoint(this.enemySystem.enemies[i].mesh.group.position.x, this.enemySystem.enemies[i].mesh.group.position.z);
-        //nodeSystem.setGoalNode(Math.floor(Math.random() * 40), Math.floor(Math.random() * 40));
+        nodeSystem.setStartWaypoint(enemy.mesh.group.position.x, enemy.mesh.group.position.z);
         nodeSystem.setGoalWaypoint(this.player1.group.position.x, this.player1.group.position.z);
         nodeSystem.setNodeCosts();
         nodeSystem.autoSearch();
         if (this.debugSystem.debugNodeSystemPath){
           this.debugSystem.log(nodeSystem.logNodes(), this.debugSystem.debugNodeSystemPath);
         }
-        this.enemySystem.enemies[i].waypointManager.setPriorityWaypoints(nodeSystem.getSimplifiedPathWaypoints()); 
-        this.enemySystem.enemies[i].pauseDuration = 0;
+        enemy.waypointManager.setPriorityWaypoints(nodeSystem.getSimplifiedPathWaypoints()); 
+        enemy.pauseDuration = 0;
       }
     }
 
@@ -206,6 +215,7 @@ export class Game {
     this.enemySystem.update(delta);
     this.environmentSystem.update(delta);
     this.collisionSystem.update(delta);
+    this.visionSystem.update(delta);
     this.cameraSystem.update(delta);
 
     //  render all output

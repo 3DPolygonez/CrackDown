@@ -77,4 +77,7 @@ export class WaypointManager {
         this.#previousWaypointIndex = 0;
         this.#currentWaypointIndex = 0;
     }
+    isBusy(){
+        return this.#priority ? true : this.#returningFromPriority;
+    }
 }

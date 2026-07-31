@@ -57,4 +57,11 @@ export class EnvironmentSystem {
                 delta);
         }
     }
+    getPositions(){
+        const positions = [];
+        for (const item of this.items) {
+            positions.push(item.mesh.group); 
+        }  
+        return positions;
+    }
 }

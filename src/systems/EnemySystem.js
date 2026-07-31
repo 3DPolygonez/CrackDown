@@ -12,7 +12,7 @@ export class EnemySystem {
     this.enemies = [];
 
     this.spawnTimer = 0;
-    this.spawnInterval = 2;
+    this.spawnInterval = 8;
 
     this.spawnEnemy();
   }
@@ -20,7 +20,7 @@ export class EnemySystem {
   update(delta) {
     this.spawnTimer -= delta;
 
-    if (this.spawnTimer <= 0 && this.enemies.length < this.maxEnemies) {
+    if (this.spawnTimer <= 0 && this.enemies.length <= this.maxEnemies) {
       this.spawnEnemy();
       this.spawnTimer = this.spawnInterval;
     }
@@ -47,19 +47,20 @@ export class EnemySystem {
   spawnEnemy() {
     const spawnPositions = [];
     if (true) {
-      if (this.enemies.length < this.maxEnemies / 4 * 1){
-        spawnPositions.push([-16, -16]);
-        spawnPositions.push([-4, -16]);
-        spawnPositions.push([-4, -4]);
-        spawnPositions.push([-16, -4]);
+      //if (this.enemies.length <= this.maxEnemies / 4 * 1){
+      if (true){
+        spawnPositions.push([-16.5, -16.5]);
+        spawnPositions.push([-3.5, -16.5]);
+        spawnPositions.push([-3.5, -3.5]);
+        spawnPositions.push([-16.5, -3.5]);
       }
-      else if (this.enemies.length < this.maxEnemies / 4 * 2){
-        spawnPositions.push([4, -16]);
-        spawnPositions.push([16, -16]);
-        spawnPositions.push([16, -4]);
-        spawnPositions.push([4, -4]);
+      else if (this.enemies.length <= this.maxEnemies / 4 * 2){
+        spawnPositions.push([4.5, -15.5]);
+        spawnPositions.push([15.5, -15.5]);
+        spawnPositions.push([15.5, -4.5]);
+        spawnPositions.push([4.5, -4.5]);
       }
-      else if (this.enemies.length < this.maxEnemies / 4 * 3){
+      else if (this.enemies.length <= this.maxEnemies / 4 * 3){
         spawnPositions.push([4, 4]);
         spawnPositions.push([16, 4]);
         spawnPositions.push([16, 16]);
@@ -77,13 +78,7 @@ export class EnemySystem {
         spawnPositions.push([Math.floor(Math.random() * (20 - -20)) + -20, Math.floor(Math.random() * (20 - -20)) + -20]);
       }
     }
-    const enemy = new Enemy(this.debugSystem, this.enemies.length, this.players, spawnPositions);
-    enemy.mesh.group.position.set(
-      enemy.waypointManager.getCurrentWaypointX(), 
-      0, 
-      enemy.waypointManager.getCurrentWaypointZ());
-    
-
+    const enemy = new Enemy(this.debugSystem, "Enemy " + (this.enemies.length + 1).toString(), spawnPositions);
     this.scene.add(enemy.mesh.group);
     this.enemies.push(enemy);
     return;

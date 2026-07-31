@@ -11,6 +11,7 @@ import { WaistIdleAnimation } from '../entities/animations/person/waist/WaistIdl
 import { WaistMovingAnimation } from '../entities/animations/person/waist/WaistMovingAnimation.js';
 import { BackpackIdleAnimation } from '../entities/animations/person/backpack/BackpackIdleAnimation.js';
 import { BackpackMovingAnimation } from '../entities/animations/person/backpack/BackpackMovingAnimation.js';
+import { ThreeMFLoader } from 'three/examples/jsm/Addons.js';
 
 export class Person {
     constructor(debugSystem, maxSpeed, baseTexturePath) {
@@ -195,17 +196,16 @@ export class Person {
         this.backpack.receiveShadow = true;
         //this.group.add(this.backpack);
 
-        this.coneOfVision = new THREE.Mesh(
-          new THREE.ConeGeometry(this.maxSpeed == 2 ? 250 : (this.maxSpeed == 4 ? 200 : 150), 500, 32), 
+        this.detectionState = new THREE.Mesh(
+          new THREE.SphereGeometry(6),
           new THREE.MeshStandardMaterial({ 
-              color: "red", 
+              color: "green", // green: Patrolling, orange: Player in FOV, red: Target visible, blue: investigating, black: disabled
               transparent: true, 
-              opacity: this.debugSystem.showNpcFov ? 0.1 : 0.0 
+              opacity: 0.75
           }));
-        this.coneOfVision.position.y = 25;
-        this.coneOfVision.position.z = 250;
-        this.coneOfVision.rotateX(-Math.PI / 2);
-        this.headGroup.add(this.coneOfVision);
+        this.detectionState.position.y = this.head.position.y + 40;
+        this.detectionState.receiveShadow = true;
+        this.headGroup.add(this.detectionState);
 
         this.group.add(this.headGroup);
         this.group.scale.x = 0.025;

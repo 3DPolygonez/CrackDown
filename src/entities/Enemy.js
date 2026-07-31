@@ -4,14 +4,13 @@ import { Engineer } from '../mesh/Engineer';
 import { WaypointManager } from './managers/WaypointManager';
 
 export class Enemy {
-  constructor(debugSystem, name, players, waypoints) {
+  constructor(debugSystem, name, waypoints) {
     this.name = name;
-    this.players = players;
     this.waypointManager = new WaypointManager(waypoints);
 
     this.pauseTime = this.pauseDuration;
 
-    this.maxSpeed = 6;//[2, 4, 6][Math.floor(Math.random() * 3)];
+    this.maxSpeed = 4;//[2, 4, 6][Math.floor(Math.random() * 3)];
     this.speed = this.maxSpeed;
     this.waypointProximity = 0.05;
     this.pauseDuration = this.maxSpeed == 2 ? 3 : (this.maxSpeed == 4 ? 2 : 1);
@@ -24,7 +23,10 @@ export class Enemy {
     else{
       this.mesh = new Soldier(debugSystem, this.maxSpeed);
     }
-    
+    this.mesh.group.position.set(
+      this.waypointManager.getCurrentWaypointX(), 
+      0, 
+      this.waypointManager.getCurrentWaypointZ());
   }
   bounce(delta, x, y, z) {
     this.direction.x += (this.direction.x < 0 ? x : -x) * this.speed;
@@ -33,8 +35,19 @@ export class Enemy {
         this.direction.multiplyScalar(this.speed * (1.25) * delta));
     this.waypointManager.setPreviousWaypoint();
   }
+  isBusy(){
+    return this.waypointManager.isBusy();
+  }
   getPosition(){
     return this.mesh.group.position;
+  }
+  canSeeTarget(){
+    this.maxSpeed = 8;
+    this.mesh.detectionState.material.color.set("orange");
+  }
+  cannotSeeTarget(){
+    this.maxSpeed = 4;
+    this.mesh.detectionState.material.color.set("green");
   }
   update(delta) {
     // waypoint navigation

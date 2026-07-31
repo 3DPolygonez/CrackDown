@@ -3,7 +3,8 @@ import { Bullet } from './Bullet';
 import { Blast } from './Blast';
 
 export class Player {
-  constructor(color, controls, speed, input, scene, bullets, blasts) {
+  constructor(name, color, controls, speed, input, scene, bullets, blasts) {
+    this.name = name;
     this.controls = controls;
     this.input = input;
     this.scene = scene;
