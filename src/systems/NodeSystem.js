@@ -4,13 +4,11 @@ export class NodeSystem{
     /**
      * Prepares the NodeSystem class to ultimately return an array of coordinators to get from a start position to a goal position.
      * 
-     * @param {number} maxCol - The width (x) of the area to be mapped by nodes of equal size.
-     * @param {number} maxRow - The depth (z) of the area to be mapped by nodex of equal size.
      * @param {EnvironmentSystem} environmentSystem - The pre-configured environment system that contains buildings, walls and other objects.
      */
-    constructor(maxCol, maxRow, environmentSystem){
-        this.maxCol = maxCol;
-        this.maxRow = maxRow;
+    constructor(environmentSystem){
+        this.maxCol = environmentSystem.width;
+        this.maxRow = environmentSystem.depth;
         this.xOffset = this.maxCol / 2;
         this.zOffset = this.maxRow / 2;
         this.nodes = Array(this.maxRow).fill(null).map(() => Array(this.maxCol).fill(null));
@@ -24,10 +22,10 @@ export class NodeSystem{
         this.step = 0;
         let col = 0;
         let row = 0;
-        while (col < maxCol && row < maxRow){
+        while (col < this.maxCol && row < this.maxRow){
             this.nodes[row][col] = new Node(col, row);
             col ++;
-            if (col == maxCol){
+            if (col == this.maxCol){
                 col = 0;
                 row ++;
             }
@@ -74,6 +72,10 @@ export class NodeSystem{
         return optimised;
     }
     setStartWaypoint(x, z){
+        /*
+            this needs to be explored to see 
+            where abouts the start is exactly
+        */
         this.setStartNode(Math.round(x) + this.xOffset, Math.round(z) + this.zOffset);
     }
     setStartNode(col, row){
@@ -86,6 +88,10 @@ export class NodeSystem{
         this.currentNode = this.startNode;
     }
     setGoalWaypoint(x, z){
+        /*
+            this needs to be explored to see 
+            where abouts the goal is exactly
+        */
         this.setGoalNode(Math.round(x) + this.xOffset, Math.round(z) + this.zOffset);
     }
     setGoalNode(col, row){
@@ -125,7 +131,6 @@ export class NodeSystem{
         node.fCost = node.gCost + node.hCost;
     }
     logNodes(){
-        console.clear();
         for (let row = 0; row < this.maxRow; row++){
             let output = ("0" + row.toString() + " ").slice(-3);
             for (let col = 0; col < this.maxCol; col++){
@@ -141,6 +146,13 @@ export class NodeSystem{
             this.currentNode.setAsChecked();
             this.#addToArray(this.checkedNodes, this.currentNode);
             this.#removeFromArray(this.openNodes, this.currentNode);
+            /*
+                this needs to be expanded to include
+                eight way movement
+            */
+            /*
+                this is only four way movement
+            */
             //  open the up node
             if (row - 1 >= 0){
                 this.#openNode(this.nodes[row - 1][col]);
@@ -182,6 +194,7 @@ export class NodeSystem{
                     this.pathNodes.push(this.currentNode);
                     this.currentNode = this.currentNode.parentNode;
                 }
+                this.pathNodes.pop();
             }
         }
         this.step ++;

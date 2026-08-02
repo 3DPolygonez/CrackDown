@@ -19,7 +19,7 @@ export class Person {
         this.deltaSum = 0;
         this.headDeltaSum = 0;
         this.maxSpeed = maxSpeed;
-        this.state = "Idle"; // Default state
+        this.animationState = "Idle"; // Default state
         this.animations = this.idleAnimations(); // Default animations
 
         const textureLoader = new THREE.TextureLoader();
@@ -212,16 +212,16 @@ export class Person {
         this.group.scale.y = 0.025;
         this.group.scale.z = 0.025;
     }
-    update(delta, state){
+    update(delta, animationState){
       const swingSpeed = this.maxSpeed * (this.maxSpeed <= 2 ? 4 : (this.maxSpeed <= 4 ? 3 : 1.5));
-      const maxSwingAngle = (Math.PI / (this.maxSpeed <= 2 ? 8 : (this.maxSpeed <= 4 ? 4 : 2))) * (this.state === "Turning" ? 0.25 : 1);
+      const maxSwingAngle = (Math.PI / (this.maxSpeed <= 2 ? 8 : (this.maxSpeed <= 4 ? 4 : 2))) * (this.animationState === "Turning" ? 0.25 : 1);
       const headSwingSpeed = this.maxSpeed;
       const maxHeadSwingAngle = Math.PI / 8; // 45 degrees
-      const armsAndLegsAngle = state === "Idle" ? 0 : Math.sin(this.deltaSum * swingSpeed) * maxSwingAngle;
-      const centralBodyAngle = state === "Idle" ? Math.sin(this.headDeltaSum * headSwingSpeed) * maxHeadSwingAngle : Math.sin(this.deltaSum * swingSpeed) * (maxSwingAngle / 8);
+      const armsAndLegsAngle = animationState === "Idle" ? 0 : Math.sin(this.deltaSum * swingSpeed) * maxSwingAngle;
+      const centralBodyAngle = animationState === "Idle" ? Math.sin(this.headDeltaSum * headSwingSpeed) * maxHeadSwingAngle : Math.sin(this.deltaSum * swingSpeed) * (maxSwingAngle / 8);
       const headAngle = Math.sin(this.headDeltaSum * headSwingSpeed) * maxHeadSwingAngle;
       this.deltaSum += delta;
-      if (state === "Idle"){
+      if (animationState === "Idle"){
         this.deltaSum = 0;
         this.headDeltaSum += delta;
       }
@@ -232,11 +232,11 @@ export class Person {
       // I guess this is where we check the state of the person and apply the appropriate animations. 
       // For example, if the person is walking, we might want to swing their arms and legs. 
       // If they are idle, we might want to have them sway slightly or look around.
-      if (this.state !== state) {
+      if (this.animationState !== animationState) {
         this.deltaSum = 0;
         this.headDeltaSum = 0;
-        this.state = state;
-        switch (this.state){
+        this.animationState = animationState;
+        switch (this.animationState){
           case "Idle":
             this.animations = this.idleAnimations();
             break;

@@ -68,16 +68,32 @@ export class WaypointManager {
     }
     setPriorityWaypoints(waypoints){
         if (!this.#priority){
+            //  if we're not currently on priority
+            //  then save the current waypoint index
+            //  so we can return to it later
+            //  and also empty the current waypoints so we can set the new priority waypoints
             this.#previousBaseWaypointIndex = this.#previousWaypointIndex;
             this.#currentBaseWaypointIndex = this.#currentWaypointIndex;
+            this.#waypoints = [];
+        }
+        //  if we don't have any waypoints yet
+        //  then set the waypoints to the new priority waypoints
+        //  otherwise splice the new priority waypoints into the current waypoints
+        if (this.#waypoints.length == 0){
+            this.#waypoints = waypoints;
+            this.#previousWaypointIndex = 0;
+            this.#currentWaypointIndex = 0;
+        }
+        else{
+            this.#waypoints = this.#waypoints.slice(0, this.#currentWaypointIndex + 1).concat(waypoints);
         }
         this.#priority = true;
         this.#returningFromPriority = false;
-        this.#waypoints = waypoints;
-        this.#previousWaypointIndex = 0;
-        this.#currentWaypointIndex = 0;
     }
     isBusy(){
         return this.#priority ? true : this.#returningFromPriority;
+    }
+    getWaypointLength(){
+        return this.#waypoints.length;
     }
 }

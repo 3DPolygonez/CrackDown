@@ -13,20 +13,17 @@ export class VisionSystem{
     update(delta) {
         for (const enemy of this.enemySystem.enemies) {
             const player = this.players[0];
-            if (!enemy.isBusy()){
-                if (this.canSee(enemy, player)){
-                    enemy.canSeeTarget();
-                    const nodeSystem = new NodeSystem(40, 40, this.environmentSystem);
-                    nodeSystem.setStartWaypoint(enemy.mesh.group.position.x, enemy.mesh.group.position.z);
-                    nodeSystem.setGoalWaypoint(player.group.position.x, player.group.position.z);
-                    nodeSystem.setNodeCosts();
-                    nodeSystem.autoSearch();
-                    enemy.waypointManager.setPriorityWaypoints(nodeSystem.getSimplifiedPathWaypoints()); 
-                    enemy.pauseDuration = 0;
-                }
-                else{
-                    enemy.cannotSeeTarget();
-                }
+            //  we should only be setting Enemy Spotted
+            //  the other states should be handled by the enemy itself
+            //  based on its own internal state and timers
+            if (this.canSee(enemy, player)){
+                enemy.fsm.transition('ENEMY_SPOTTED', { player: player });``
+            }
+            else if (enemy.isBusy()){
+                enemy.fsm.transition('VISION_LOST');
+            }
+            else{
+                enemy.fsm.transition('TIMEOUT');
             }
         }
     }
@@ -55,8 +52,6 @@ export class VisionSystem{
         if (isVisible){
             //  raycast
             this.raycaster.set(observerPosition, direction);
-
-            console.log(this.obstacles);
 
             //  get an array of intersections with potential obstacles. sorted by cloest first
             const intersections = this.raycaster.intersectObjects(this.obstacles, true);

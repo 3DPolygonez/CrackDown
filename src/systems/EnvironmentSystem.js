@@ -3,8 +3,10 @@ import { Wall } from "../entities/Wall";
 import { Window } from "../entities/Window";
 
 export class EnvironmentSystem {
-    constructor(scene) {
+    constructor(scene, width, depth) {
         this.scene = scene;
+        this.width = width;
+        this.depth = depth; 
         this.items = [
             new Wall(
                 "mid horiz window", 

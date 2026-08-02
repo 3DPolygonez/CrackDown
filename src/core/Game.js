@@ -128,15 +128,18 @@ export class Game {
       this.bulletSystem.bullets,
       this.blastSystem.blasts);
 
+    this.environmentSystem = new EnvironmentSystem(
+      this.scene,
+      40,
+      40);
+
     this.enemySystem = new EnemySystem(
       this.debugSystem,
       this.scene,
-      2,
+      1,
       [this.player1, this.player2],
-      this.blasts);
-
-    this.environmentSystem = new EnvironmentSystem(
-      this.scene);
+      this.blasts,
+      this.environmentSystem);
 
     this.collisionSystem = new CollisionSystem(
       this.scene,
@@ -191,20 +194,6 @@ export class Game {
         this.cameraEnemyTarget = 0;
       }
       this.cameraSystem.target = this.enemySystem.enemies[this.cameraEnemyTarget].mesh.group;
-    }
-    if (this.input.isDown('KeyR')){
-      for (const enemy of this.enemySystem.enemies){
-        const nodeSystem = new NodeSystem(40, 40, this.environmentSystem);
-        nodeSystem.setStartWaypoint(enemy.mesh.group.position.x, enemy.mesh.group.position.z);
-        nodeSystem.setGoalWaypoint(this.player1.group.position.x, this.player1.group.position.z);
-        nodeSystem.setNodeCosts();
-        nodeSystem.autoSearch();
-        if (this.debugSystem.debugNodeSystemPath){
-          this.debugSystem.log(nodeSystem.logNodes(), this.debugSystem.debugNodeSystemPath);
-        }
-        enemy.waypointManager.setPriorityWaypoints(nodeSystem.getSimplifiedPathWaypoints()); 
-        enemy.pauseDuration = 0;
-      }
     }
 
     //  update all game components
