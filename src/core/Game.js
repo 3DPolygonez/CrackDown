@@ -138,7 +138,7 @@ export class Game {
       this.scene,
       20,
       [this.player1, this.player2],
-      this.blasts,
+      this.blastSystem.blasts,
       this.environmentSystem);
 
     this.collisionSystem = new CollisionSystem(

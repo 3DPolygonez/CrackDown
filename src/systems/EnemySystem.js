@@ -39,10 +39,6 @@ export class EnemySystem {
       this.blasts);
     this.scene.remove(enemy.mesh.group);
     this.enemies.splice(this.enemies.indexOf(enemy), 1);
-    enemy.mesh.group.children.forEach(mesh => {
-      mesh.geometry.dispose();
-      mesh.material.dispose();     
-    });
   }
 
   spawnEnemy() {
