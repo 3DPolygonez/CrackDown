@@ -17,11 +17,12 @@ export class StateManager {
         //  is the same event as the last one, do we want to ignore it?  
         //  or do we want to allow it to transition again?  
         //  for now, let's ignore it if it's the same event as the last one
-        if (this.lastEvent === event) return false;
+        //if (this.lastEvent === event) return false;
 
         const nextStateName = this.current.transitions?.[event];
         if (!nextStateName) return false;
-        if (this.current.name === nextStateName) return false;
+
+        //if (this.current.name === nextStateName) return false;
         
         const nextState = this.states.get(nextStateName);
         if (!nextState) return false;

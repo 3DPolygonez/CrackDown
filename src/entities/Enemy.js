@@ -8,13 +8,14 @@ import { StateManager } from './managers/StateManager';
 export class Enemy {
   constructor(debugSystem, name, waypoints, environmentSystem) {
     this.name = name;
-    this.waypointManager = new WaypointManager(waypoints);
+    this.waypointManager = new WaypointManager(waypoints, this);
     this.environmentSystem = environmentSystem;
     this.pauseTime = this.pauseDuration;
     this.maxSpeed = 4;//[2, 4, 6][Math.floor(Math.random() * 3)];
     this.speed = this.maxSpeed;
     this.waypointProximity = 0.05;
     this.pauseDuration = this.maxSpeed == 2 ? 3 : (this.maxSpeed == 4 ? 2 : 1);
+    this.lookTimeoutId = null;
 
     //  the initial direction is used to determine which way the enemy is looking when it first spawns, and is also used to determine which way the enemy is moving when it is not at a waypoint
     this.direction = new THREE.Vector3(0, 0, 0);
@@ -51,15 +52,31 @@ export class Enemy {
       {
         name: 'CHASE',
         transitions: {
-          VISION_LOST: 'SEARCH'
+          VISION_LOST: 'SEARCH',
+          ENEMY_SPOTTED: 'CHASE'
         },
         onEnter: () => {}
       },
       {
         name: 'SEARCH',
         transitions: {
-          TIMEOUT: 'PATROL',
+          STOP_AND_LOOK: 'LOOK',
           ENEMY_SPOTTED: 'CHASE'
+        },
+        onEnter: () => {}
+      },
+      {
+        name: 'LOOK',
+        transitions: {
+          TIMEOUT: 'RETURN',
+          ENEMY_SPOTTED: 'CHASE'
+        },
+        onEnter: () => {}
+      },
+      {
+        name: 'RETURN',
+        transitions: {
+          RETURN_TO_PATROL: 'PATROL'
         },
         onEnter: () => {}
       }
@@ -68,16 +85,20 @@ export class Enemy {
     this.fsm.transition('START_PATROL');
   }
   handleStateChange({ from, to, trigger, args }) {
-    console.log(`Enemy ${this.name} transitioned from ${from} to ${to} due to ${trigger} with args:`, args);
     switch (to) {
       case 'CHASE':
         this.canSeeTarget(args.player);
         break;
       case 'SEARCH':
-        this.maybeSeeTarget();
+        break;
+      case 'LOOK':
+        this.look();
+        break;
+      case 'RETURN':
+        this.returnToPatrol();
         break;
       case 'PATROL':
-        this.cannotSeeTarget();
+        this.patrol();
         break;
     }
   }
@@ -95,28 +116,45 @@ export class Enemy {
     return this.waypointManager.isBusy();
   }
   canSeeTarget(player){
+    clearTimeout(this.lookTimeoutId);
     this.maxSpeed = 6;
     this.mesh.maxSpeed = this.maxSpeed;
     this.mesh.detectionState.material.color.set("red");
     this.pauseDuration = 0;
-    //  this needs to be moved to the enemy class, but for now it's here
+
     const nodeSystem = new NodeSystem(this.environmentSystem);
     nodeSystem.setStartWaypoint(this.getPosition().x - 0.5, this.getPosition().z - 0.5);
-    nodeSystem.setGoalWaypoint(player.group.position.x, player.group.position.z);
+    nodeSystem.setGoalWaypoint(player.getPosition().x, player.getPosition().z);
     nodeSystem.setNodeCosts();
     nodeSystem.autoSearch();
     this.waypointManager.setPriorityWaypoints(nodeSystem.getSimplifiedPathWaypoints()); 
   }
-  cannotSeeTarget(){
+  patrol(){
     this.maxSpeed = 4;
     this.mesh.maxSpeed = this.maxSpeed;
     this.mesh.detectionState.material.color.set("green");
   }
-  maybeSeeTarget(){
+  look(){
+    this.mesh.maxSpeed = 2;
     this.mesh.detectionState.material.color.set("orange");
+    this.lookTimeoutId = setTimeout(() => {
+      this.fsm.transition("TIMEOUT");
+    }, 5000);
+  }
+  returnToPatrol(){
+    this.maxSpeed = 4;
+    this.mesh.maxSpeed = this.maxSpeed;
+
+    const nodeSystem = new NodeSystem(this.environmentSystem);
+    nodeSystem.setStartWaypoint(this.getPosition().x - 0.5, this.getPosition().z - 0.5);
+    nodeSystem.setGoalWaypoint(this.waypointManager.getLastBaseWaypointX(), this.waypointManager.getLastBaseWaypointZ());
+    nodeSystem.setNodeCosts();
+    nodeSystem.autoSearch();
+    this.waypointManager.clearWaypoints();
+    this.waypointManager.setPriorityWaypoints(nodeSystem.getSimplifiedPathWaypoints()); 
   }
   animationState(){
-    return this.pauseTime < this.pauseDuration === true ? "Idle" : (this.turning() ? "Turning" : "Moving");
+    return this.pauseTime < this.pauseDuration === true || this.fsm.current.name === "LOOK" ? "Idle" : (this.turning() ? "Turning" : "Moving");
   }
   targetY(){
     return Math.atan2(this.direction.x, this.direction.z);
@@ -177,7 +215,7 @@ export class Enemy {
     // Calculate how much we have to turn the character towards the waypoint
     const targetY = this.targetY();
     const turning = this.turning();
-    
+
     // update the mesh (arms and legs swinging)
     this.mesh.update(
       delta, 

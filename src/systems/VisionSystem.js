@@ -19,11 +19,8 @@ export class VisionSystem{
             if (this.canSee(enemy, player)){
                 enemy.fsm.transition('ENEMY_SPOTTED', { player: player });``
             }
-            else if (enemy.isBusy()){
-                enemy.fsm.transition('VISION_LOST');
-            }
             else{
-                enemy.fsm.transition('TIMEOUT');
+                enemy.fsm.transition('VISION_LOST');
             }
         }
     }
@@ -42,7 +39,7 @@ export class VisionSystem{
         observer.mesh.headGroup.getWorldDirection(lookDirection);
         
         //  set the max view distance and vision angle
-        const maxDistance = 10;
+        const maxDistance = 100;
         const maxAngleCos = Math.cos(THREE.MathUtils.degToRad(45));
 
         //  check if within distance and cone angle

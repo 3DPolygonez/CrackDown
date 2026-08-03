@@ -12,7 +12,7 @@ export class EnemySystem {
 
     this.enemies = [];
 
-    this.spawnInterval = 8;
+    this.spawnInterval = 3;
     this.spawnTimer = this.spawnInterval;
 
     this.spawnEnemy();
@@ -78,7 +78,7 @@ export class EnemySystem {
         spawnPositions.push([Math.floor(Math.random() * (20 - -20)) + -20, Math.floor(Math.random() * (20 - -20)) + -20]);
       }
     }
-    const enemy = new Enemy(this.debugSystem, "Enemy " + (this.enemies.length + 1).toString(), spawnPositions, this.environmentSystem);
+    const enemy = new Enemy(this.debugSystem, this.enemies.length, spawnPositions, this.environmentSystem);
     this.scene.add(enemy.mesh.group);
     this.enemies.push(enemy);
     return;

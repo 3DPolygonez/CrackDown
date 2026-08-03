@@ -7,7 +7,8 @@ export class WaypointManager {
     #waypoints;
     #previousWaypointIndex;
     #currentWaypointIndex;
-    constructor(waypoints){
+    constructor(waypoints, enemy){
+        this.enemy = enemy;
         this.#priority = false;
         this.#returningFromPriority = false;
         this.#waypoints = waypoints;
@@ -39,24 +40,18 @@ export class WaypointManager {
         this.#previousWaypointIndex = this.#currentWaypointIndex;
         this.#currentWaypointIndex++;
         if (this.#currentWaypointIndex >= this.#waypoints.length) {
-            //  if we're currently on priority
-            //  and we've reached the end
-            //  then start back down the path
-            //  that we travelled
             if (this.#priority){
-                this.#priority = false;
-                this.#returningFromPriority = true;
-                this.#waypoints = this.#waypoints.toReversed();
-                this.#currentWaypointIndex = 0;
-            }
-            //  if we returning from priority
-            //  and we've reached the end
-            //  then revert back to the base waypoints
-            else if (this.#returningFromPriority){
-                this.#returningFromPriority = false;
-                this.#previousWaypointIndex = this.#previousBaseWaypointIndex;
-                this.#currentWaypointIndex = this.#currentBaseWaypointIndex;
-                this.#waypoints = this.#baseWaypoints;
+                if (this.enemy.fsm.current.name == "RETURN"){
+                    this.#priority = false;
+                    this.#waypoints = this.#baseWaypoints;
+                    this.#currentWaypointIndex = this.#currentBaseWaypointIndex;
+                    this.#previousWaypointIndex = this.#previousBaseWaypointIndex;
+                    this.enemy.fsm.transition('RETURN_TO_PATROL');
+                }
+                else{
+                    this.#currentWaypointIndex--
+                    this.enemy.fsm.transition('STOP_AND_LOOK');
+                }
             }
             else{
                 this.#currentWaypointIndex = 0;
@@ -65,6 +60,9 @@ export class WaypointManager {
     }
     setPreviousWaypoint(){
         this.#currentWaypointIndex = this.#previousWaypointIndex;
+    }
+    clearWaypoints(){
+        this.#waypoints = [];
     }
     setPriorityWaypoints(waypoints){
         if (!this.#priority){
@@ -95,5 +93,14 @@ export class WaypointManager {
     }
     getWaypointLength(){
         return this.#waypoints.length;
+    }
+    getLastBaseWaypoint(){
+        return this.#baseWaypoints[this.#currentBaseWaypointIndex];
+    }
+    getLastBaseWaypointX(){
+        return this.getLastBaseWaypoint()[0];
+    }
+    getLastBaseWaypointZ(){
+        return this.getLastBaseWaypoint()[1];
     }
 }
