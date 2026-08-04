@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { PersonDefinition } from './PersonDefinition.js';
 import { LegIdleAnimation } from '../entities/animations/person/legs/LegIdleAnimation.js';
 import { LegMovingAnimation } from '../entities/animations/person/legs/LegsMovingAnimation.js';
 import { ArmIdleAnimation } from '../entities/animations/person/arm/ArmIdleAnimation.js';
@@ -14,7 +15,7 @@ import { BackpackMovingAnimation } from '../entities/animations/person/backpack/
 import { ThreeMFLoader } from 'three/examples/jsm/Addons.js';
 
 export class Person {
-    constructor(debugSystem, maxSpeed, baseTexturePath) {
+    constructor(debugSystem, maxSpeed, baseTexturePath, definition) {
         this.debugSystem = debugSystem;
         this.deltaSum = 0;
         this.headDeltaSum = 0;
@@ -114,77 +115,77 @@ export class Person {
         this.headGroup = new THREE.Group;
     
         this.head = new THREE.Mesh(
-          new THREE.BoxGeometry(12, 12, 12), material);
-        this.head.position.y = 26;
-        this.head.position.z = 2;
+          new THREE.BoxGeometry(definition.headWidth, definition.headHeight, definition.headDepth), material);
+        this.head.position.y = definition.headPositionY;
+        this.head.position.z = definition.headPositionZ;
         this.head.castShadow = true;
         this.head.receiveShadow = true;
         //this.headGroup.add(this.head);
     
         this.face = new THREE.Mesh(
-          new THREE.BoxGeometry(10, 10, 10), faceMaterial);
-        this.face.position.y = 25;
-        this.face.position.z = 2;
+          new THREE.BoxGeometry(definition.faceWidth, definition.faceHeight, definition.faceDepth), faceMaterial);
+        this.face.position.y = definition.facePositionY;
+        this.face.position.z = definition.facePositionZ;
         this.face.castShadow = true;
         this.face.receiveShadow = true;
         this.face.geometry.translate(0, 0, 0); // Translate geometry to rotate around the back  
         this.headGroup.add(this.face);
     
         this.chest = new THREE.Mesh(
-          new THREE.BoxGeometry(16, 6, 10), chestMaterial);
-        this.chest.position.y = 16;
-        this.chest.position.z = 0;
+          new THREE.BoxGeometry(definition.chestWidth, definition.chestHeight, definition.chestDepth), chestMaterial);
+        this.chest.position.y = definition.chestPositionY;
+        this.chest.position.z = definition.chestPositionZ;
         this.chest.castShadow = true;
         this.chest.receiveShadow = true;
         this.group.add(this.chest);
     
         this.waist = new THREE.Mesh(
-          new THREE.BoxGeometry(10, 4, 10), waistMaterial);
-        this.waist.position.y = 11;
-        this.waist.position.z = 0;
+          new THREE.BoxGeometry(definition.waistWidth, definition.waistHeight, definition.waistDepth), waistMaterial);
+        this.waist.position.y = definition.waistPositionY;
+        this.waist.position.z = definition.waistPositionZ;
         this.waist.castShadow = true;
         this.waist.receiveShadow = true;
         this.group.add(this.waist);
     
         this.rightArm = new THREE.Mesh(
-          new THREE.BoxGeometry(6, 12, 6), rightArmMaterial);
-        this.rightArm.position.y = 19;
-        this.rightArm.position.z = 0;
-        this.rightArm.position.x = -11;
+          new THREE.BoxGeometry(definition.rightArmWidth, definition.rightArmHeight, definition.rightArmDepth), rightArmMaterial);
+        this.rightArm.position.y = definition.rightArmPositionY;
+        this.rightArm.position.z = definition.rightArmPositionZ;
+        this.rightArm.position.x = definition.rightArmPositionX;
         this.rightArm.castShadow = true;
         this.rightArm.receiveShadow = true;
-        this.rightArm.geometry.translate(0, -7, 0); // Translate geometry to rotate around the top
+        this.rightArm.geometry.translate(0, -definition.rightArmHeight / 2 - 1, 0); // Translate geometry to rotate around the top
         this.group.add(this.rightArm);
     
         this.leftArm = new THREE.Mesh(
-          new THREE.BoxGeometry(6, 12, 6), leftArmMaterial);
-        this.leftArm.position.y = 19;
-        this.leftArm.position.z = 0;
-        this.leftArm.position.x = 11;
+          new THREE.BoxGeometry(definition.leftArmWidth, definition.leftArmHeight, definition.leftArmDepth), leftArmMaterial);
+        this.leftArm.position.y = definition.leftArmPositionY;
+        this.leftArm.position.z = definition.leftArmPositionZ;
+        this.leftArm.position.x = definition.leftArmPositionX;
         this.leftArm.castShadow = true;
         this.leftArm.receiveShadow = true;
-        this.leftArm.geometry.translate(0, -7, 0);
+        this.leftArm.geometry.translate(0, -definition.leftArmHeight / 2 - 1, 0);
         this.group.add(this.leftArm);
     
         this.rightLeg = new THREE.Mesh(
-          new THREE.BoxGeometry(4, 9, 4), rightLegMaterial);
-        this.rightLeg.position.y = 9;
-        this.rightLeg.position.z = 0;
-        this.rightLeg.position.x = -5;
+          new THREE.BoxGeometry(definition.rightLegWidth, definition.rightLegHeight, definition.rightLegDepth), rightLegMaterial);
+        this.rightLeg.position.y = definition.rightLegPositionY;
+        this.rightLeg.position.z = definition.rightLegPositionZ;
+        this.rightLeg.position.x = definition.rightLegPositionX;
         this.rightLeg.castShadow = true;
         this.rightLeg.receiveShadow = true;
-        this.rightLeg.geometry.translate(0, -5, 0);
+        this.rightLeg.geometry.translate(0, -definition.rightLegHeight / 2 - 1, 0);
         this.rightLeg.rotateZ(Math.PI / 32); // Slightly rotate the right leg for a more natural stance
         this.group.add(this.rightLeg);
     
         this.leftLeg = new THREE.Mesh(
-          new THREE.BoxGeometry(4, 9, 4), leftLegMaterial);
-        this.leftLeg.position.y = 9;
-        this.leftLeg.position.z = 0;
-        this.leftLeg.position.x = 5;
+          new THREE.BoxGeometry(definition.leftLegWidth, definition.leftLegHeight, definition.leftLegDepth), leftLegMaterial);
+        this.leftLeg.position.y = definition.leftLegPositionY;
+        this.leftLeg.position.z = definition.leftLegPositionZ;
+        this.leftLeg.position.x = definition.leftLegPositionX;
         this.leftLeg.castShadow = true;
         this.leftLeg.receiveShadow = true;
-        this.leftLeg.geometry.translate(0, -5, 0);
+        this.leftLeg.geometry.translate(0, -definition.leftLegHeight / 2 - 1, 0);
         this.leftLeg.rotateZ(-Math.PI / 32); // Slightly rotate the left leg for a more natural stance
         this.group.add(this.leftLeg);
     
@@ -201,16 +202,16 @@ export class Person {
           new THREE.MeshStandardMaterial({ 
               color: "green", // green: Patrolling, orange: Player in FOV, red: Target visible, blue: investigating, black: disabled
               transparent: true, 
-              opacity: 0.75
+              opacity: 0.5
           }));
         this.detectionState.position.y = this.head.position.y + 40;
         this.detectionState.receiveShadow = true;
         this.headGroup.add(this.detectionState);
 
         this.group.add(this.headGroup);
-        this.group.scale.x = 0.025;
-        this.group.scale.y = 0.025;
-        this.group.scale.z = 0.025;
+        this.group.scale.x = definition.scale;
+        this.group.scale.y = definition.scale;
+        this.group.scale.z = definition.scale;
     }
     update(delta, animationState){
       const swingSpeed = this.maxSpeed * (this.maxSpeed <= 2 ? 4 : (this.maxSpeed <= 4 ? 3 : 1.5));

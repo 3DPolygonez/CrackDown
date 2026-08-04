@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { Soldier } from '../mesh/Soldier';
 import { Engineer } from '../mesh/Engineer';
+import { Scientist } from '../mesh/Scientist';
 import { WaypointManager } from './managers/WaypointManager';
 import { NodeSystem } from '../systems/NodeSystem';
 import { StateManager } from './managers/StateManager';
@@ -21,12 +22,8 @@ export class Enemy {
     this.direction = new THREE.Vector3(0, 0, 0);
 
     //  during development, we can use the name to determine which mesh to use for the enemy
-    if (name % 2){
-      this.mesh = new Engineer(debugSystem, this.maxSpeed);
-    }
-    else{
-      this.mesh = new Soldier(debugSystem, this.maxSpeed);
-    }
+    this.mesh = [new Engineer(debugSystem, this.maxSpeed), new Soldier(debugSystem, this.maxSpeed), new Scientist(debugSystem, this.maxSpeed)][Math.floor(Math.random() * 3)];
+
     //  position the npc at the first waypoint
     this.mesh.group.position.set(
       this.waypointManager.getCurrentWaypointX(), 
@@ -76,7 +73,8 @@ export class Enemy {
       {
         name: 'RETURN',
         transitions: {
-          RETURN_TO_PATROL: 'PATROL'
+          RETURN_TO_PATROL: 'PATROL',
+          ENEMY_SPOTTED: 'CHASE'
         },
         onEnter: () => {}
       }
