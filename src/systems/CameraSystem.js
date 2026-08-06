@@ -69,8 +69,8 @@ export class CameraSystem {
             this.#cameraDefaultYZ += delta * 8;
         }
         //  capture bounds
-        if (this.#cameraDefaultYZ < 5){
-            this.#cameraDefaultYZ = 5;
+        if (this.#cameraDefaultYZ < 2){
+            this.#cameraDefaultYZ = 2;
         }
 
         /*

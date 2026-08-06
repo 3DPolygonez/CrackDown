@@ -11,11 +11,11 @@ export class Enemy {
     this.name = name;
     this.waypointManager = new WaypointManager(waypoints, this);
     this.environmentSystem = environmentSystem;
-    this.pauseTime = this.pauseDuration;
     this.maxSpeed = 4;//[2, 4, 6][Math.floor(Math.random() * 3)];
     this.speed = this.maxSpeed;
     this.waypointProximity = 0.05;
-    this.pauseDuration = this.maxSpeed == 2 ? 3 : (this.maxSpeed == 4 ? 2 : 1);
+    this.pauseDuration = 0;//this.maxSpeed == 2 ? 3 : (this.maxSpeed == 4 ? 2 : 1);
+    this.pauseTime = this.pauseDuration;
     this.lookTimeoutId = null;
 
     //  the initial direction is used to determine which way the enemy is looking when it first spawns, and is also used to determine which way the enemy is moving when it is not at a waypoint

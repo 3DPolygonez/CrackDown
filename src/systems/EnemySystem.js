@@ -12,7 +12,7 @@ export class EnemySystem {
 
     this.enemies = [];
 
-    this.spawnInterval = 3;
+    this.spawnInterval = 2;
     this.spawnTimer = this.spawnInterval;
 
     this.spawnEnemy();
@@ -44,29 +44,35 @@ export class EnemySystem {
   spawnEnemy() {
     const spawnPositions = [];
     if (true) {
-      if (this.enemies.length <= this.maxEnemies / 4 * 1){
+      if (this.enemies.length <= this.maxEnemies / 5 * 1){
         spawnPositions.push([-16.5, -16.5]);
         spawnPositions.push([-3.5, -16.5]);
         spawnPositions.push([-3.5, -3.5]);
         spawnPositions.push([-16.5, -3.5]);
       }
-      else if (this.enemies.length <= this.maxEnemies / 4 * 2){
+      else if (this.enemies.length <= this.maxEnemies / 5 * 2){
         spawnPositions.push([4.5, -15.5]);
         spawnPositions.push([15.5, -15.5]);
         spawnPositions.push([15.5, -4.5]);
         spawnPositions.push([4.5, -4.5]);
       }
-      else if (this.enemies.length <= this.maxEnemies / 4 * 3){
+      else if (this.enemies.length <= this.maxEnemies / 5 * 3){
         spawnPositions.push([4, 4]);
         spawnPositions.push([16, 4]);
         spawnPositions.push([16, 16]);
         spawnPositions.push([4, 16]);
       }
-      else{
+      else if (this.enemies.length <= this.maxEnemies / 5 * 4){
         spawnPositions.push([-16, 4]);
         spawnPositions.push([-4, 4]);
         spawnPositions.push([-4, 16]);
         spawnPositions.push([-16, 16]);
+      }
+      else{
+        spawnPositions.push([-17.5, -17,5]);
+        spawnPositions.push([17.5, -17,5]);
+        spawnPositions.push([17.5, 17.5]);
+        spawnPositions.push([-17.5, 17.5]);
       }
     }
     else {
