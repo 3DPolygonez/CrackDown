@@ -109,8 +109,8 @@ export class Game {
       this.scene,
       this.bulletSystem.bullets,
       this.blastSystem.blasts);
-    this.player1.group.position.x = 10;
-    this.player1.group.position.z = 10;
+    this.player1.group.position.x = -8;
+    this.player1.group.position.z = -8;
     
     this.player2 = new Player(
       "Player 2",
