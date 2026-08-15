@@ -11,7 +11,7 @@ export class Enemy {
     this.name = name;
     this.waypointManager = new WaypointManager(waypoints, this);
     this.environmentSystem = environmentSystem;
-    this.maxSpeed = 4;//[2, 4, 6][Math.floor(Math.random() * 3)];
+    this.maxSpeed = 6;//[2, 4, 6][Math.floor(Math.random() * 3)];
     this.speed = this.maxSpeed;
     this.waypointProximity = 0.05;
     this.pauseDuration = 0;//this.maxSpeed == 2 ? 3 : (this.maxSpeed == 4 ? 2 : 1);
@@ -22,7 +22,11 @@ export class Enemy {
     this.direction = new THREE.Vector3(0, 0, 0);
 
     //  during development, we can use the name to determine which mesh to use for the enemy
-    this.mesh = [new Engineer(debugSystem, this.maxSpeed), new Soldier(debugSystem, this.maxSpeed), new Scientist(debugSystem, this.maxSpeed)][Math.floor(Math.random() * 3)];
+    this.mesh = [
+                  new Engineer(debugSystem, this.maxSpeed), 
+                  new Soldier(debugSystem, this.maxSpeed), 
+                  new Scientist(debugSystem, this.maxSpeed)
+                ][Math.floor(Math.random() * 3)];
 
     //  position the npc at the first waypoint
     this.mesh.group.position.set(
@@ -100,18 +104,8 @@ export class Enemy {
         break;
     }
   }
-  bounce(delta, x, y, z) {
-    this.direction.x += (this.direction.x < 0 ? x : -x) * this.speed;
-    this.direction.z += (this.direction.z < 0 ? z : -z) * this.speed;
-    this.mesh.group.position.add(
-        this.direction.multiplyScalar(this.speed * (1.25) * delta));
-    this.waypointManager.setPreviousWaypoint();
-  }
   getPosition(){
     return this.mesh.group.position;
-  }
-  isBusy(){
-    return this.waypointManager.isBusy();
   }
   canSeeTarget(player){
     clearTimeout(this.lookTimeoutId);
@@ -128,7 +122,7 @@ export class Enemy {
     this.waypointManager.setPriorityWaypoints(nodeSystem.getSimplifiedPathWaypoints()); 
   }
   patrol(){
-    this.maxSpeed = 4;
+    this.maxSpeed = 6;
     this.mesh.maxSpeed = this.maxSpeed;
     this.mesh.detectionState.material.color.set("green");
   }
@@ -140,7 +134,7 @@ export class Enemy {
     }, 5000);
   }
   returnToPatrol(){
-    this.maxSpeed = 4;
+    this.maxSpeed = 6;
     this.mesh.maxSpeed = this.maxSpeed;
 
     const nodeSystem = new NodeSystem(this.environmentSystem);

@@ -6,6 +6,6 @@ export class HeadMovingAnimation extends BaseAnimation {
     }
     animate(angleX, angleY, angleZ) {
         this.mesh.headGroup.rotation.y = 0;
-        this.mesh.headGroup.rotation.z = angleZ / 2; 
+        this.mesh.headGroup.rotation.z = angleZ / 3; 
     }
 }

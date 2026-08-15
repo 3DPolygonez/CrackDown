@@ -6,7 +6,9 @@ export class Soldier extends Person {
         super(
             debugSystem,
             maxSpeed,
-            "./resources/textures/person/soldier",
-            new PersonDefinition());
+            new PersonDefinition(
+            {
+                baseTexturePath: "./resources/textures/person/soldier"
+            }));
     }
 }

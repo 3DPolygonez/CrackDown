@@ -109,8 +109,8 @@ export class Game {
       this.scene,
       this.bulletSystem.bullets,
       this.blastSystem.blasts);
-    this.player1.group.position.x = -8;
-    this.player1.group.position.z = -8;
+    this.player1.group.position.x = 10;
+    this.player1.group.position.z = 10;
     
     this.player2 = new Player(
       "Player 2",
@@ -136,7 +136,7 @@ export class Game {
     this.enemySystem = new EnemySystem(
       this.debugSystem,
       this.scene,
-      50,
+      20,
       [this.player1, this.player2],
       this.blastSystem.blasts,
       this.environmentSystem);

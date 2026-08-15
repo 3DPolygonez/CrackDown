@@ -15,7 +15,7 @@ import { BackpackMovingAnimation } from '../entities/animations/person/backpack/
 import { ThreeMFLoader } from 'three/examples/jsm/Addons.js';
 
 export class Person {
-    constructor(debugSystem, maxSpeed, baseTexturePath, definition) {
+    constructor(debugSystem, maxSpeed, definition) {
         this.debugSystem = debugSystem;
         this.deltaSum = 0;
         this.headDeltaSum = 0;
@@ -25,78 +25,78 @@ export class Person {
 
         const textureLoader = new THREE.TextureLoader();
         const faceTextures = [
-          textureLoader.load(baseTexturePath + "/face/right.png"),
-          textureLoader.load(baseTexturePath + "/face/left.png"),
-          textureLoader.load(baseTexturePath + "/face/top.png"),
-          textureLoader.load(baseTexturePath + "/face/bottom.png"),
-          textureLoader.load(baseTexturePath + "/face/front.png"),
-          textureLoader.load(baseTexturePath + "/face/back.png")
+          textureLoader.load(definition.baseTexturePath + "/face/right.png"),
+          textureLoader.load(definition.baseTexturePath + "/face/left.png"),
+          textureLoader.load(definition.baseTexturePath + "/face/top.png"),
+          textureLoader.load(definition.baseTexturePath + "/face/bottom.png"),
+          textureLoader.load(definition.baseTexturePath + "/face/front.png"),
+          textureLoader.load(definition.baseTexturePath + "/face/back.png")
         ];
         faceTextures.forEach(texture => {
           texture.colorSpace = THREE.SRGBColorSpace;
         });
         const chestTextures = [
-          textureLoader.load(baseTexturePath + "/chest/right.png"),
-          textureLoader.load(baseTexturePath + "/chest/left.png"),
-          textureLoader.load(baseTexturePath + "/chest/top.png"),
-          textureLoader.load(baseTexturePath + "/chest/bottom.png"),
-          textureLoader.load(baseTexturePath + "/chest/front.png"),
-          textureLoader.load(baseTexturePath + "/chest/back.png")
+          textureLoader.load(definition.baseTexturePath + "/chest/right.png"),
+          textureLoader.load(definition.baseTexturePath + "/chest/left.png"),
+          textureLoader.load(definition.baseTexturePath + "/chest/top.png"),
+          textureLoader.load(definition.baseTexturePath + "/chest/bottom.png"),
+          textureLoader.load(definition.baseTexturePath + "/chest/front.png"),
+          textureLoader.load(definition.baseTexturePath + "/chest/back.png")
         ];
         chestTextures.forEach(texture => {
           texture.colorSpace = THREE.SRGBColorSpace;
         });
         const rightArmTextures = [
-          textureLoader.load(baseTexturePath + "/rightArm/right.png"),
-          textureLoader.load(baseTexturePath + "/rightArm/left.png"),
-          textureLoader.load(baseTexturePath + "/rightArm/top.png"),
-          textureLoader.load(baseTexturePath + "/rightArm/bottom.png"),
-          textureLoader.load(baseTexturePath + "/rightArm/front.png"),
-          textureLoader.load(baseTexturePath + "/rightArm/back.png")
+          textureLoader.load(definition.baseTexturePath + "/rightArm/right.png"),
+          textureLoader.load(definition.baseTexturePath + "/rightArm/left.png"),
+          textureLoader.load(definition.baseTexturePath + "/rightArm/top.png"),
+          textureLoader.load(definition.baseTexturePath + "/rightArm/bottom.png"),
+          textureLoader.load(definition.baseTexturePath + "/rightArm/front.png"),
+          textureLoader.load(definition.baseTexturePath + "/rightArm/back.png")
         ];
         rightArmTextures.forEach(texture => {
           texture.colorSpace = THREE.SRGBColorSpace;
         });
         const leftArmTextures = [
-          textureLoader.load(baseTexturePath + "/leftArm/right.png"),
-          textureLoader.load(baseTexturePath + "/leftArm/left.png"),
-          textureLoader.load(baseTexturePath + "/leftArm/top.png"),
-          textureLoader.load(baseTexturePath + "/leftArm/bottom.png"),
-          textureLoader.load(baseTexturePath + "/leftArm/front.png"),
-          textureLoader.load(baseTexturePath + "/leftArm/back.png")
+          textureLoader.load(definition.baseTexturePath + "/leftArm/right.png"),
+          textureLoader.load(definition.baseTexturePath + "/leftArm/left.png"),
+          textureLoader.load(definition.baseTexturePath + "/leftArm/top.png"),
+          textureLoader.load(definition.baseTexturePath + "/leftArm/bottom.png"),
+          textureLoader.load(definition.baseTexturePath + "/leftArm/front.png"),
+          textureLoader.load(definition.baseTexturePath + "/leftArm/back.png")
         ];
         leftArmTextures.forEach(texture => {
           texture.colorSpace = THREE.SRGBColorSpace;
         });
         const waistTextures = [
-          textureLoader.load(baseTexturePath + "/waist/right.png"),
-          textureLoader.load(baseTexturePath + "/waist/left.png"),
-          textureLoader.load(baseTexturePath + "/waist/top.png"),
-          textureLoader.load(baseTexturePath + "/waist/bottom.png"),
-          textureLoader.load(baseTexturePath + "/waist/front.png"),
-          textureLoader.load(baseTexturePath + "/waist/back.png")
+          textureLoader.load(definition.baseTexturePath + "/waist/right.png"),
+          textureLoader.load(definition.baseTexturePath + "/waist/left.png"),
+          textureLoader.load(definition.baseTexturePath + "/waist/top.png"),
+          textureLoader.load(definition.baseTexturePath + "/waist/bottom.png"),
+          textureLoader.load(definition.baseTexturePath + "/waist/front.png"),
+          textureLoader.load(definition.baseTexturePath + "/waist/back.png")
         ];
         waistTextures.forEach(texture => {
           texture.colorSpace = THREE.SRGBColorSpace;
         });
         const rightLegTextures = [
-          textureLoader.load(baseTexturePath + "/rightLeg/right.png"),
-          textureLoader.load(baseTexturePath + "/rightLeg/left.png"),
-          textureLoader.load(baseTexturePath + "/rightLeg/top.png"),
-          textureLoader.load(baseTexturePath + "/rightLeg/bottom.png"),
-          textureLoader.load(baseTexturePath + "/rightLeg/front.png"),
-          textureLoader.load(baseTexturePath + "/rightLeg/back.png")
+          textureLoader.load(definition.baseTexturePath + "/rightLeg/right.png"),
+          textureLoader.load(definition.baseTexturePath + "/rightLeg/left.png"),
+          textureLoader.load(definition.baseTexturePath + "/rightLeg/top.png"),
+          textureLoader.load(definition.baseTexturePath + "/rightLeg/bottom.png"),
+          textureLoader.load(definition.baseTexturePath + "/rightLeg/front.png"),
+          textureLoader.load(definition.baseTexturePath + "/rightLeg/back.png")
         ];
         rightLegTextures.forEach(texture => {
           texture.colorSpace = THREE.SRGBColorSpace;
         });
         const leftLegTextures = [
-          textureLoader.load(baseTexturePath + "/leftLeg/right.png"),
-          textureLoader.load(baseTexturePath + "/leftLeg/left.png"),
-          textureLoader.load(baseTexturePath + "/leftLeg/top.png"),
-          textureLoader.load(baseTexturePath + "/leftLeg/bottom.png"),
-          textureLoader.load(baseTexturePath + "/leftLeg/front.png"),
-          textureLoader.load(baseTexturePath + "/leftLeg/back.png")
+          textureLoader.load(definition.baseTexturePath + "/leftLeg/right.png"),
+          textureLoader.load(definition.baseTexturePath + "/leftLeg/left.png"),
+          textureLoader.load(definition.baseTexturePath + "/leftLeg/top.png"),
+          textureLoader.load(definition.baseTexturePath + "/leftLeg/bottom.png"),
+          textureLoader.load(definition.baseTexturePath + "/leftLeg/front.png"),
+          textureLoader.load(definition.baseTexturePath + "/leftLeg/back.png")
         ];
         leftLegTextures.forEach(texture => {
           texture.colorSpace = THREE.SRGBColorSpace;
@@ -109,7 +109,7 @@ export class Person {
         const rightLegMaterial = rightLegTextures.map(t => new THREE.MeshStandardMaterial({ map: t }));
         const leftLegMaterial = leftLegTextures.map(t => new THREE.MeshStandardMaterial({ map: t }));
 
-        const material = new THREE.MeshPhongMaterial({ color: this.maxSpeed == 2 ? "green" : (this.maxSpeed == 4 ? "orange" : "red") });
+        const material = new THREE.MeshPhongMaterial({ color: "#333333" });
 
         this.group = new THREE.Group();
         this.headGroup = new THREE.Group;
@@ -147,25 +147,95 @@ export class Person {
         this.waist.receiveShadow = true;
         this.group.add(this.waist);
     
+        /*
+            right arm
+        */
+        this.rightArmGroup = new THREE.Group;
+        if (debugSystem.showAxisHelper){
+          this.rightArmGroup.add(new THREE.AxesHelper(5));
+        }
+        this.rightArmGroup.position.x = definition.rightArmPositionX + definition.rightArmWidth / 2;
+        this.rightArmGroup.position.y = definition.rightArmPositionY;
+
         this.rightArm = new THREE.Mesh(
           new THREE.BoxGeometry(definition.rightArmWidth, definition.rightArmHeight, definition.rightArmDepth), rightArmMaterial);
-        this.rightArm.position.y = definition.rightArmPositionY;
-        this.rightArm.position.z = definition.rightArmPositionZ;
-        this.rightArm.position.x = definition.rightArmPositionX;
         this.rightArm.castShadow = true;
         this.rightArm.receiveShadow = true;
-        this.rightArm.geometry.translate(0, -definition.rightArmHeight / 2 - 1, 0); // Translate geometry to rotate around the top
-        this.group.add(this.rightArm);
-    
+        this.rightArm.geometry.translate(
+          -definition.rightArmWidth / 2, 
+          -definition.rightArmHeight / 2 - 1, 
+          0);
+        this.rightArmGroup.add(this.rightArm);
+
+        this.weaponGroup = new THREE.Group;
+        if (debugSystem.showAxisHelper){
+          this.weaponGroup.add(new THREE.AxesHelper(5));
+        }
+        this.weaponGroup.position.y = -definition.rightArmHeight;
+        this.weaponGroup.position.x = -definition.rightArmWidth / 2;
+        this.weaponGroup.position.z = definition.rightArmDepth + 0.5;
+
+        this.smgGrip = new THREE.Mesh(
+          new THREE.BoxGeometry(2, 2, 4), material);
+        this.smgGrip.geometry.translate(
+          0, 
+          1, 
+          -4);
+        this.smgGrip.castShadow = true;
+        this.smgGrip.receiveShadow = true;
+        this.weaponGroup.add(this.smgGrip);
+
+        this.smgTop = new THREE.Mesh(
+          new THREE.BoxGeometry(2, 16, 4), material);
+        this.smgTop.geometry.translate(
+          0, 
+          -4, 
+          0);
+        this.smgTop.castShadow = true;
+        this.smgTop.receiveShadow = true;
+        this.weaponGroup.add(this.smgTop);
+
+        this.smgMag = new THREE.Mesh(
+          new THREE.BoxGeometry(2, 3, 6), material);
+        this.smgMag.geometry.translate(
+          0, 
+          -4, 
+          -5);
+        this.smgMag.castShadow = true;
+        this.smgMag.receiveShadow = true;
+        this.weaponGroup.add(this.smgMag);
+
+        this.smgBarrel = new THREE.Mesh(
+          new THREE.BoxGeometry(2, 1, 2), material);
+        this.smgBarrel.geometry.translate(
+          0, 
+          -12, 
+          -1);
+        this.smgBarrel.castShadow = true;
+        this.smgBarrel.receiveShadow = true;
+        this.weaponGroup.add(this.smgBarrel);
+
+        this.rightArmGroup.add(this.weaponGroup);
+
+        /*
+            left arm
+        */
+        this.leftArmGroup = new THREE.Group;
+        if (debugSystem.showAxisHelper){
+          this.leftArmGroup.add(new THREE.AxesHelper(5));
+        }
+        this.leftArmGroup.position.x = definition.leftArmPositionX - definition.leftArmWidth / 2;
+        this.leftArmGroup.position.y = definition.leftArmPositionY;
+
         this.leftArm = new THREE.Mesh(
           new THREE.BoxGeometry(definition.leftArmWidth, definition.leftArmHeight, definition.leftArmDepth), leftArmMaterial);
-        this.leftArm.position.y = definition.leftArmPositionY;
-        this.leftArm.position.z = definition.leftArmPositionZ;
-        this.leftArm.position.x = definition.leftArmPositionX;
         this.leftArm.castShadow = true;
         this.leftArm.receiveShadow = true;
-        this.leftArm.geometry.translate(0, -definition.leftArmHeight / 2 - 1, 0);
-        this.group.add(this.leftArm);
+        this.leftArm.geometry.translate(
+          definition.leftArmWidth / 2, 
+          -definition.leftArmHeight / 2 - 1, 
+          0);
+        this.leftArmGroup.add(this.leftArm);
     
         this.rightLeg = new THREE.Mesh(
           new THREE.BoxGeometry(definition.rightLegWidth, definition.rightLegHeight, definition.rightLegDepth), rightLegMaterial);
@@ -209,6 +279,9 @@ export class Person {
         this.headGroup.add(this.detectionState);
 
         this.group.add(this.headGroup);
+        this.group.add(this.rightArmGroup);
+        this.group.add(this.leftArmGroup);
+
         this.group.scale.x = definition.scale;
         this.group.scale.y = definition.scale;
         this.group.scale.z = definition.scale;

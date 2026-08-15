@@ -6,7 +6,9 @@ export class Engineer extends Person {
         super(
             debugSystem,
             maxSpeed,
-            "./resources/textures/person/engineer",
-            new PersonDefinition());
+            new PersonDefinition(
+            {
+                baseTexturePath: "./resources/textures/person/engineer"
+            }));
     }
 }

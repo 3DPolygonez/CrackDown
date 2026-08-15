@@ -12,7 +12,7 @@ export class EnemySystem {
 
     this.enemies = [];
 
-    this.spawnInterval = 2;
+    this.spawnInterval = 4;
     this.spawnTimer = this.spawnInterval;
 
     this.spawnEnemy();
@@ -69,10 +69,10 @@ export class EnemySystem {
         spawnPositions.push([-16, 16]);
       }
       else{
-        spawnPositions.push([-17.5, -17,5]);
-        spawnPositions.push([17.5, -17,5]);
-        spawnPositions.push([17.5, 17.5]);
-        spawnPositions.push([-17.5, 17.5]);
+        spawnPositions.push([-18.5, -18,5]);
+        spawnPositions.push([18.5, -18,5]);
+        spawnPositions.push([18.5, 18.5]);
+        spawnPositions.push([-18.5, 18.5]);
       }
     }
     else {
@@ -82,6 +82,7 @@ export class EnemySystem {
     }
     const enemy = new Enemy(this.debugSystem, this.enemies.length, spawnPositions, this.environmentSystem);
     this.scene.add(enemy.mesh.group);
+
     this.enemies.push(enemy);
     return;
   }

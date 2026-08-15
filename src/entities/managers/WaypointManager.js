@@ -88,9 +88,6 @@ export class WaypointManager {
         this.#priority = true;
         this.#returningFromPriority = false;
     }
-    isBusy(){
-        return this.#priority ? true : this.#returningFromPriority;
-    }
     getWaypointLength(){
         return this.#waypoints.length;
     }

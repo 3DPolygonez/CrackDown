@@ -1,5 +1,7 @@
 export class PersonDefinition {
     constructor(properties = {}) {
+        this.baseTexturePath = properties.baseTexturePath || "./resources/textures/person/soldier";
+
         this.headWidth = properties.headWidth || 12;
         this.headHeight = properties.headHeight || 12;
         this.headDepth = properties.headDepth || 12;
