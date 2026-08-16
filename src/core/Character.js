@@ -21,6 +21,7 @@ import { bilateralBlur } from 'three/examples/jsm/tsl/display/BilateralBlurNode.
 import { Soldier } from '../mesh/Soldier';
 import { Engineer } from '../mesh/Engineer';
 import { Scientist } from '../mesh/Scientist';
+import { Blank } from '../mesh/Blank';
 
 export class Character {
   constructor() {
@@ -205,6 +206,12 @@ export class Character {
         break;
       case "Scientist":
         mesh = new Scientist(
+          this.debugSystem, 
+          enemy.maxSpeed,
+          args.value);
+        break;
+      case "Blank":
+        mesh = new Blank(
           this.debugSystem, 
           enemy.maxSpeed,
           args.value);
