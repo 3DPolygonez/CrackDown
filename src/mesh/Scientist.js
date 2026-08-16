@@ -2,7 +2,7 @@ import { Person } from './Person.js';
 import { PersonDefinition } from './PersonDefinition.js';
 
 export class Scientist extends Person {
-    constructor(debugSystem, maxSpeed) {
+    constructor(debugSystem, maxSpeed, definition = {}) {
         super(
             debugSystem,
             maxSpeed,
@@ -32,7 +32,8 @@ export class Scientist extends Person {
                 rightLegPositionX: -3,
                 leftLegWidth: 3,
                 leftLegDepth: 3,
-                leftLegPositionX: 3
+                leftLegPositionX: 3,
+                ...definition
             }));
     }
 }

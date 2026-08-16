@@ -129,7 +129,9 @@ export class Person {
         this.face.castShadow = true;
         this.face.receiveShadow = true;
         this.face.geometry.translate(0, 0, 0); // Translate geometry to rotate around the back  
-        this.headGroup.add(this.face);
+        if (definition.includeFace){
+          this.headGroup.add(this.face);
+        }
     
         this.chest = new THREE.Mesh(
           new THREE.BoxGeometry(definition.chestWidth, definition.chestHeight, definition.chestDepth), chestMaterial);
@@ -137,7 +139,9 @@ export class Person {
         this.chest.position.z = definition.chestPositionZ;
         this.chest.castShadow = true;
         this.chest.receiveShadow = true;
-        this.group.add(this.chest);
+        if (definition.includeChest){
+          this.group.add(this.chest);
+        }
     
         this.waist = new THREE.Mesh(
           new THREE.BoxGeometry(definition.waistWidth, definition.waistHeight, definition.waistDepth), waistMaterial);
@@ -145,7 +149,9 @@ export class Person {
         this.waist.position.z = definition.waistPositionZ;
         this.waist.castShadow = true;
         this.waist.receiveShadow = true;
-        this.group.add(this.waist);
+        if (definition.includeWaist){
+          this.group.add(this.waist);
+        }
     
         /*
             right arm
@@ -165,7 +171,9 @@ export class Person {
           -definition.rightArmWidth / 2, 
           -definition.rightArmHeight / 2 - 1, 
           0);
-        this.rightArmGroup.add(this.rightArm);
+        if (definition.includeRightArm){
+          this.rightArmGroup.add(this.rightArm);
+        }
 
         this.weaponGroup = new THREE.Group;
         if (debugSystem.showAxisHelper){
@@ -215,7 +223,9 @@ export class Person {
         this.smgBarrel.receiveShadow = true;
         this.weaponGroup.add(this.smgBarrel);
 
-        this.rightArmGroup.add(this.weaponGroup);
+        if (definition.includeObject){
+          this.rightArmGroup.add(this.weaponGroup);
+        }
 
         /*
             left arm
@@ -235,7 +245,9 @@ export class Person {
           definition.leftArmWidth / 2, 
           -definition.leftArmHeight / 2 - 1, 
           0);
-        this.leftArmGroup.add(this.leftArm);
+        if (definition.includeLeftArm){
+          this.leftArmGroup.add(this.leftArm);
+        }
     
         this.rightLeg = new THREE.Mesh(
           new THREE.BoxGeometry(definition.rightLegWidth, definition.rightLegHeight, definition.rightLegDepth), rightLegMaterial);
@@ -246,7 +258,9 @@ export class Person {
         this.rightLeg.receiveShadow = true;
         this.rightLeg.geometry.translate(0, -definition.rightLegHeight / 2 - 1, 0);
         this.rightLeg.rotateZ(Math.PI / 32); // Slightly rotate the right leg for a more natural stance
-        this.group.add(this.rightLeg);
+        if (definition.includeRightLeg){
+          this.group.add(this.rightLeg);
+        }
     
         this.leftLeg = new THREE.Mesh(
           new THREE.BoxGeometry(definition.leftLegWidth, definition.leftLegHeight, definition.leftLegDepth), leftLegMaterial);
@@ -257,7 +271,9 @@ export class Person {
         this.leftLeg.receiveShadow = true;
         this.leftLeg.geometry.translate(0, -definition.leftLegHeight / 2 - 1, 0);
         this.leftLeg.rotateZ(-Math.PI / 32); // Slightly rotate the left leg for a more natural stance
-        this.group.add(this.leftLeg);
+        if (definition.includeLeftLeg){
+          this.group.add(this.leftLeg);
+        }
     
         this.backpack = new THREE.Mesh(
           new THREE.BoxGeometry(10, 8, 6), material);

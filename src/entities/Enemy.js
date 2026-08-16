@@ -1,17 +1,16 @@
 import * as THREE from 'three';
-import { Soldier } from '../mesh/Soldier';
-import { Engineer } from '../mesh/Engineer';
-import { Scientist } from '../mesh/Scientist';
 import { WaypointManager } from './managers/WaypointManager';
 import { NodeSystem } from '../systems/NodeSystem';
 import { StateManager } from './managers/StateManager';
 
 export class Enemy {
-  constructor(debugSystem, name, waypoints, environmentSystem) {
+  constructor(scene, debugSystem, name, waypoints, environmentSystem, mesh) {
+    this.scene = scene;
     this.name = name;
     this.waypointManager = new WaypointManager(waypoints, this);
     this.environmentSystem = environmentSystem;
-    this.maxSpeed = 6;//[2, 4, 6][Math.floor(Math.random() * 3)];
+    this.baseMaxSpeed = 0;
+    this.maxSpeed = 0;
     this.speed = this.maxSpeed;
     this.waypointProximity = 0.05;
     this.pauseDuration = 0;//this.maxSpeed == 2 ? 3 : (this.maxSpeed == 4 ? 2 : 1);
@@ -20,19 +19,8 @@ export class Enemy {
 
     //  the initial direction is used to determine which way the enemy is looking when it first spawns, and is also used to determine which way the enemy is moving when it is not at a waypoint
     this.direction = new THREE.Vector3(0, 0, 0);
-
-    //  during development, we can use the name to determine which mesh to use for the enemy
-    this.mesh = [
-                  new Engineer(debugSystem, this.maxSpeed), 
-                  new Soldier(debugSystem, this.maxSpeed), 
-                  new Scientist(debugSystem, this.maxSpeed)
-                ][Math.floor(Math.random() * 3)];
-
-    //  position the npc at the first waypoint
-    this.mesh.group.position.set(
-      this.waypointManager.getCurrentWaypointX(), 
-      0, 
-      this.waypointManager.getCurrentWaypointZ());
+    this.setMesh(mesh);
+    this.setBaseSpeed(6);
 
     //  FSM for the enemy's state (patrolling, chasing, searching, etc.)
     const states = [
@@ -85,6 +73,7 @@ export class Enemy {
     ];
     this.fsm = new StateManager(states, 'IDLE', (changeData) => this.handleStateChange(changeData));
     this.fsm.transition('START_PATROL');
+    this.scene.add(this.mesh.group);
   }
   handleStateChange({ from, to, trigger, args }) {
     switch (to) {
@@ -107,10 +96,12 @@ export class Enemy {
   getPosition(){
     return this.mesh.group.position;
   }
+  get3DObject(){
+    return this.mesh.group;
+  }
   canSeeTarget(player){
     clearTimeout(this.lookTimeoutId);
-    this.maxSpeed = 6;
-    this.mesh.maxSpeed = this.maxSpeed;
+    this.setSpeed(this.baseMaxSpeed);
     this.mesh.detectionState.material.color.set("red");
     this.pauseDuration = 0;
 
@@ -122,20 +113,18 @@ export class Enemy {
     this.waypointManager.setPriorityWaypoints(nodeSystem.getSimplifiedPathWaypoints()); 
   }
   patrol(){
-    this.maxSpeed = 6;
-    this.mesh.maxSpeed = this.maxSpeed;
+    this.setSpeed(this.baseMaxSpeed);
     this.mesh.detectionState.material.color.set("green");
   }
   look(){
-    this.mesh.maxSpeed = 2;
+    this.setSpeed(2);
     this.mesh.detectionState.material.color.set("orange");
     this.lookTimeoutId = setTimeout(() => {
       this.fsm.transition("TIMEOUT");
     }, 5000);
   }
   returnToPatrol(){
-    this.maxSpeed = 6;
-    this.mesh.maxSpeed = this.maxSpeed;
+    this.setSpeed(this.baseMaxSpeed);
 
     const nodeSystem = new NodeSystem(this.environmentSystem);
     nodeSystem.setStartWaypoint(this.getPosition().x - 0.5, this.getPosition().z - 0.5);
@@ -153,6 +142,33 @@ export class Enemy {
   }
   turning(){
     return Math.abs(this.mesh.group.rotation.y - this.targetY()) > 0.1;
+  }
+  setMesh(mesh){
+    let deltaSum = 0;
+    let headDeltaSum = 0;
+    if (this.mesh){
+      deltaSum = this.mesh.deltaSum;
+      headDeltaSum = this.mesh.headDeltaSum;
+      this.scene.remove(this.mesh.group);
+    }
+    this.mesh = mesh;
+    this.mesh.deltaSum = deltaSum;
+    this.mesh.headDeltaSum = headDeltaSum;
+    //  position the npc at the first waypoint
+    this.mesh.group.position.set(
+      this.waypointManager.getCurrentWaypointX(), 
+      0, 
+      this.waypointManager.getCurrentWaypointZ());
+    this.scene.add(this.mesh.group);
+  }
+  setBaseSpeed(speed){
+    this.baseMaxSpeed = speed;
+    this.maxSpeed = this.baseMaxSpeed;
+    this.mesh.maxSpeed = this.baseMaxSpeed;
+  }
+  setSpeed(speed){
+    this.maxSpeed = speed;
+    this.mesh.maxSpeed = this.maxSpeed;
   }
   update(delta) {
     // waypoint navigation

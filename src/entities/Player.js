@@ -49,6 +49,9 @@ export class Player {
   getPosition(){
     return this.group.position;
   }
+  get3DObject(){
+    return this.group;
+  }
   update(delta, cameraRotationPosition) {
     const move = new THREE.Vector3();
     const moveIncrement = 1;

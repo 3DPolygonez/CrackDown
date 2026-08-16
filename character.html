@@ -15,6 +15,33 @@
   <body>
     <div id="app"></div>
     <script type="module" src="/src/character.js"></script>
+    <div id="character-control-container">
+      <label>mesh</label>
+      <select id="ddlMesh">
+        <option value="Engineer" selected>Engineer</option>
+        <option value="Soldier">Soldier</option>
+        <option value="Scientist">Scientist</option>
+      </select>
+      <label>speed</label>
+      <select id="ddlSpeed">
+        <option value="6" selected>Fast</option>
+        <option value="4">Medium</option>
+        <option value="2">Slow</option>
+        <option value="0">Stopped</option>
+      </select>
+      <label>include</label><br/>
+      <label><input type="checkbox" id="chkIncludeFace" checked/> face</label><br/>
+      <label><input type="checkbox" id="chkIncludeChest" checked/> chest</label><br/>
+      <label><input type="checkbox" id="chkIncludeRightArm" checked/> right arm</label><br/>
+      <label><input type="checkbox" id="chkIncludeLeftArm" checked/> left arm</label><br/>
+      <label><input type="checkbox" id="chkIncludeWaist" checked/> waist</label><br/>
+      <label><input type="checkbox" id="chkIncludeRightLeg" checked/> right leg</label><br/>
+      <label><input type="checkbox" id="chkIncludeLeftLeg" checked/> left leg</label><br/>
+      <label><input type="checkbox" id="chkIncludeObject" checked/> accessory</label><br/>
+    </div>
+    <div id="character-control-result">
+      <label id="lblResult"></label>
+    </div>
     <img src="/resources/web/Preview20260724.png" style="display: none"/>
   </body>
 </html>

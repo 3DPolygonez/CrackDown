@@ -12,15 +12,17 @@ import { BulletSystem } from '../systems/BulletSystem';
 import { CollisionSystem } from '../systems/CollisionSystem';
 import { EnemySystem } from '../systems/EnemySystem';
 import { EnvironmentSystem } from '../systems/EnvironmentSystem';
-import { Room } from "../entities/Room";
-import { Wall } from "../entities/Wall";
-import { Window } from "../entities/Window";
 import { CameraSystem } from '../systems/CameraSystem';
 import { NodeSystem } from '../systems/NodeSystem';
 import { VisionSystem } from '../systems/VisionSystem';
 import { WaypointManager } from '../entities//managers/WaypointManager'
+import { bilateralBlur } from 'three/examples/jsm/tsl/display/BilateralBlurNode.js';
 
-export class Game {
+import { Soldier } from '../mesh/Soldier';
+import { Engineer } from '../mesh/Engineer';
+import { Scientist } from '../mesh/Scientist';
+
+export class Character {
   constructor() {
     //  configure scene
     this.scene = new THREE.Scene();
@@ -65,7 +67,7 @@ export class Game {
 
     this.debugSystem = new DebugSystem();
 
-    this.input = new Input();
+    this.input = new Input((changeData) => this.handleInputChange(changeData));
 
     this.blastSystem = new BlastSystem(
       this.scene);
@@ -92,78 +94,20 @@ export class Game {
     this.player1.group.position.z = 10;
     this.scene.add(this.player1.get3DObject());
 
-    this.player2 = new Player(
-      "Player 2",
-      0x00ff00, 
-      {
-        up: 'KeyW',
-        down: 'KeyS',
-        left: 'KeyA',
-        right: 'KeyD',
-        fire: 'Enter'
-      },
-      5,
-      this.input,
-      this.scene,
-      this.bulletSystem.bullets,
-      this.blastSystem.blasts);
-    //this.scene.add(this.player2.get3DObject());
-
     this.environmentSystem = new EnvironmentSystem(
       this.scene,
       40,
       40,
-      [
-        new Wall(
-            "mid horiz window", 
-            -15, 0, 
-            30, 1, 1),
-        new Wall(
-            "mid vert wall", 
-            0, -15, 
-            1, 1, 30),
-        new Wall(
-            "top wall", 
-            -20, -20, 
-            40, 1, 1),
-        new Wall(
-            "right wall", 
-            19, -20, 
-            1, 1, 40),
-        new Wall(
-            "bottom wall", 
-            -20, 19, 
-            40, 1, 1),
-        new Wall(
-            "left wall", 
-            -20, -15, 
-            1, 1, 34),
-        new Room(
-            "main room TL", 
-            -15, -15, 
-            10, 1, 10),
-        new Room(
-            "main room TR", 
-            5, -15, 
-            10, 1, 10),
-        new Room(
-            "main room BL", 
-            -15, 5, 
-            10, 1, 10),
-        new Room(
-            "main room BR", 
-            5, 5, 
-            10, 1, 10)
-    ]);
+      []);
 
     this.enemySystem = new EnemySystem(
       this.debugSystem,
       this.scene,
-      20,
-      [this.player1, this.player2],
+      1,
+      [this.player1],
       this.blastSystem.blasts,
       this.environmentSystem,
-      false);
+      true);
 
     this.collisionSystem = new CollisionSystem(
       this.scene,
@@ -176,7 +120,7 @@ export class Game {
       this.debugSystem,
       this.environmentSystem,
       this.enemySystem,
-      [this.player1, this.player2]
+      [this.player1]
     );
 
     this.cameraSystem = new CameraSystem(
@@ -189,25 +133,19 @@ export class Game {
       this.renderer,
       this.input,
       this.enemySystem.enemies[0].get3DObject(),
-      7);
+      1);
 
     //  configure floor
-    const textureLoader = new THREE.TextureLoader();
-    const map = textureLoader.load("./resources/textures/floor/tile.png");
-    map.colorSpace = THREE.SRGBColorSpace;
-    map.wrapS = THREE.RepeatWrapping;
-    map.wrapT = THREE.RepeatWrapping;
-    map.repeat.set(this.environmentSystem.width, this.environmentSystem.depth);
     const floor = new THREE.Mesh(
         new THREE.PlaneGeometry(this.environmentSystem.width, this.environmentSystem.depth),
         new THREE.MeshStandardMaterial({
-          map: map
+          color: "#333333"
         })
       );
     floor.receiveShadow = true;
     floor.rotation.x = -Math.PI / 2;
     this.scene.add(floor);
-      
+
     this.timer = new THREE.Timer();
   }
 
@@ -232,12 +170,11 @@ export class Game {
       if (this.cameraEnemyTarget > this.enemySystem.enemies.length){
         this.cameraEnemyTarget = 0;
       }
-      this.cameraSystem.target = this.enemySystem.enemies[this.cameraEnemyTarget].get3DObject();
+      this.cameraSystem.target = this.enemySystem.enemies[this.cameraEnemyTarget].mesh.group;
     }
 
     //  update all game components
     this.player1.update(delta, this.cameraSystem.cameraRotationPosition());
-    this.player2.update(delta, this.cameraSystem.cameraRotationPosition());
     this.blastSystem.update(delta);
     this.bulletSystem.update(delta);
     this.enemySystem.update(delta);
@@ -248,5 +185,32 @@ export class Game {
 
     //  render all output
     this.renderer.render(this.scene, this.cameraSystem.camera);
+  }
+
+  handleInputChange({ element, args }) {
+    const enemy = this.enemySystem.enemies[0];
+    let mesh = null;
+    switch (args.value.mesh){
+      case "Engineer":
+        mesh = new Engineer(
+          this.debugSystem, 
+          enemy.maxSpeed,
+          args.value);
+        break;
+      case "Soldier":
+        mesh = new Soldier(
+          this.debugSystem, 
+          enemy.maxSpeed,
+          args.value);
+        break;
+      case "Scientist":
+        mesh = new Scientist(
+          this.debugSystem, 
+          enemy.maxSpeed,
+          args.value);
+        break;
+    }
+    enemy.setMesh(mesh);
+    enemy.setBaseSpeed(args.value.speed);
   }
 }

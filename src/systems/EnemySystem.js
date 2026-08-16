@@ -1,14 +1,18 @@
 import { Enemy } from '../entities/Enemy';
 import { Blast } from '../entities/Blast';
+import { Soldier } from '../mesh/Soldier';
+import { Engineer } from '../mesh/Engineer';
+import { Scientist } from '../mesh/Scientist';
 
 export class EnemySystem {
-  constructor(debugSystem, scene, maxEnemies, players, blasts, environmentSystem) {
+  constructor(debugSystem, scene, maxEnemies, players, blasts, environmentSystem, designMode) {
     this.debugSystem = debugSystem;
     this.scene = scene;
     this.maxEnemies = maxEnemies;
     this.players = players;
     this.blasts = blasts;
     this.environmentSystem = environmentSystem;
+    this.designMode = designMode;
 
     this.enemies = [];
 
@@ -43,7 +47,7 @@ export class EnemySystem {
 
   spawnEnemy() {
     const spawnPositions = [];
-    if (true) {
+    if (!this.designMode) {
       if (this.enemies.length <= this.maxEnemies / 5 * 1){
         spawnPositions.push([-16.5, -16.5]);
         spawnPositions.push([-3.5, -16.5]);
@@ -76,12 +80,22 @@ export class EnemySystem {
       }
     }
     else {
-      for (let i = 0; i < 10; i++) {
-        spawnPositions.push([Math.floor(Math.random() * (20 - -20)) + -20, Math.floor(Math.random() * (20 - -20)) + -20]);
-      }
+      spawnPositions.push([0, 0]);
     }
-    const enemy = new Enemy(this.debugSystem, this.enemies.length, spawnPositions, this.environmentSystem);
-    this.scene.add(enemy.mesh.group);
+    const enemy = new Enemy(
+      this.scene,
+      this.debugSystem, 
+      this.enemies.length, 
+      spawnPositions, 
+      this.environmentSystem,
+      this.designMode ? 
+        new Engineer(this.debugSystem, this.maxSpeed)
+        :
+        [
+          new Engineer(this.debugSystem, this.maxSpeed), 
+          new Soldier(this.debugSystem, this.maxSpeed), 
+          new Scientist(this.debugSystem, this.maxSpeed)
+        ][Math.floor(Math.random() * 3)]);
 
     this.enemies.push(enemy);
     return;
