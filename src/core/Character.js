@@ -187,7 +187,6 @@ export class Character {
     //  render all output
     this.renderer.render(this.scene, this.cameraSystem.camera);
   }
-
   handleInputChange({ element, args }) {
     const enemy = this.enemySystem.enemies[0];
     let mesh = null;

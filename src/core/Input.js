@@ -2,6 +2,11 @@ export class Input {
   #lastKey;
   constructor(onChange = null) {
     this.keys = {};
+    this.swipeStartX = 0;
+    this.swipeStartY = 0;
+    this.swipeEndX = 0;
+    this.swipeEndY = 0;
+    this.swipeThreshold = 50;// Minimum distance in pixels to be considered a swipe 
     this.onChange = onChange;
     window.addEventListener('keydown', (e) => {
       this.#lastKey = e.code;
@@ -258,6 +263,25 @@ export class Input {
         this.changeCharacter("Include");
       })
     }
+    const tracker = document.getElementById('swipe-zone');
+    if (tracker){
+      tracker.addEventListener('touchstart', (e) => {
+        this.swipeStartX = e.touches[0].clientX;
+        this.swipeStartY = e.touches[0].clientY;
+      }, { passive: true });
+
+      tracker.addEventListener('touchmove', (e) => {
+        this.swipeEndX = e.changedTouches[0].clientX;
+        this.swipeEndY = e.changedTouches[0].clientY;
+        this.handleVerticalSwipe();
+      }, { passive: true });
+
+      tracker.addEventListener('touchend', (e) => {
+        this.keys["Digit3"] = false;
+        this.keys["Digit4"] = false;
+        this.handleHorizontalSwipe();
+      }, { passive: true });
+    }
   }
   changeCharacter(element){
     if (this.onChange){
@@ -290,5 +314,35 @@ export class Input {
     let output = this.#lastKey;
     this.#lastKey = null;
     return output;
+  }
+  handleVerticalSwipe() {
+    const diffX = this.swipeEndX - this.swipeStartX;
+    const diffY = this.swipeEndY - this.swipeStartY;
+
+    // Determine if horizontal or vertical movement was greater
+    if (Math.abs(diffX) < Math.abs(diffY)) {
+      if (Math.abs(diffY) > this.swipeThreshold) {
+        if (diffY > 0) {
+          this.keys["Digit4"] = true;
+        } else {
+          this.keys["Digit3"] = true;
+        }
+      }
+    }
+  }
+  handleHorizontalSwipe() {
+    const diffX = this.swipeEndX - this.swipeStartX;
+    const diffY = this.swipeEndY - this.swipeStartY;
+
+    // Determine if horizontal or vertical movement was greater
+    if (Math.abs(diffX) > Math.abs(diffY)) {
+      if (Math.abs(diffX) > this.swipeThreshold) {
+        if (diffX > 0) {
+          this.#lastKey = "Digit2";
+        } else {
+          this.#lastKey = "Digit1";
+        }
+      }
+    }
   }
 }
