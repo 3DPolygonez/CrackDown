@@ -134,7 +134,9 @@ export class Character {
       this.renderer,
       this.input,
       this.enemySystem.enemies[0].get3DObject(),
-      1);
+      1,
+      2,
+      8);
 
     //  configure floor
     const floor = new THREE.Mesh(

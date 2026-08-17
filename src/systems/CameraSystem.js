@@ -7,18 +7,24 @@ export class CameraSystem {
     #cameraTargetX;
     #cameraTargetZ;
     #cameraMovementSnapMultiplier;
+    #minZoom;
+    #maxZoom;
     constructor(
         controls,
         renderer,
         input, 
         target, 
-        cameraDefaultYZ){
+        cameraDefaultYZ,
+        minZoom = 2,
+        maxZoom = 20){
         this.distance = 0;
         this.controls = controls;
         this.renderer = renderer;
         this.input = input;
         this.target = target;
         this.#cameraDefaultYZ = cameraDefaultYZ;
+        this.#minZoom = minZoom;
+        this.#maxZoom = maxZoom;
         this.#cameraRotationPosition = 0;
         this.camera = new THREE.PerspectiveCamera(
             45,
@@ -69,8 +75,11 @@ export class CameraSystem {
             this.#cameraDefaultYZ += delta * 8;
         }
         //  capture bounds
-        if (this.#cameraDefaultYZ < 2){
-            this.#cameraDefaultYZ = 2;
+        if (this.#cameraDefaultYZ < this.#minZoom){
+            this.#cameraDefaultYZ = this.#minZoom;
+        }
+        else if (this.#cameraDefaultYZ > this.#maxZoom){
+            this.#cameraDefaultYZ = this.#maxZoom;
         }
 
         /*
