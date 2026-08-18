@@ -228,9 +228,23 @@ export class Input {
         this.changeCharacter("Include");
       })
     }
+    const chkIncludeRightHand = document.getElementById('chkIncludeRightHand');
+    if (chkIncludeRightHand){
+      chkIncludeRightHand.addEventListener('change', (e) => {
+        e.preventDefault();
+        this.changeCharacter("Include");
+      })
+    }
     const chkIncludeLeftArm = document.getElementById('chkIncludeLeftArm');
     if (chkIncludeLeftArm){
       chkIncludeLeftArm.addEventListener('change', (e) => {
+        e.preventDefault();
+        this.changeCharacter("Include");
+      })
+    }
+    const chkIncludeLeftHand = document.getElementById('chkIncludeLeftHand');
+    if (chkIncludeLeftHand){
+      chkIncludeLeftHand.addEventListener('change', (e) => {
         e.preventDefault();
         this.changeCharacter("Include");
       })
@@ -252,13 +266,6 @@ export class Input {
     const chkIncludeLeftLeg = document.getElementById('chkIncludeLeftLeg');
     if (chkIncludeLeftLeg){
       chkIncludeLeftLeg.addEventListener('change', (e) => {
-        e.preventDefault();
-        this.changeCharacter("Include");
-      })
-    }
-    const chkIncludeObject = document.getElementById('chkIncludeObject');
-    if (chkIncludeObject){
-      chkIncludeObject.addEventListener('change', (e) => {
         e.preventDefault();
         this.changeCharacter("Include");
       })
@@ -291,11 +298,12 @@ export class Input {
         includeFace: document.getElementById('chkIncludeFace').checked,
         includeChest: document.getElementById('chkIncludeChest').checked,
         includeRightArm: document.getElementById('chkIncludeRightArm').checked,
+        includeRightHand: document.getElementById('chkIncludeRightHand').checked,
         includeLeftArm: document.getElementById('chkIncludeLeftArm').checked,
+        includeLeftHand: document.getElementById('chkIncludeLeftHand').checked,
         includeWaist: document.getElementById('chkIncludeWaist').checked,
         includeRightLeg: document.getElementById('chkIncludeRightLeg').checked,
-        includeLeftLeg: document.getElementById('chkIncludeLeftLeg').checked,
-        includeObject: document.getElementById('chkIncludeObject').checked
+        includeLeftLeg: document.getElementById('chkIncludeLeftLeg').checked
       };
       document.getElementById('lblResult').innerHTML = JSON.stringify(value)
         .replaceAll(",", ",<br/>&nbsp;&nbsp;")
