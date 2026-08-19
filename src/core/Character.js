@@ -105,6 +105,8 @@ export class Character {
       40,
       []);
 
+    this.attachmentSystem = new AttachmentSystem(this.debugSystem);
+    
     this.enemySystem = new EnemySystem(
       this.debugSystem,
       this.scene,
@@ -112,6 +114,7 @@ export class Character {
       [this.player1],
       this.blastSystem.blasts,
       this.environmentSystem,
+      this.attachmentSystem,
       true);
 
     this.collisionSystem = new CollisionSystem(
@@ -141,8 +144,6 @@ export class Character {
       1,
       1.5,
       8);
-
-    this.attachmentSystem = new AttachmentSystem(this.debugSystem);
 
     //  configure floor
     const floor = new THREE.Mesh(

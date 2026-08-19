@@ -3,15 +3,19 @@ import { Blast } from '../entities/Blast';
 import { Soldier } from '../mesh/npc/Soldier';
 import { Engineer } from '../mesh/npc/Engineer';
 import { Scientist } from '../mesh/npc/Scientist';
+import { Box } from '../mesh/object/Box';
+import { Smg } from '../mesh/object/Smg';
+import { ClipBoard } from '../mesh/object/ClipBoard';
 
 export class EnemySystem {
-  constructor(debugSystem, scene, maxEnemies, players, blasts, environmentSystem, designMode) {
+  constructor(debugSystem, scene, maxEnemies, players, blasts, environmentSystem, attachmentSystem, designMode) {
     this.debugSystem = debugSystem;
     this.scene = scene;
     this.maxEnemies = maxEnemies;
     this.players = players;
     this.blasts = blasts;
     this.environmentSystem = environmentSystem;
+    this.attachmentSystem = attachmentSystem;
     this.designMode = designMode;
 
     this.enemies = [];
@@ -96,6 +100,20 @@ export class EnemySystem {
           new Soldier(this.debugSystem, this.maxSpeed), 
           new Scientist(this.debugSystem, this.maxSpeed)
         ][Math.floor(Math.random() * 3)]);
+
+    let rndObject = Math.floor(Math.random() * 4)
+    if (rndObject == 1){
+      const item = new Box(this.debugSystem);
+      this.attachmentSystem.attach(enemy.mesh.rightArmGroup, enemy.getAttachmentPoint(), item.get3DObject(), item.getAttachmentPoint());
+    }
+    else if (rndObject == 2){
+      const item = new Smg(this.debugSystem);
+      this.attachmentSystem.attach(enemy.mesh.rightArmGroup, enemy.getAttachmentPoint(), item.get3DObject(), item.getAttachmentPoint());
+    }
+    else if (rndObject == 3){
+      const item = new ClipBoard(this.debugSystem);
+      this.attachmentSystem.attach(enemy.mesh.rightArmGroup, enemy.getAttachmentPoint(), item.get3DObject(), item.getAttachmentPoint());
+    }
 
     this.enemies.push(enemy);
     return;

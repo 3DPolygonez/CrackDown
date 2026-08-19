@@ -18,6 +18,7 @@ import { Window } from "../entities/Window";
 import { CameraSystem } from '../systems/CameraSystem';
 import { NodeSystem } from '../systems/NodeSystem';
 import { VisionSystem } from '../systems/VisionSystem';
+import { AttachmentSystem } from '../systems/AttachmentSystem';
 import { WaypointManager } from '../entities//managers/WaypointManager'
 
 export class Game {
@@ -156,6 +157,8 @@ export class Game {
             10, 1, 10)
     ]);
 
+    this.attachmentSystem = new AttachmentSystem(this.debugSystem);
+
     this.enemySystem = new EnemySystem(
       this.debugSystem,
       this.scene,
@@ -163,6 +166,7 @@ export class Game {
       [this.player1, this.player2],
       this.blastSystem.blasts,
       this.environmentSystem,
+      this.attachmentSystem,
       false);
 
     this.collisionSystem = new CollisionSystem(
