@@ -53,3 +53,10 @@ label {
   color: #ffffff;
   white-space: nowrap;
 }
+#swipe-zone {
+  position: fixed;
+  bottom: -10px;
+  left: -10px;
+  height: 40%;
+  opacity: 0.15;
+}

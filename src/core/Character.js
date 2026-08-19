@@ -142,7 +142,7 @@ export class Character {
       this.input,
       this.enemySystem.enemies[0].get3DObject(),
       1,
-      1.5,
+      2,
       8);
 
     //  configure floor
