@@ -14,6 +14,7 @@ import { WaistIdleAnimation } from '../../entities/animations/person/waist/Waist
 import { WaistMovingAnimation } from '../../entities/animations/person/waist/WaistMovingAnimation.js';
 import { BackpackIdleAnimation } from '../../entities/animations/person/backpack/BackpackIdleAnimation.js';
 import { BackpackMovingAnimation } from '../../entities/animations/person/backpack/BackpackMovingAnimation.js';
+import { AttachmentPoint } from '../AttachmentPoint.js';
 
 export class Person {
     constructor(debugSystem, maxSpeed, definition) {
@@ -212,57 +213,10 @@ export class Person {
           this.rightArmGroup.add(this.rightHand);
         }
 
-        this.weaponGroup = new THREE.Group;
-        if (debugSystem.showAxisHelper){
-          this.weaponGroup.add(new THREE.AxesHelper(5));
-        }
-        this.weaponGroup.position.y = -definition.rightArmHeight;
-        this.weaponGroup.position.x = -definition.rightArmWidth / 2;
-        this.weaponGroup.position.z = definition.rightArmDepth + 0.5;
-
-        this.smgGrip = new THREE.Mesh(
-          new THREE.BoxGeometry(2, 2, 4), material);
-        this.smgGrip.geometry.translate(
-          0, 
-          1, 
-          -4);
-        this.smgGrip.castShadow = true;
-        this.smgGrip.receiveShadow = true;
-        this.weaponGroup.add(this.smgGrip);
-
-        this.smgTop = new THREE.Mesh(
-          new THREE.BoxGeometry(2, 16, 4), material);
-        this.smgTop.geometry.translate(
-          0, 
-          -4, 
-          0);
-        this.smgTop.castShadow = true;
-        this.smgTop.receiveShadow = true;
-        this.weaponGroup.add(this.smgTop);
-
-        this.smgMag = new THREE.Mesh(
-          new THREE.BoxGeometry(2, 3, 6), material);
-        this.smgMag.geometry.translate(
-          0, 
-          -4, 
-          -5);
-        this.smgMag.castShadow = true;
-        this.smgMag.receiveShadow = true;
-        this.weaponGroup.add(this.smgMag);
-
-        this.smgBarrel = new THREE.Mesh(
-          new THREE.BoxGeometry(2, 1, 2), material);
-        this.smgBarrel.geometry.translate(
-          0, 
-          -12, 
-          -1);
-        this.smgBarrel.castShadow = true;
-        this.smgBarrel.receiveShadow = true;
-        this.weaponGroup.add(this.smgBarrel);
-
-        if (definition.includeObject){
-          this.rightArmGroup.add(this.weaponGroup);
-        }
+        this.attachmentPoint = new AttachmentPoint( 
+          0,
+          -definition.rightArmHeight - definition.rightHandHeight,
+          definition.rightArmDepth / 2);
 
         /*
             left arm

@@ -99,6 +99,9 @@ export class Enemy {
   get3DObject(){
     return this.mesh.group;
   }
+  getAttachmentPoint(){
+    return this.mesh.attachmentPoint.getPoint();
+  }
   canSeeTarget(player){
     clearTimeout(this.lookTimeoutId);
     this.setSpeed(this.baseMaxSpeed);

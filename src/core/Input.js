@@ -270,6 +270,34 @@ export class Input {
         this.changeCharacter("Include");
       })
     }
+    const chkUsingNothing = document.getElementById('chkUsingNothing');
+    if (chkUsingNothing){
+      chkUsingNothing.addEventListener('change', (e) => {
+        e.preventDefault();
+        this.changeCharacter("Using");
+      })
+    }
+    const chkUsingBox = document.getElementById('chkUsingBox');
+    if (chkUsingBox){
+      chkUsingBox.addEventListener('change', (e) => {
+        e.preventDefault();
+        this.changeCharacter("Using");
+      })
+    }
+    const chkUsingSmg = document.getElementById('chkUsingSmg');
+    if (chkUsingSmg){
+      chkUsingSmg.addEventListener('change', (e) => {
+        e.preventDefault();
+        this.changeCharacter("Using");
+      })
+    }
+    const chkUsingClipBoard = document.getElementById('chkUsingClipBoard');
+    if (chkUsingClipBoard){
+      chkUsingClipBoard.addEventListener('change', (e) => {
+        e.preventDefault();
+        this.changeCharacter("Using");
+      })
+    }
     const tracker = document.getElementById('swipe-zone');
     if (tracker){
       tracker.addEventListener('touchstart', (e) => {
@@ -303,7 +331,11 @@ export class Input {
         includeLeftHand: document.getElementById('chkIncludeLeftHand').checked,
         includeWaist: document.getElementById('chkIncludeWaist').checked,
         includeRightLeg: document.getElementById('chkIncludeRightLeg').checked,
-        includeLeftLeg: document.getElementById('chkIncludeLeftLeg').checked
+        includeLeftLeg: document.getElementById('chkIncludeLeftLeg').checked,
+        usingNothing: document.getElementById('chkUsingNothing').checked,
+        usingBox: document.getElementById('chkUsingBox').checked,
+        usingSmg: document.getElementById('chkUsingSmg').checked,
+        usingClipBoard: document.getElementById('chkUsingClipBoard').checked
       };
       document.getElementById('lblResult').innerHTML = JSON.stringify(value)
         .replaceAll(",", ",<br/>&nbsp;&nbsp;")

@@ -15,13 +15,17 @@ import { EnvironmentSystem } from '../systems/EnvironmentSystem';
 import { CameraSystem } from '../systems/CameraSystem';
 import { NodeSystem } from '../systems/NodeSystem';
 import { VisionSystem } from '../systems/VisionSystem';
+import { AttachmentSystem } from '../systems/AttachmentSystem';
 import { WaypointManager } from '../entities//managers/WaypointManager'
-import { bilateralBlur } from 'three/examples/jsm/tsl/display/BilateralBlurNode.js';
 
 import { Soldier } from '../mesh/npc/Soldier';
 import { Engineer } from '../mesh/npc/Engineer';
 import { Scientist } from '../mesh/npc/Scientist';
 import { Blank } from '../mesh/npc/Blank';
+import { Box } from '../mesh/object/Box';
+import { Smg } from '../mesh/object/Smg';
+import { ClipBoard } from '../mesh/object/ClipBoard';
+
 
 export class Character {
   constructor() {
@@ -135,8 +139,10 @@ export class Character {
       this.input,
       this.enemySystem.enemies[0].get3DObject(),
       1,
-      2,
+      1.5,
       8);
+
+    this.attachmentSystem = new AttachmentSystem(this.debugSystem);
 
     //  configure floor
     const floor = new THREE.Mesh(
@@ -220,5 +226,18 @@ export class Character {
     }
     enemy.setMesh(mesh);
     enemy.setBaseSpeed(args.value.speed);
+
+    if (args.value.usingBox){
+      const item = new Box(this.debugSystem);
+      this.attachmentSystem.attach(enemy.mesh.rightArmGroup, enemy.getAttachmentPoint(), item.get3DObject(), item.getAttachmentPoint());
+    }
+    else if (args.value.usingSmg){
+      const item = new Smg(this.debugSystem);
+      this.attachmentSystem.attach(enemy.mesh.rightArmGroup, enemy.getAttachmentPoint(), item.get3DObject(), item.getAttachmentPoint());
+    }
+    else if (args.value.usingClipBoard){
+      const item = new ClipBoard(this.debugSystem);
+      this.attachmentSystem.attach(enemy.mesh.rightArmGroup, enemy.getAttachmentPoint(), item.get3DObject(), item.getAttachmentPoint());
+    }
   }
 }
