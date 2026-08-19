@@ -1,4 +1,4 @@
-import { BuildingBlock } from "../mesh/BuildingBlock";
+import { BuildingBlock } from "../mesh/environment/BuildingBlock";
 
 export class Room {
     constructor(name, x, z, width, height, depth) {

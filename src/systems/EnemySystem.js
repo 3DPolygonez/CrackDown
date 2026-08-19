@@ -1,8 +1,8 @@
 import { Enemy } from '../entities/Enemy';
 import { Blast } from '../entities/Blast';
-import { Soldier } from '../mesh/Soldier';
-import { Engineer } from '../mesh/Engineer';
-import { Scientist } from '../mesh/Scientist';
+import { Soldier } from '../mesh/npc/Soldier';
+import { Engineer } from '../mesh/npc/Engineer';
+import { Scientist } from '../mesh/npc/Scientist';
 
 export class EnemySystem {
   constructor(debugSystem, scene, maxEnemies, players, blasts, environmentSystem, designMode) {

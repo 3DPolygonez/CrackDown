@@ -1,19 +1,19 @@
 import * as THREE from 'three';
 import { PersonDefinition } from './PersonDefinition.js';
-import { LegIdleAnimation } from '../entities/animations/person/legs/LegIdleAnimation.js';
-import { LegMovingAnimation } from '../entities/animations/person/legs/LegsMovingAnimation.js';
-import { ArmIdleAnimation } from '../entities/animations/person/arm/ArmIdleAnimation.js';
-import { ArmMovingAnimation } from '../entities/animations/person/arm/ArmMovingAnimation.js';  
-import { HeadIdleAnimation } from '../entities/animations/person/head/HeadIdleAnimation.js';
-import { HeadMovingAnimation } from '../entities/animations/person/head/HeadMovingAnimation.js';
-import { ChestIdleAnimation } from '../entities/animations/person/chest/ChestIdleAnimation.js';
-import { ChestMovingAnimation } from '../entities/animations/person/chest/ChestMovingAnimation.js';
-import { WaistIdleAnimation } from '../entities/animations/person/waist/WaistIdleAnimation.js';
-import { WaistMovingAnimation } from '../entities/animations/person/waist/WaistMovingAnimation.js';
-import { BackpackIdleAnimation } from '../entities/animations/person/backpack/BackpackIdleAnimation.js';
-import { BackpackMovingAnimation } from '../entities/animations/person/backpack/BackpackMovingAnimation.js';
-import { ThreeMFLoader } from 'three/examples/jsm/Addons.js';
-import { defined } from 'three/tsl';
+import { LegIdleAnimation } from '../../entities/animations/person/legs/LegIdleAnimation.js';
+import { LegMovingAnimation } from '../../entities/animations/person/legs/LegsMovingAnimation.js';
+import { ArmIdleAnimation } from '../../entities/animations/person/arm/ArmIdleAnimation.js';
+import { ArmMovingAnimation } from '../../entities/animations/person/arm/ArmMovingAnimation.js';  
+import { HandIdleAnimation } from '../../entities/animations/person/hand/HandIdleAnimation.js';
+import { HandMovingAnimation } from '../../entities/animations/person/hand/HandMovingAnimation.js';
+import { HeadIdleAnimation } from '../../entities/animations/person/head/HeadIdleAnimation.js';
+import { HeadMovingAnimation } from '../../entities/animations/person/head/HeadMovingAnimation.js';
+import { ChestIdleAnimation } from '../../entities/animations/person/chest/ChestIdleAnimation.js';
+import { ChestMovingAnimation } from '../../entities/animations/person/chest/ChestMovingAnimation.js';
+import { WaistIdleAnimation } from '../../entities/animations/person/waist/WaistIdleAnimation.js';
+import { WaistMovingAnimation } from '../../entities/animations/person/waist/WaistMovingAnimation.js';
+import { BackpackIdleAnimation } from '../../entities/animations/person/backpack/BackpackIdleAnimation.js';
+import { BackpackMovingAnimation } from '../../entities/animations/person/backpack/BackpackMovingAnimation.js';
 
 export class Person {
     constructor(debugSystem, maxSpeed, definition) {
@@ -397,6 +397,7 @@ export class Person {
       return [
         new LegIdleAnimation(this),
         new ArmIdleAnimation(this),
+        new HandIdleAnimation(this),
         new HeadIdleAnimation(this),
         new ChestIdleAnimation(this),
         new WaistIdleAnimation(this),
@@ -407,6 +408,7 @@ export class Person {
       return [
         new LegMovingAnimation(this),
         new ArmMovingAnimation(this),
+        new HandMovingAnimation(this),
         new HeadMovingAnimation(this),
         new ChestMovingAnimation(this),
         new WaistMovingAnimation(this),
@@ -417,6 +419,7 @@ export class Person {
       return [
         new LegMovingAnimation(this),
         new ArmMovingAnimation(this),
+        new HandMovingAnimation(this),
         new HeadIdleAnimation(this),
         new ChestIdleAnimation(this),
         new WaistIdleAnimation(this),

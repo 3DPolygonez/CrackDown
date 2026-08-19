@@ -18,10 +18,10 @@ import { VisionSystem } from '../systems/VisionSystem';
 import { WaypointManager } from '../entities//managers/WaypointManager'
 import { bilateralBlur } from 'three/examples/jsm/tsl/display/BilateralBlurNode.js';
 
-import { Soldier } from '../mesh/Soldier';
-import { Engineer } from '../mesh/Engineer';
-import { Scientist } from '../mesh/Scientist';
-import { Blank } from '../mesh/Blank';
+import { Soldier } from '../mesh/npc/Soldier';
+import { Engineer } from '../mesh/npc/Engineer';
+import { Scientist } from '../mesh/npc/Scientist';
+import { Blank } from '../mesh/npc/Blank';
 
 export class Character {
   constructor() {
