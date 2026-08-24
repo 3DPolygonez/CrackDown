@@ -17,7 +17,7 @@ export class Object{
         this.#group.rotateY(definition.rotateY);
         this.#group.rotateZ(definition.rotateZ);
         this.#attachmentPoint = definition.attachmentPoint;
-        if (debugSystem.showAxisHelper){
+        if (debugSystem.showNpcAxisHelper){
             this.#group.add(new THREE.AxesHelper(5));
         }
     }

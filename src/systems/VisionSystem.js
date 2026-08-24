@@ -17,7 +17,7 @@ export class VisionSystem{
             //  the other states should be handled by the enemy itself
             //  based on its own internal state and timers
             if (this.canSee(enemy, player)){
-                enemy.fsm.transition('ENEMY_SPOTTED', { player: player });``
+                enemy.fsm.transition('ENEMY_SPOTTED', { player: player });
             }
             else{
                 enemy.fsm.transition('VISION_LOST');

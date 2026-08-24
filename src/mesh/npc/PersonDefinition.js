@@ -2,14 +2,14 @@ export class PersonDefinition {
     constructor(properties = {}) {
         this.baseTexturePath = properties.baseTexturePath || "./resources/textures/person/soldier";
 
-        
-
         this.includeHead = properties.includeHead != undefined ? properties.includeHead : true;
         this.includeFace = properties.includeFace != undefined ? properties.includeFace : true;
         this.includeChest = properties.includeChest != undefined ? properties.includeChest : true;
         this.includeRightArm = properties.includeRightArm != undefined ? properties.includeRightArm : true;
+        this.includeRightForeArm = properties.includeRightForeArm != undefined ? properties.includeRightForeArm : true;
         this.includeRightHand = properties.includeRightHand != undefined ? properties.includeRightHand : true;
         this.includeLeftArm = properties.includeLeftArm != undefined ? properties.includeLeftArm : true;
+        this.includeLeftForeArm = properties.includeLeftForeArm != undefined ? properties.includeLeftForeArm : true;
         this.includeLeftHand = properties.includeLeftHand != undefined ? properties.includeLeftHand : true;
         this.includeWaist = properties.includeWaist != undefined ? properties.includeWaist : true;
         this.includeRightLeg = properties.includeRightLeg != undefined ? properties.includeRightLeg : true;
@@ -40,25 +40,39 @@ export class PersonDefinition {
         this.waistPositionZ = properties.waistPositionZ || 0;
 
         this.rightArmWidth = properties.rightArmWidth || 6;
-        this.rightArmHeight = properties.rightArmHeight || 8;
+        this.rightArmHeight = properties.rightArmHeight || 4;
         this.rightArmDepth = properties.rightArmDepth || 6;
         this.rightArmPositionY = properties.rightArmPositionY || 19;
         this.rightArmPositionZ = properties.rightArmPositionZ || 0;
         this.rightArmPositionX = properties.rightArmPositionX || -11;
 
+        this.rightForeArmWidth = properties.rightForeArmWidth || 6;
+        this.rightForeArmHeight = properties.rightForeArmHeight || 4;
+        this.rightForeArmDepth = properties.rightForeArmDepth || 6;
+        this.rightForeArmPositionY = properties.rightForeArmPositionY || 15;
+        this.rightForeArmPositionZ = properties.rightForeArmPositionZ || 0;
+        this.rightForeArmPositionX = properties.rightForeArmPositionX || -11;
+
         this.rightHandWidth = properties.rightHandWidth || 6;
-        this.rightHandHeight = properties.rightHandHeight || 4;
+        this.rightHandHeight = properties.rightHandHeight || 3;
         this.rightHandDepth = properties.rightHandDepth || 6;
 
         this.leftArmWidth = properties.leftArmWidth || 6;
-        this.leftArmHeight = properties.leftArmHeight || 8;
+        this.leftArmHeight = properties.leftArmHeight || 4;
         this.leftArmDepth = properties.leftArmDepth || 6;
         this.leftArmPositionY = properties.leftArmPositionY || 19;
         this.leftArmPositionZ = properties.leftArmPositionZ || 0;
         this.leftArmPositionX = properties.leftArmPositionX || 11;
 
+        this.leftForeArmWidth = properties.leftForeArmWidth || 6;
+        this.leftForeArmHeight = properties.leftForeArmHeight || 4;
+        this.leftForeArmDepth = properties.leftForeArmDepth || 6;
+        this.leftForeArmPositionY = properties.leftForeArmPositionY || 15;
+        this.leftForeArmPositionZ = properties.leftForeArmPositionZ || 0;
+        this.leftForeArmPositionX = properties.leftForeArmPositionX || 11;
+
         this.leftHandWidth = properties.leftHandWidth || 6;
-        this.leftHandHeight = properties.leftHandHeight || 4;
+        this.leftHandHeight = properties.leftHandHeight || 3;
         this.leftHandDepth = properties.leftHandDepth || 6;
 
         this.rightLegWidth = properties.rightLegWidth || 4;

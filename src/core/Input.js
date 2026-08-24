@@ -228,6 +228,13 @@ export class Input {
         this.changeCharacter("Include");
       })
     }
+    const chkIncludeRightForeArm = document.getElementById('chkIncludeRightForeArm');
+    if (chkIncludeRightForeArm){
+      chkIncludeRightForeArm.addEventListener('change', (e) => {
+        e.preventDefault();
+        this.changeCharacter("Include");
+      })
+    }
     const chkIncludeRightHand = document.getElementById('chkIncludeRightHand');
     if (chkIncludeRightHand){
       chkIncludeRightHand.addEventListener('change', (e) => {
@@ -238,6 +245,13 @@ export class Input {
     const chkIncludeLeftArm = document.getElementById('chkIncludeLeftArm');
     if (chkIncludeLeftArm){
       chkIncludeLeftArm.addEventListener('change', (e) => {
+        e.preventDefault();
+        this.changeCharacter("Include");
+      })
+    }
+    const chkIncludeLeftForeArm = document.getElementById('chkIncludeLeftForeArm');
+    if (chkIncludeLeftForeArm){
+      chkIncludeLeftForeArm.addEventListener('change', (e) => {
         e.preventDefault();
         this.changeCharacter("Include");
       })
@@ -326,8 +340,10 @@ export class Input {
         includeFace: document.getElementById('chkIncludeFace').checked,
         includeChest: document.getElementById('chkIncludeChest').checked,
         includeRightArm: document.getElementById('chkIncludeRightArm').checked,
+        includeRightForeArm: document.getElementById('chkIncludeRightForeArm').checked,
         includeRightHand: document.getElementById('chkIncludeRightHand').checked,
         includeLeftArm: document.getElementById('chkIncludeLeftArm').checked,
+        includeLeftForeArm: document.getElementById('chkIncludeLeftForeArm').checked,
         includeLeftHand: document.getElementById('chkIncludeLeftHand').checked,
         includeWaist: document.getElementById('chkIncludeWaist').checked,
         includeRightLeg: document.getElementById('chkIncludeRightLeg').checked,

@@ -21,6 +21,14 @@ canvas {
   touch-action: none; /* Prevents zooming/scrolling on touch */
 }
 
+#console-container{
+  position: fixed;
+  text-align: right;
+  bottom: 0;
+  right: 0;
+  font-size: 0.1em;
+}
+
 #cam-container {
   position: fixed;
   top: 10px;

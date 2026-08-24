@@ -131,13 +131,18 @@ export class NodeSystem{
         node.fCost = node.gCost + node.hCost;
     }
     logNodes(){
+        console.log(this.drawNodes());
+    }
+    drawNodes(){
+        let draw = "";
         for (let row = 0; row < this.maxRow; row++){
-            let output = ("0" + row.toString() + " ").slice(-3);
+            let output = "";
             for (let col = 0; col < this.maxCol; col++){
                 output += this.nodes[row][col].logNode();
             }
-            console.log(output);
+            draw += output + "\n";
         }
+        return draw;
     }
     autoSearch(){
         while (!this.goalReached && this.step < 300){

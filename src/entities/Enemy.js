@@ -113,6 +113,9 @@ export class Enemy {
     nodeSystem.setGoalWaypoint(player.getPosition().x, player.getPosition().z);
     nodeSystem.setNodeCosts();
     nodeSystem.autoSearch();
+    if (document.getElementById('console-container')){
+      document.getElementById('console-container').innerText = "debug route\n" + nodeSystem.drawNodes();
+    }
     this.waypointManager.setPriorityWaypoints(nodeSystem.getSimplifiedPathWaypoints()); 
   }
   patrol(){
@@ -134,6 +137,9 @@ export class Enemy {
     nodeSystem.setGoalWaypoint(this.waypointManager.getLastBaseWaypointX(), this.waypointManager.getLastBaseWaypointZ());
     nodeSystem.setNodeCosts();
     nodeSystem.autoSearch();
+    if (document.getElementById('console-container')){
+      document.getElementById('console-container').innerText = "";
+    }
     this.waypointManager.clearWaypoints();
     this.waypointManager.setPriorityWaypoints(nodeSystem.getSimplifiedPathWaypoints()); 
   }
