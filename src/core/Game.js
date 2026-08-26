@@ -192,7 +192,7 @@ export class Game {
       },
       this.renderer,
       this.input,
-      this.enemySystem.enemies[0].get3DObject(),
+      this.player1.get3DObject(),
       7);
 
     //  configure floor

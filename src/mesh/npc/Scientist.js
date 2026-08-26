@@ -41,5 +41,6 @@ export class Scientist extends Person {
                 leftLegPositionX: 3,
                 ...definition
             }));
+        this.name = "Scientist";
     }
 }

@@ -199,34 +199,50 @@ export class Character {
   handleInputChange({ element, args }) {
     const enemy = this.enemySystem.enemies[0];
     let mesh = null;
-    switch (args.value.mesh){
-      case "Engineer":
-        mesh = new Engineer(
-          this.debugSystem, 
-          enemy.maxSpeed,
-          args.value);
-        break;
-      case "Soldier":
-        mesh = new Soldier(
-          this.debugSystem, 
-          enemy.maxSpeed,
-          args.value);
-        break;
-      case "Scientist":
-        mesh = new Scientist(
-          this.debugSystem, 
-          enemy.maxSpeed,
-          args.value);
-        break;
-      case "Blank":
-        mesh = new Blank(
-          this.debugSystem, 
-          enemy.maxSpeed,
-          args.value);
-        break;
+    if (args.value.mesh != enemy.mesh.name){
+      switch (args.value.mesh){
+        case "Engineer":
+          mesh = new Engineer(
+            this.debugSystem, 
+            enemy.maxSpeed,
+            args.value);
+          break;
+        case "Soldier":
+          mesh = new Soldier(
+            this.debugSystem, 
+            enemy.maxSpeed,
+            args.value);
+          break;
+        case "Scientist":
+          mesh = new Scientist(
+            this.debugSystem, 
+            enemy.maxSpeed,
+            args.value);
+          break;
+        case "Blank":
+          mesh = new Blank(
+            this.debugSystem, 
+            enemy.maxSpeed,
+            args.value);
+          break;
+      }
+      enemy.setMesh(mesh);
+      enemy.setBaseSpeed(args.value.speed);
     }
-    enemy.setMesh(mesh);
-    enemy.setBaseSpeed(args.value.speed);
+    else{
+      enemy.setBaseSpeed(args.value.speed);
+      enemy.mesh.face.visible = args.value.includeFace;
+      enemy.mesh.chest.visible = args.value.includeChest;
+      enemy.mesh.waist.visible = args.value.includeWaist;
+      enemy.mesh.rightArm.visible = args.value.includeRightArm;
+      enemy.mesh.rightForeArm.visible = args.value.includeRightForeArm;
+      enemy.mesh.rightHand.visible = args.value.includeRightHand;
+      enemy.mesh.leftArm.visible = args.value.includeLeftArm;
+      enemy.mesh.leftForeArm.visible = args.value.includeLeftForeArm;
+      enemy.mesh.leftHand.visible = args.value.includeLeftHand;
+      enemy.mesh.rightLeg.visible = args.value.includeRightLeg;
+      enemy.mesh.leftLeg.visible = args.value.includeLeftLeg;
+    }
 
     if (args.value.usingBox){
       const item = new Box(this.debugSystem);

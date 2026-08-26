@@ -11,5 +11,6 @@ export class Soldier extends Person {
                 baseTexturePath: "./resources/textures/person/soldier",
                 ...definition
             }));
+        this.name = "Soldier";
     }
 }
