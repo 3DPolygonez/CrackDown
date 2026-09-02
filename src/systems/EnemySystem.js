@@ -54,9 +54,9 @@ export class EnemySystem {
     if (!this.designMode) {
       if (this.enemies.length <= this.maxEnemies / 5 * 1){
         spawnPositions.push([-16.5, -16.5]);
-        spawnPositions.push([-3.5, -16.5]);
-        spawnPositions.push([-3.5, -3.5]);
         spawnPositions.push([-16.5, -3.5]);
+        spawnPositions.push([-3.5, -3.5]);
+        spawnPositions.push([-3.5, -16.5]);
       }
       else if (this.enemies.length <= this.maxEnemies / 5 * 2){
         spawnPositions.push([4.5, -15.5]);

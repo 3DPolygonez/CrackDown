@@ -34,7 +34,7 @@ export class Scientist extends Person {
                 leftHandWidth: 2,
                 leftHandDepth: 3,
                 rightLegWidth: 3,
-                rightlegdepth: 3,
+                rightLegDepth: 3,
                 rightLegPositionX: -3,
                 leftLegWidth: 3,
                 leftLegDepth: 3,

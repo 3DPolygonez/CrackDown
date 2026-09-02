@@ -146,15 +146,15 @@ export class Path {
         new Room(
             "main room TR", 
             5, -15, 
-            10, 1, 10),
+            10, 2, 10),
         new Room(
             "main room BL", 
             -15, 5, 
-            10, 1, 10),
+            10, 4, 10),
         new Room(
             "main room BR", 
             5, 5, 
-            10, 1, 10)
+            10, 3, 10)
     ]);
 
     this.attachmentSystem = new AttachmentSystem(this.debugSystem);
@@ -246,6 +246,7 @@ export class Path {
     this.collisionSystem.update(delta);
     this.visionSystem.update(delta);
     this.cameraSystem.update(delta);
+    this.input.update(delta)
 
     //  render all output
     this.renderer.render(this.scene, this.cameraSystem.camera);

@@ -6,7 +6,6 @@ export class Object{
     #meshes;
     #attachmentPoint;
     constructor(debugSystem, definition = {}){
-        console.log(definition);
         this.#debugSystem = debugSystem;
         this.#group = new THREE.Group();
         this.#meshes = definition.meshes;

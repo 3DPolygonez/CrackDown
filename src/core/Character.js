@@ -95,8 +95,8 @@ export class Character {
       this.scene,
       this.bulletSystem.bullets,
       this.blastSystem.blasts);
-    this.player1.group.position.x = 10;
-    this.player1.group.position.z = 10;
+    this.player1.group.position.x = -20;
+    this.player1.group.position.z = -20;
     this.scene.add(this.player1.get3DObject());
 
     this.environmentSystem = new EnvironmentSystem(
@@ -192,6 +192,7 @@ export class Character {
     this.collisionSystem.update(delta);
     this.visionSystem.update(delta);
     this.cameraSystem.update(delta);
+    this.input.update(delta)
 
     //  render all output
     this.renderer.render(this.scene, this.cameraSystem.camera);

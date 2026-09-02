@@ -146,15 +146,15 @@ export class Game {
         new Room(
             "main room TR", 
             5, -15, 
-            10, 1, 10),
+            10, 2, 10),
         new Room(
             "main room BL", 
             -15, 5, 
-            10, 1, 10),
+            10, 4, 10),
         new Room(
             "main room BR", 
             5, 5, 
-            10, 1, 10)
+            10, 3, 10)
     ]);
 
     this.attachmentSystem = new AttachmentSystem(this.debugSystem);
@@ -162,7 +162,7 @@ export class Game {
     this.enemySystem = new EnemySystem(
       this.debugSystem,
       this.scene,
-      20,
+      80,
       [this.player1, this.player2],
       this.blastSystem.blasts,
       this.environmentSystem,
@@ -192,7 +192,7 @@ export class Game {
       },
       this.renderer,
       this.input,
-      this.player1.get3DObject(),
+      this.enemySystem.enemies[0].get3DObject(),
       7);
 
     //  configure floor
@@ -231,7 +231,7 @@ export class Game {
     //  get the delta time since the last update
     const delta = this.timer.getDelta();
 
-    if (this.input.isDown('KeyT')){
+    if (this.input.lastKey() == 'KeyT'){
       this.cameraEnemyTarget++;
       if (this.cameraEnemyTarget > this.enemySystem.enemies.length){
         this.cameraEnemyTarget = 0;
@@ -249,6 +249,7 @@ export class Game {
     this.collisionSystem.update(delta);
     this.visionSystem.update(delta);
     this.cameraSystem.update(delta);
+    this.input.update(delta)
 
     //  render all output
     this.renderer.render(this.scene, this.cameraSystem.camera);

@@ -18,9 +18,9 @@ export class Enemy {
     this.lookTimeoutId = null;
 
     //  the initial direction is used to determine which way the enemy is looking when it first spawns, and is also used to determine which way the enemy is moving when it is not at a waypoint
-    this.direction = new THREE.Vector3(0, 0, 0);
+    this.direction = new THREE.Vector3();
     this.setMesh(mesh);
-    this.setBaseSpeed(6);
+    this.setBaseSpeed([2, 4, 6][Math.floor(Math.random() * 3)]);
 
     //  FSM for the enemy's state (patrolling, chasing, searching, etc.)
     const states = [
@@ -73,7 +73,7 @@ export class Enemy {
     ];
     this.fsm = new StateManager(states, 'IDLE', (changeData) => this.handleStateChange(changeData));
     this.fsm.transition('START_PATROL');
-    this.scene.add(this.mesh.group);
+    this.scene.add(this.get3DObject());
   }
   handleStateChange({ from, to, trigger, args }) {
     switch (to) {
@@ -104,7 +104,7 @@ export class Enemy {
   }
   canSeeTarget(player){
     clearTimeout(this.lookTimeoutId);
-    this.setSpeed(this.baseMaxSpeed);
+    this.setSpeed(6);
     this.mesh.detectionState.material.color.set("red");
     this.pauseDuration = 0;
 
@@ -147,10 +147,12 @@ export class Enemy {
     return this.pauseTime < this.pauseDuration === true || this.fsm.current.name === "LOOK" ? "Idle" : (this.turning() ? "Turning" : "Moving");
   }
   targetY(){
-    return Math.atan2(this.direction.x, this.direction.z);
+    return Math.atan2(
+      this.waypointManager.getCurrentWaypointX() - this.mesh.group.position.x, 
+      this.waypointManager.getCurrentWaypointZ() -  this.mesh.group.position.z);
   }
   turning(){
-    return Math.abs(this.mesh.group.rotation.y - this.targetY()) > 0.1;
+    return Math.abs(this.targetY() - this.mesh.group.rotation.y) > 0.1;
   }
   setMesh(mesh){
     let deltaSum = 0;
@@ -194,22 +196,6 @@ export class Enemy {
     if (true){
       if (this.pauseTime < this.pauseDuration) {
         this.pauseTime += delta;
-        if (this.speed > 0) {
-          this.speed -= delta * this.maxSpeed * 4;
-        }
-        if (this.speed < 0) {
-          this.speed = 0;
-        }
-        // move towards the previous waypoint
-        this.direction = new THREE.Vector3()
-          .subVectors(
-            new THREE.Vector3(
-              this.waypointManager.getPreviousWaypointX(), 
-              this.mesh.group.position.y, 
-              this.waypointManager.getPreviousWaypointZ()),
-            this.mesh.group.position
-          )
-          .normalize();
       }
       else {
         // Accelerate to max speed
@@ -229,34 +215,37 @@ export class Enemy {
       }
     }
 
-    // Calculate how much we have to turn the character towards the waypoint
-    const targetY = this.targetY();
-    const turning = this.turning();
-
     // update the mesh (arms and legs swinging)
     this.mesh.update(
       delta, 
       this.animationState());
 
-    // Rotate the enemy to face the direction of movement
+    // Calculate how much we have to turn the character towards the waypoint
+    const turning = this.turning();
+    const targetY = this.targetY();
+    //  Rotate the enemy to face the direction of movement
+    //  +0.00 down
+    //  -1.57 left
+    //  +3.14 up
+    //  +1.57 right
     if (!turning) {
       this.mesh.group.position.add(
-        this.direction.multiplyScalar(this.speed * (0.5) * 1.25 * delta));
+        this.direction.multiplyScalar(this.speed * (0.5) * delta));
     }
     else {
       // Smoothly rotate towards the target direction
       this.speed = 0;
-      const directionDifference = targetY - this.mesh.group.rotation.y;
-      
-      if (targetY > this.mesh.group.rotation.y) {
-        this.mesh.group.rotation.y += this.maxSpeed / 100;
-      }
-      else {
-        this.mesh.group.rotation.y -= this.maxSpeed / 100;
-      }
-      const rotationDifference = Math.abs(targetY - this.mesh.group.rotation.y);
-      if (rotationDifference < this.maxSpeed / 50) {
-        this.mesh.group.rotation.y = targetY;
+      if (this.pauseTime >= this.pauseDuration){
+        this.mesh.group.rotation.y += Math.atan2(
+          Math.sin(targetY - this.mesh.group.rotation.y),
+          Math.cos(targetY - this.mesh.group.rotation.y)) * (this.maxSpeed / 50);
+        const rotationDifference = Math.abs(this.mesh.group.rotation.y - targetY);
+        if (rotationDifference < this.maxSpeed / 50) {
+          this.mesh.group.rotation.y = targetY;
+        }
+        else if (Math.abs(rotationDifference - Math.round(Math.PI * 100) / 100 * 2) < (this.maxSpeed / 50)){
+          this.mesh.group.rotation.y = targetY;
+        }
       }
     }
     return;

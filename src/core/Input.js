@@ -367,9 +367,13 @@ export class Input {
     return !!this.keys[key];
   }
   lastKey() {
-    let output = this.#lastKey;
+    return this.#lastKey;
+  }
+  clearLastKey(){
     this.#lastKey = null;
-    return output;
+  }
+  update(delta){
+    this.clearLastKey();
   }
   handleVerticalSwipe() {
     const diffX = this.swipeEndX - this.swipeStartX;
