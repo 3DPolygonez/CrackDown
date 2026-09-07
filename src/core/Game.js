@@ -89,8 +89,8 @@ export class Game {
       this.scene,
       this.bulletSystem.bullets,
       this.blastSystem.blasts);
-    this.player1.group.position.x = 10;
-    this.player1.group.position.z = 10;
+    this.player1.group.position.x = -8;
+    this.player1.group.position.z = -8;
     this.scene.add(this.player1.get3DObject());
 
     this.player2 = new Player(
@@ -192,7 +192,7 @@ export class Game {
       },
       this.renderer,
       this.input,
-      this.enemySystem.enemies[0].get3DObject(),
+      this.player1.get3DObject(),
       7);
 
     //  configure floor

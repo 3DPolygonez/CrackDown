@@ -44,7 +44,7 @@ export class Smg extends Object{
                     smgTop,
                     smgMag
                 ],
-                attachmentPoint: new AttachmentPoint(-1, -0.75, 2)
+                attachmentPoint: new AttachmentPoint(-1, -0.75, 2, -Math.PI / 2)
             }));
     }
 }

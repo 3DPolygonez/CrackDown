@@ -104,15 +104,15 @@ export class EnemySystem {
     let rndObject = Math.floor(Math.random() * 4)
     if (rndObject == 1){
       const item = new Box(this.debugSystem);
-      this.attachmentSystem.attach(enemy.mesh.rightArmGroup, enemy.getAttachmentPoint(), item.get3DObject(), item.getAttachmentPoint());
+      this.attachmentSystem.attach(enemy.mesh.rightForeArmGroup, enemy.getAttachmentPoint(), item.get3DObject(), item.getAttachmentPoint());
     }
     else if (rndObject == 2){
       const item = new Smg(this.debugSystem);
-      this.attachmentSystem.attach(enemy.mesh.rightArmGroup, enemy.getAttachmentPoint(), item.get3DObject(), item.getAttachmentPoint());
+      this.attachmentSystem.attach(enemy.mesh.rightForeArmGroup, enemy.getAttachmentPoint(), item.get3DObject(), item.getAttachmentPoint());
     }
     else if (rndObject == 3){
       const item = new ClipBoard(this.debugSystem);
-      this.attachmentSystem.attach(enemy.mesh.rightArmGroup, enemy.getAttachmentPoint(), item.get3DObject(), item.getAttachmentPoint());
+      this.attachmentSystem.attach(enemy.mesh.rightForeArmGroup, enemy.getAttachmentPoint(), item.get3DObject(), item.getAttachmentPoint());
     }
 
     this.enemies.push(enemy);

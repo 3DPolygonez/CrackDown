@@ -4,7 +4,7 @@ export class LegMovingAnimation extends BaseAnimation {
     constructor(mesh) {
         super(mesh);
     }
-    animate(angleX, angleY, angleZ) {
+    animate(angleX, angleY, angleZ, swingSpeed, speed, delta) {
         this.mesh.rightLeg.rotation.x = -angleX;
         this.mesh.leftLeg.rotation.x = angleX;
     }

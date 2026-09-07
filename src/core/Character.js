@@ -245,17 +245,24 @@ export class Character {
       enemy.mesh.leftLeg.visible = args.value.includeLeftLeg;
     }
 
-    if (args.value.usingBox){
-      const item = new Box(this.debugSystem);
-      this.attachmentSystem.attach(enemy.mesh.rightArmGroup, enemy.getAttachmentPoint(), item.get3DObject(), item.getAttachmentPoint());
+    let item = null;
+    if (args.value.holdingBox){
+      item = new Box(this.debugSystem);
+      this.attachmentSystem.attach(enemy.mesh.rightForeArmGroup, enemy.getAttachmentPoint(), item.get3DObject(), item.getAttachmentPoint());
     }
-    else if (args.value.usingSmg){
-      const item = new Smg(this.debugSystem);
-      this.attachmentSystem.attach(enemy.mesh.rightArmGroup, enemy.getAttachmentPoint(), item.get3DObject(), item.getAttachmentPoint());
+    else if (args.value.holdingSmg){
+      item = new Smg(this.debugSystem);
+      this.attachmentSystem.attach(enemy.mesh.rightForeArmGroup, enemy.getAttachmentPoint(), item.get3DObject(), item.getAttachmentPoint());
     }
-    else if (args.value.usingClipBoard){
-      const item = new ClipBoard(this.debugSystem);
-      this.attachmentSystem.attach(enemy.mesh.rightArmGroup, enemy.getAttachmentPoint(), item.get3DObject(), item.getAttachmentPoint());
+    else if (args.value.holdingClipBoard){
+      item = new ClipBoard(this.debugSystem);
+      this.attachmentSystem.attach(enemy.mesh.rightForeArmGroup, enemy.getAttachmentPoint(), item.get3DObject(), item.getAttachmentPoint());
+    }
+    if (item != null){
+      enemy.mesh.rightForeArmGroup.rotation.x = 0;
+      if (args.value.actionUsing){
+        enemy.mesh.rightForeArmGroup.rotateX(item.getAttachmentPoint().onUserGroupRotateX);
+      }
     }
   }
 }

@@ -14,6 +14,8 @@ import { WaistIdleAnimation } from '../../entities/animations/person/waist/Waist
 import { WaistMovingAnimation } from '../../entities/animations/person/waist/WaistMovingAnimation.js';
 import { BackpackIdleAnimation } from '../../entities/animations/person/backpack/BackpackIdleAnimation.js';
 import { BackpackMovingAnimation } from '../../entities/animations/person/backpack/BackpackMovingAnimation.js';
+import { GroupIdleAnimation } from '../../entities/animations/person/group/groupIdleAnimation.js';
+import { GroupMovingAnimation } from '../../entities/animations/person/group/groupMovingAnimation.js';
 import { AttachmentPoint } from '../AttachmentPoint.js';
 
 export class Person {
@@ -221,16 +223,24 @@ export class Person {
           0);
         this.rightArmGroup.add(this.rightArm);
 
+        this.rightForeArmGroup = new THREE.Group;
+        if (debugSystem.showNpcAxisHelper){
+          this.rightForeArmGroup.add(new THREE.AxesHelper(5));
+        }
+        this.rightForeArmGroup.position.x = definition.rightArmWidth;
+        this.rightForeArmGroup.position.y = -definition.rightArmHeight;
+        this.rightArmGroup.add(this.rightForeArmGroup);
+
         this.rightForeArm = new THREE.Mesh(
           new THREE.BoxGeometry(definition.rightForeArmWidth, definition.rightForeArmHeight, definition.rightForeArmDepth), rightForeArmMaterial);
         this.rightForeArm.castShadow = true;
         this.rightForeArm.receiveShadow = true;
         this.rightArmGroup.visible = definition.includeRightForeArm;
         this.rightForeArm.geometry.translate(
-          -definition.rightForeArmWidth / 2, 
-          -(definition.rightArmHeight + definition.rightForeArmHeight) + 1.5, 
+          -definition.rightForeArmWidth * 1.5 - (definition.rightArmWidth - definition.rightForeArmWidth), 
+          -(definition.rightArmHeight) + 1.5, 
           0);
-        this.rightArmGroup.add(this.rightForeArm);
+        this.rightForeArmGroup.add(this.rightForeArm);
 
         this.rightHand = new THREE.Mesh(
           new THREE.BoxGeometry(definition.rightHandWidth, definition.rightHandHeight, definition.rightHandDepth), rightHandMaterial);
@@ -238,15 +248,15 @@ export class Person {
         this.rightHand.receiveShadow = true;
         this.rightHand.visible = definition.includeRightHand;
         this.rightHand.geometry.translate(
-          -definition.rightHandWidth / 2, 
-          -(definition.rightArmHeight + definition.rightForeArmHeight) - definition.rightHandHeight + 1, 
+          -definition.rightHandWidth * 1.5 - (definition.rightArmWidth - definition.rightHandWidth), 
+          -(definition.rightForeArmHeight) - definition.rightHandHeight + 1, 
           0);
-        this.rightArmGroup.add(this.rightHand);
+        this.rightForeArmGroup.add(this.rightHand);
 
         this.attachmentPoint = new AttachmentPoint( 
-          0,
-          -(definition.rightArmHeight + definition.rightForeArmHeight) - definition.rightHandHeight + 1,
-          definition.rightArmDepth / 2);
+          -definition.rightHandWidth - 0.95,
+          this.rightForeArmGroup.position.y - definition.rightHandHeight + 0.5,
+          definition.rightHandDepth / 2 + 0.5);
 
         /*
             left arm
@@ -330,7 +340,7 @@ export class Person {
               transparent: true, 
               opacity: 0.5
           }));
-        this.detectionState.position.y = this.head.position.y + 40;
+        this.detectionState.position.y = this.head.position.y + definition.detectionStateHeight;
         this.detectionState.receiveShadow = true;
         this.headGroup.add(this.detectionState);
 
@@ -342,7 +352,7 @@ export class Person {
         this.group.scale.y = definition.scale;
         this.group.scale.z = definition.scale;
     }
-    update(delta, animationState){
+    update(delta, animationState, speed){
       const swingSpeed = this.maxSpeed * (this.maxSpeed <= 2 ? 4 : (this.maxSpeed <= 4 ? 3 : 1.5));
       const maxSwingAngle = (Math.PI / (this.maxSpeed <= 2 ? 8 : (this.maxSpeed <= 4 ? 4 : 2))) * (this.animationState === "Turning" ? 0.25 : 1);
       const headSwingSpeed = this.maxSpeed;
@@ -381,7 +391,7 @@ export class Person {
       }
       //  run the animations
       this.animations.forEach(animation => {
-        animation.animate(armsAndLegsAngle, headAngle, centralBodyAngle);
+        animation.animate(armsAndLegsAngle, headAngle, centralBodyAngle, swingSpeed, speed, delta);
       });
     }
     idleAnimations() {
@@ -392,7 +402,8 @@ export class Person {
         new HeadIdleAnimation(this),
         new ChestIdleAnimation(this),
         new WaistIdleAnimation(this),
-        new BackpackIdleAnimation(this)
+        new BackpackIdleAnimation(this),
+        new GroupIdleAnimation(this)
       ];
     }
     movingAnimations() {
@@ -403,7 +414,8 @@ export class Person {
         new HeadMovingAnimation(this),
         new ChestMovingAnimation(this),
         new WaistMovingAnimation(this),
-        new BackpackMovingAnimation(this)
+        new BackpackMovingAnimation(this),
+        new GroupMovingAnimation(this)
       ];
     }
     turningAnimations() {
@@ -414,7 +426,8 @@ export class Person {
         new HeadIdleAnimation(this),
         new ChestIdleAnimation(this),
         new WaistIdleAnimation(this),
-        new BackpackIdleAnimation(this)
+        new BackpackIdleAnimation(this),
+        new GroupIdleAnimation(this)
       ];
     }
 }

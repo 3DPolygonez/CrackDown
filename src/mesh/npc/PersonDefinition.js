@@ -1,3 +1,5 @@
+import { property } from "three/tsl";
+
 export class PersonDefinition {
     constructor(properties = {}) {
         this.baseTexturePath = properties.baseTexturePath || "./resources/textures/person/soldier";
@@ -46,14 +48,14 @@ export class PersonDefinition {
         this.rightArmPositionZ = properties.rightArmPositionZ || 0;
         this.rightArmPositionX = properties.rightArmPositionX || -11;
 
-        this.rightForeArmWidth = properties.rightForeArmWidth || 6;
+        this.rightForeArmWidth = properties.rightForeArmWidth || 5.5;
         this.rightForeArmHeight = properties.rightForeArmHeight || 4;
         this.rightForeArmDepth = properties.rightForeArmDepth || 6;
         this.rightForeArmPositionY = properties.rightForeArmPositionY || 15;
         this.rightForeArmPositionZ = properties.rightForeArmPositionZ || 0;
         this.rightForeArmPositionX = properties.rightForeArmPositionX || -11;
 
-        this.rightHandWidth = properties.rightHandWidth || 6;
+        this.rightHandWidth = properties.rightHandWidth || 5.5;
         this.rightHandHeight = properties.rightHandHeight || 3;
         this.rightHandDepth = properties.rightHandDepth || 6;
 
@@ -88,6 +90,8 @@ export class PersonDefinition {
         this.leftLegPositionY = properties.leftLegPositionY || 9.5;
         this.leftLegPositionZ = properties.leftLegPositionZ || 0;
         this.leftLegPositionX = properties.leftLegPositionX || 5;
+
+        this.detectionStateHeight = properties.detectionStateHeight || 40;
 
         this.scale = properties.scale || 0.025;
     }

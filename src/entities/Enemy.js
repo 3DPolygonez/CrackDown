@@ -13,7 +13,7 @@ export class Enemy {
     this.maxSpeed = 0;
     this.speed = this.maxSpeed;
     this.waypointProximity = 0.05;
-    this.pauseDuration = 0;//this.maxSpeed == 2 ? 3 : (this.maxSpeed == 4 ? 2 : 1);
+    this.pauseDuration = this.maxSpeed == 2 ? 3 : (this.maxSpeed == 4 ? 2 : 1);
     this.pauseTime = this.pauseDuration;
     this.lookTimeoutId = null;
 
@@ -218,7 +218,9 @@ export class Enemy {
     // update the mesh (arms and legs swinging)
     this.mesh.update(
       delta, 
-      this.animationState());
+      this.animationState(),
+      this.speed
+    );
 
     // Calculate how much we have to turn the character towards the waypoint
     const turning = this.turning();
@@ -234,16 +236,17 @@ export class Enemy {
     }
     else {
       // Smoothly rotate towards the target direction
+      const increment = this.maxSpeed / 25;
       this.speed = 0;
       if (this.pauseTime >= this.pauseDuration){
         this.mesh.group.rotation.y += Math.atan2(
           Math.sin(targetY - this.mesh.group.rotation.y),
-          Math.cos(targetY - this.mesh.group.rotation.y)) * (this.maxSpeed / 50);
+          Math.cos(targetY - this.mesh.group.rotation.y)) * increment;
         const rotationDifference = Math.abs(this.mesh.group.rotation.y - targetY);
-        if (rotationDifference < this.maxSpeed / 50) {
+        if (rotationDifference < increment) {
           this.mesh.group.rotation.y = targetY;
         }
-        else if (Math.abs(rotationDifference - Math.round(Math.PI * 100) / 100 * 2) < (this.maxSpeed / 50)){
+        else if (Math.abs(rotationDifference - Math.round(Math.PI * 100) / 100 * 2) < increment){
           this.mesh.group.rotation.y = targetY;
         }
       }

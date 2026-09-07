@@ -284,32 +284,46 @@ export class Input {
         this.changeCharacter("Include");
       })
     }
-    const chkUsingNothing = document.getElementById('chkUsingNothing');
-    if (chkUsingNothing){
-      chkUsingNothing.addEventListener('change', (e) => {
+    const chkHoldingNothing = document.getElementById('chkHoldingNothing');
+    if (chkHoldingNothing){
+      chkHoldingNothing.addEventListener('change', (e) => {
         e.preventDefault();
-        this.changeCharacter("Using");
+        this.changeCharacter("Holding");
       })
     }
-    const chkUsingBox = document.getElementById('chkUsingBox');
-    if (chkUsingBox){
-      chkUsingBox.addEventListener('change', (e) => {
+    const chkHoldingBox = document.getElementById('chkHoldingBox');
+    if (chkHoldingBox){
+      chkHoldingBox.addEventListener('change', (e) => {
         e.preventDefault();
-        this.changeCharacter("Using");
+        this.changeCharacter("Holding");
       })
     }
-    const chkUsingSmg = document.getElementById('chkUsingSmg');
-    if (chkUsingSmg){
-      chkUsingSmg.addEventListener('change', (e) => {
+    const chkHoldingSmg = document.getElementById('chkHoldingSmg');
+    if (chkHoldingSmg){
+      chkHoldingSmg.addEventListener('change', (e) => {
         e.preventDefault();
-        this.changeCharacter("Using");
+        this.changeCharacter("Holding");
       })
     }
-    const chkUsingClipBoard = document.getElementById('chkUsingClipBoard');
-    if (chkUsingClipBoard){
-      chkUsingClipBoard.addEventListener('change', (e) => {
+    const chkHoldingClipBoard = document.getElementById('chkHoldingClipBoard');
+    if (chkHoldingClipBoard){
+      chkHoldingClipBoard.addEventListener('change', (e) => {
         e.preventDefault();
-        this.changeCharacter("Using");
+        this.changeCharacter("Holding");
+      })
+    }
+    const chkActionHolding = document.getElementById('chkActionHolding');
+    if (chkActionHolding){
+      chkActionHolding.addEventListener('change', (e) => {
+        e.preventDefault();
+        this.changeCharacter("Action");
+      })
+    }
+    const chkActionUsing = document.getElementById('chkActionUsing');
+    if (chkActionUsing){
+      chkActionUsing.addEventListener('change', (e) => {
+        e.preventDefault();
+        this.changeCharacter("Action");
       })
     }
     const tracker = document.getElementById('swipe-zone');
@@ -348,10 +362,12 @@ export class Input {
         includeWaist: document.getElementById('chkIncludeWaist').checked,
         includeRightLeg: document.getElementById('chkIncludeRightLeg').checked,
         includeLeftLeg: document.getElementById('chkIncludeLeftLeg').checked,
-        usingNothing: document.getElementById('chkUsingNothing').checked,
-        usingBox: document.getElementById('chkUsingBox').checked,
-        usingSmg: document.getElementById('chkUsingSmg').checked,
-        usingClipBoard: document.getElementById('chkUsingClipBoard').checked
+        holdingNothing: document.getElementById('chkHoldingNothing').checked,
+        holdingBox: document.getElementById('chkHoldingBox').checked,
+        holdingSmg: document.getElementById('chkHoldingSmg').checked,
+        holdingClipBoard: document.getElementById('chkHoldingClipBoard').checked,
+        actionHolding: document.getElementById('chkActionHolding').checked,
+        actionUsing: document.getElementById('chkActionUsing').checked
       };
       document.getElementById('lblResult').innerHTML = JSON.stringify(value)
         .replaceAll(",", ",<br/>&nbsp;&nbsp;")
