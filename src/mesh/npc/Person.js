@@ -353,7 +353,7 @@ export class Person {
         this.group.scale.z = definition.scale;
     }
     update(delta, animationState, speed){
-      const swingSpeed = this.maxSpeed * (this.maxSpeed <= 2 ? 4 : (this.maxSpeed <= 4 ? 3 : 1.5));
+      const swingSpeed = this.maxSpeed * (this.maxSpeed <= 2 ? 4 : (this.maxSpeed <= 4 ? 3 : 2));
       const maxSwingAngle = (Math.PI / (this.maxSpeed <= 2 ? 8 : (this.maxSpeed <= 4 ? 4 : 2))) * (this.animationState === "Turning" ? 0.25 : 1);
       const headSwingSpeed = this.maxSpeed;
       const maxHeadSwingAngle = Math.PI / 8; // 45 degrees

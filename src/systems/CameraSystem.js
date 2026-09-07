@@ -16,7 +16,7 @@ export class CameraSystem {
         target, 
         cameraDefaultYZ,
         minZoom = 2,
-        maxZoom = 20){
+        maxZoom = 25){
         this.distance = 0;
         this.controls = controls;
         this.renderer = renderer;
@@ -25,7 +25,7 @@ export class CameraSystem {
         this.#cameraDefaultYZ = cameraDefaultYZ;
         this.#minZoom = minZoom;
         this.#maxZoom = maxZoom;
-        this.#cameraRotationPosition = 0;
+        this.#cameraRotationPosition = 3;
         this.camera = new THREE.PerspectiveCamera(
             45,
             window.innerWidth / window.innerHeight,

@@ -4,11 +4,12 @@ import { NodeSystem } from '../systems/NodeSystem';
 import { StateManager } from './managers/StateManager';
 
 export class Enemy {
-  constructor(scene, debugSystem, name, waypoints, environmentSystem, mesh) {
+  constructor(scene, debugSystem, name, waypoints, environmentSystem, attachmentSystem, mesh) {
     this.scene = scene;
     this.name = name;
     this.waypointManager = new WaypointManager(waypoints, this);
     this.environmentSystem = environmentSystem;
+    this.attachmentSystem = attachmentSystem;
     this.baseMaxSpeed = 0;
     this.maxSpeed = 0;
     this.speed = this.maxSpeed;
@@ -16,11 +17,11 @@ export class Enemy {
     this.pauseDuration = this.maxSpeed == 2 ? 3 : (this.maxSpeed == 4 ? 2 : 1);
     this.pauseTime = this.pauseDuration;
     this.lookTimeoutId = null;
+    this.object = null;
 
     //  the initial direction is used to determine which way the enemy is looking when it first spawns, and is also used to determine which way the enemy is moving when it is not at a waypoint
     this.direction = new THREE.Vector3();
     this.setMesh(mesh);
-    this.setBaseSpeed([2, 4, 6][Math.floor(Math.random() * 3)]);
 
     //  FSM for the enemy's state (patrolling, chasing, searching, etc.)
     const states = [
@@ -102,6 +103,55 @@ export class Enemy {
   getAttachmentPoint(){
     return this.mesh.attachmentPoint.getPoint();
   }
+  setMesh(mesh){
+    let deltaSum = 0;
+    let headDeltaSum = 0;
+    if (this.mesh){
+      deltaSum = this.mesh.deltaSum;
+      headDeltaSum = this.mesh.headDeltaSum;
+      this.scene.remove(this.mesh.group);
+    }
+    this.mesh = mesh;
+    this.mesh.deltaSum = deltaSum;
+    this.mesh.headDeltaSum = headDeltaSum;
+    //  position the npc at the first waypoint
+    this.mesh.group.position.set(
+      this.waypointManager.getCurrentWaypointX(), 
+      0, 
+      this.waypointManager.getCurrentWaypointZ());
+    this.scene.add(this.mesh.group);
+  }
+  setBaseSpeed(speed){
+    this.baseMaxSpeed = speed;
+    this.maxSpeed = this.baseMaxSpeed;
+    this.mesh.maxSpeed = this.baseMaxSpeed;
+  }
+  setSpeed(speed){
+    this.maxSpeed = speed;
+    this.mesh.maxSpeed = this.maxSpeed;
+  }
+  setObject(object){
+    this.object = object;
+    this.attachmentSystem.attach(this.mesh.rightForeArmGroup, this.getAttachmentPoint(), object.get3DObject(), object.getAttachmentPoint());  
+  }
+  useObject(){
+    if (this.object){
+      this.mesh.rightForeArmGroup.rotation.x = 0;
+      this.mesh.rightForeArmGroup.rotateX(this.object.getAttachmentPoint().onUserGroupRotateX);2
+    }
+  }
+  holdObject(){
+  if (this.object){
+      this.mesh.rightForeArmGroup.rotation.x = 0;
+    }
+  }
+  dropObject(){
+    if (this.object){
+      this.mesh.rightForeArmGroup.rotation.x = 0;
+      this.mesh.rightForeArmGroup.remove(this.object.get3DObject());
+      this.scene.remove(this.object.get3DObject());
+    }
+  }
   canSeeTarget(player){
     clearTimeout(this.lookTimeoutId);
     this.setSpeed(6);
@@ -153,33 +203,6 @@ export class Enemy {
   }
   turning(){
     return Math.abs(this.targetY() - this.mesh.group.rotation.y) > 0.1;
-  }
-  setMesh(mesh){
-    let deltaSum = 0;
-    let headDeltaSum = 0;
-    if (this.mesh){
-      deltaSum = this.mesh.deltaSum;
-      headDeltaSum = this.mesh.headDeltaSum;
-      this.scene.remove(this.mesh.group);
-    }
-    this.mesh = mesh;
-    this.mesh.deltaSum = deltaSum;
-    this.mesh.headDeltaSum = headDeltaSum;
-    //  position the npc at the first waypoint
-    this.mesh.group.position.set(
-      this.waypointManager.getCurrentWaypointX(), 
-      0, 
-      this.waypointManager.getCurrentWaypointZ());
-    this.scene.add(this.mesh.group);
-  }
-  setBaseSpeed(speed){
-    this.baseMaxSpeed = speed;
-    this.maxSpeed = this.baseMaxSpeed;
-    this.mesh.maxSpeed = this.baseMaxSpeed;
-  }
-  setSpeed(speed){
-    this.maxSpeed = speed;
-    this.mesh.maxSpeed = this.maxSpeed;
   }
   update(delta) {
     // waypoint navigation

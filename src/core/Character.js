@@ -141,7 +141,7 @@ export class Character {
       this.renderer,
       this.input,
       this.enemySystem.enemies[0].get3DObject(),
-      1,
+      4,
       2,
       8);
 
@@ -228,10 +228,8 @@ export class Character {
           break;
       }
       enemy.setMesh(mesh);
-      enemy.setBaseSpeed(args.value.speed);
     }
     else{
-      enemy.setBaseSpeed(args.value.speed);
       enemy.mesh.face.visible = args.value.includeFace;
       enemy.mesh.chest.visible = args.value.includeChest;
       enemy.mesh.waist.visible = args.value.includeWaist;
@@ -244,25 +242,30 @@ export class Character {
       enemy.mesh.rightLeg.visible = args.value.includeRightLeg;
       enemy.mesh.leftLeg.visible = args.value.includeLeftLeg;
     }
+    enemy.setBaseSpeed(args.value.speed);
 
     let item = null;
     if (args.value.holdingBox){
       item = new Box(this.debugSystem);
-      this.attachmentSystem.attach(enemy.mesh.rightForeArmGroup, enemy.getAttachmentPoint(), item.get3DObject(), item.getAttachmentPoint());
     }
     else if (args.value.holdingSmg){
       item = new Smg(this.debugSystem);
-      this.attachmentSystem.attach(enemy.mesh.rightForeArmGroup, enemy.getAttachmentPoint(), item.get3DObject(), item.getAttachmentPoint());
     }
     else if (args.value.holdingClipBoard){
       item = new ClipBoard(this.debugSystem);
-      this.attachmentSystem.attach(enemy.mesh.rightForeArmGroup, enemy.getAttachmentPoint(), item.get3DObject(), item.getAttachmentPoint());
     }
+    enemy.dropObject();
     if (item != null){
-      enemy.mesh.rightForeArmGroup.rotation.x = 0;
+      enemy.setObject(item);
       if (args.value.actionUsing){
-        enemy.mesh.rightForeArmGroup.rotateX(item.getAttachmentPoint().onUserGroupRotateX);
+        enemy.useObject();
       }
+      else{
+        enemy.holdObject();
+      }
+    }
+    else{
+      enemy.dropObject();
     }
   }
 }

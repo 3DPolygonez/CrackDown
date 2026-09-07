@@ -92,6 +92,7 @@ export class EnemySystem {
       this.enemies.length, 
       spawnPositions, 
       this.environmentSystem,
+      this.attachmentSystem,
       this.designMode ? 
         new Engineer(this.debugSystem, this.maxSpeed)
         :
@@ -100,19 +101,23 @@ export class EnemySystem {
           new Soldier(this.debugSystem, this.maxSpeed), 
           new Scientist(this.debugSystem, this.maxSpeed)
         ][Math.floor(Math.random() * 3)]);
+    enemy.setBaseSpeed(this.designMode ? 4 : [2, 4, 6][Math.floor(Math.random() * 3)]);
 
-    let rndObject = Math.floor(Math.random() * 4)
-    if (rndObject == 1){
-      const item = new Box(this.debugSystem);
-      this.attachmentSystem.attach(enemy.mesh.rightForeArmGroup, enemy.getAttachmentPoint(), item.get3DObject(), item.getAttachmentPoint());
-    }
-    else if (rndObject == 2){
-      const item = new Smg(this.debugSystem);
-      this.attachmentSystem.attach(enemy.mesh.rightForeArmGroup, enemy.getAttachmentPoint(), item.get3DObject(), item.getAttachmentPoint());
-    }
-    else if (rndObject == 3){
-      const item = new ClipBoard(this.debugSystem);
-      this.attachmentSystem.attach(enemy.mesh.rightForeArmGroup, enemy.getAttachmentPoint(), item.get3DObject(), item.getAttachmentPoint());
+    if (!this.designMode){
+      let rndObject = Math.floor(Math.random() * 4)
+      let item = null;
+      if (rndObject == 1){
+        item = new Box(this.debugSystem);
+      }
+      else if (rndObject == 2){
+        item = new Smg(this.debugSystem);
+      }
+      else if (rndObject == 3){
+        item = new ClipBoard(this.debugSystem);
+      }
+      if (item != null){
+        enemy.setObject(item);
+      }
     }
 
     this.enemies.push(enemy);

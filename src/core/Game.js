@@ -89,8 +89,8 @@ export class Game {
       this.scene,
       this.bulletSystem.bullets,
       this.blastSystem.blasts);
-    this.player1.group.position.x = -8;
-    this.player1.group.position.z = -8;
+    this.player1.group.position.x = -13;
+    this.player1.group.position.z = -13;
     this.scene.add(this.player1.get3DObject());
 
     this.player2 = new Player(
@@ -162,7 +162,7 @@ export class Game {
     this.enemySystem = new EnemySystem(
       this.debugSystem,
       this.scene,
-      50,
+      100,
       [this.player1, this.player2],
       this.blastSystem.blasts,
       this.environmentSystem,
@@ -193,7 +193,7 @@ export class Game {
       this.renderer,
       this.input,
       this.player1.get3DObject(),
-      7);
+      15);
 
     //  configure floor
     const textureLoader = new THREE.TextureLoader();

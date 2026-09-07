@@ -36,7 +36,7 @@ export class ClipBoard extends Object{
                 meshes: [
                     item
                 ],
-                attachmentPoint: new AttachmentPoint(0.25, 0, 0),
+                attachmentPoint: new AttachmentPoint(0.25, 0, 0, -Math.PI / 4),
                 rotateY: Math.PI / 2
             }));
     }
