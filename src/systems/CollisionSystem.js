@@ -14,8 +14,8 @@ export class CollisionSystem {
                 const bulletBox = new THREE.Box3().setFromObject(bullet.mesh);
                 if (bulletBox.intersectsBox(enemyBox)) {
                     bullet.die();
-                    this.enemySystem.die(
-                        enemy);
+                    // this.enemySystem.die(
+                    //     enemy);
                 }
             }
         }         

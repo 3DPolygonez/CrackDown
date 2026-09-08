@@ -27,4 +27,10 @@ export class Box extends Object{
                 attachmentPoint: new AttachmentPoint(0, 0, 0)
             }));
     }
+    update(delta){
+      
+    }
+    use(){
+        
+    }
 }

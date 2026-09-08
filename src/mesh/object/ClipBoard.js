@@ -40,4 +40,10 @@ export class ClipBoard extends Object{
                 rotateY: Math.PI / 2
             }));
     }
+    update(delta){
+      
+    }
+    use(){
+        
+    }
 }

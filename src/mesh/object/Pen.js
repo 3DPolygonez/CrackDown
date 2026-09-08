@@ -14,4 +14,10 @@ export class Pen extends Object{
                 attachmentPoint: new AttachmentPoint(0, 0, 0)
             }));
     }
+    update(delta){
+
+    }
+    use(){
+        
+    }
 }

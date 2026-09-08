@@ -8,11 +8,12 @@ import { Smg } from '../mesh/object/Smg';
 import { ClipBoard } from '../mesh/object/ClipBoard';
 
 export class EnemySystem {
-  constructor(debugSystem, scene, maxEnemies, players, blasts, environmentSystem, attachmentSystem, designMode) {
+  constructor(debugSystem, scene, maxEnemies, players, bulletSystem, blasts, environmentSystem, attachmentSystem, designMode) {
     this.debugSystem = debugSystem;
     this.scene = scene;
     this.maxEnemies = maxEnemies;
     this.players = players;
+    this.bulletSystem = bulletSystem;
     this.blasts = blasts;
     this.environmentSystem = environmentSystem;
     this.attachmentSystem = attachmentSystem;
@@ -20,7 +21,7 @@ export class EnemySystem {
 
     this.enemies = [];
 
-    this.spawnInterval = 4;
+    this.spawnInterval = 6;
     this.spawnTimer = this.spawnInterval;
 
     this.spawnEnemy();
@@ -104,13 +105,13 @@ export class EnemySystem {
     enemy.setBaseSpeed(this.designMode ? 4 : [2, 4, 6][Math.floor(Math.random() * 3)]);
 
     if (!this.designMode){
-      let rndObject = Math.floor(Math.random() * 4)
+      let rndObject = 2;//Math.floor(Math.random() * 4)
       let item = null;
       if (rndObject == 1){
         item = new Box(this.debugSystem);
       }
       else if (rndObject == 2){
-        item = new Smg(this.debugSystem);
+        item = new Smg(this.debugSystem, this.bulletSystem);
       }
       else if (rndObject == 3){
         item = new ClipBoard(this.debugSystem);

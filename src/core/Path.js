@@ -164,6 +164,7 @@ export class Path {
       this.scene,
       1,
       [this.player1, this.player2],
+      this.bulletSystem,
       this.blastSystem.blasts,
       this.environmentSystem,
       this.attachmentSystem,

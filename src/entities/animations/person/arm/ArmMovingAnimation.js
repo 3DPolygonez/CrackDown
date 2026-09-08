@@ -11,12 +11,5 @@ export class ArmMovingAnimation extends BaseAnimation {
         //  angle arms slightly out
         this.mesh.rightArmGroup.rotation.z = -Math.PI / 16;
         this.mesh.leftArmGroup.rotation.z = Math.PI / 16;
-        
-        // //  holding a weapon
-        // this.mesh.rightArmGroup.rotation.x = (-Math.PI / 3) + angleZ / 2;
-        // this.mesh.rightArmGroup.rotation.z = Math.PI / 4 + angleZ / 2;
-        
-        // this.mesh.leftArmGroup.rotation.x = (-Math.PI / 3) + angleZ / 2;
-        // this.mesh.leftArmGroup.rotation.z = -Math.PI / 20 + angleZ / 2;
     }
 }

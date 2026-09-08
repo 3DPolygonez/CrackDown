@@ -29,7 +29,10 @@ export class Object{
     get3DObject(){
         return this.#group;
     }
-    update(delta, animationState){
-        
+    update(delta){
+        throw new Error("Method 'update()' of 'Object' must be implemented by the subclass.");
+    }
+    use(){
+        throw new Error("Method 'use()' of 'Object' must be implemented by the subclass.");
     }
 }

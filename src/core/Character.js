@@ -112,6 +112,7 @@ export class Character {
       this.scene,
       1,
       [this.player1],
+      this.bulletSystem,
       this.blastSystem.blasts,
       this.environmentSystem,
       this.attachmentSystem,
@@ -249,7 +250,7 @@ export class Character {
       item = new Box(this.debugSystem);
     }
     else if (args.value.holdingSmg){
-      item = new Smg(this.debugSystem);
+      item = new Smg(this.debugSystem, this.bulletSystem);
     }
     else if (args.value.holdingClipBoard){
       item = new ClipBoard(this.debugSystem);

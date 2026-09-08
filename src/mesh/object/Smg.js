@@ -4,7 +4,7 @@ import { ObjectDefinition } from './ObjectDefinition';
 import { AttachmentPoint } from '../AttachmentPoint';
 
 export class Smg extends Object{
-    constructor(debugSystem, definition = {}){
+    constructor(debugSystem, bulletSystem, definition = {}){
         const material = new THREE.MeshPhongMaterial({ color: "#333333" });
 
         let smgGrip = new THREE.Mesh(
@@ -46,5 +46,30 @@ export class Smg extends Object{
                 ],
                 attachmentPoint: new AttachmentPoint(-1, -0.75, 2, -Math.PI / 2)
             }));
+
+        this.bulletSystem = bulletSystem;
+        this.shootCooldown = 0;
+        this.shootWait = 0.25;
+    }
+    update(delta){
+      this.shootCooldown -= delta;
+    }
+    use(target){
+      if (this.shootCooldown <= 0) {
+        let targetWorldPosition = new THREE.Vector3();
+        let smgWorlPosition = new THREE.Vector3();
+
+        target.get3DObject().getWorldPosition(targetWorldPosition);
+        this.get3DObject().getWorldPosition(smgWorlPosition);
+
+        const directionVector = new THREE.Vector3().subVectors(
+          targetWorldPosition, 
+          smgWorlPosition);
+
+        this.bulletSystem.shoot(
+          smgWorlPosition, 
+          directionVector);
+        this.shootCooldown = this.shootWait;
+      }
     }
 }

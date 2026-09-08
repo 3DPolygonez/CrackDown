@@ -14,7 +14,7 @@ export class Enemy {
     this.maxSpeed = 0;
     this.speed = this.maxSpeed;
     this.waypointProximity = 0.05;
-    this.pauseDuration = this.maxSpeed == 2 ? 3 : (this.maxSpeed == 4 ? 2 : 1);
+    this.pauseDuration = 0;//this.maxSpeed == 2 ? 3 : (this.maxSpeed == 4 ? 2 : 1);
     this.pauseTime = this.pauseDuration;
     this.lookTimeoutId = null;
     this.object = null;
@@ -134,10 +134,12 @@ export class Enemy {
     this.object = object;
     this.attachmentSystem.attach(this.mesh.rightForeArmGroup, this.getAttachmentPoint(), object.get3DObject(), object.getAttachmentPoint());  
   }
-  useObject(){
+  useObject(player){
     if (this.object){
       this.mesh.rightForeArmGroup.rotation.x = 0;
-      this.mesh.rightForeArmGroup.rotateX(this.object.getAttachmentPoint().onUserGroupRotateX);2
+      this.mesh.rightForeArmGroup.rotateX(this.object.getAttachmentPoint().onUserGroupRotateX);
+      this.object.use(
+        player);
     }
   }
   holdObject(){
@@ -167,6 +169,7 @@ export class Enemy {
       document.getElementById('console-container').innerText = "debug route\n" + nodeSystem.drawNodes();
     }
     this.waypointManager.setPriorityWaypoints(nodeSystem.getSimplifiedPathWaypoints()); 
+    this.useObject(player);
   }
   patrol(){
     this.setSpeed(this.baseMaxSpeed);
@@ -205,6 +208,10 @@ export class Enemy {
     return Math.abs(this.targetY() - this.mesh.group.rotation.y) > 0.1;
   }
   update(delta) {
+    // update the object if held
+    if (this.object){
+      this.object.update(delta);
+    }
     // waypoint navigation
     if ((Math.abs(this.mesh.group.position.x - this.waypointManager.getCurrentWaypointX()) <= this.waypointProximity
       && Math.abs(this.mesh.group.position.z - this.waypointManager.getCurrentWaypointZ()) <= this.waypointProximity)
