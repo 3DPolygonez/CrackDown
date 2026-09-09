@@ -54,7 +54,10 @@ export class Smg extends Object{
     update(delta){
       this.shootCooldown -= delta;
     }
-    use(target){
+    use(source, target){
+      // SPEED == ZERO?
+      // this.mesh.rightForeArmGroup.rotation.x = 0;
+      // this.mesh.rightForeArmGroup.rotateX(this.object.getAttachmentPoint().onUserGroupRotateX);
       if (this.shootCooldown <= 0) {
         let targetWorldPosition = new THREE.Vector3();
         let smgWorlPosition = new THREE.Vector3();

@@ -32,7 +32,7 @@ export class Object{
     update(delta){
         throw new Error("Method 'update()' of 'Object' must be implemented by the subclass.");
     }
-    use(){
+    use(source, target){
         throw new Error("Method 'use()' of 'Object' must be implemented by the subclass.");
     }
 }

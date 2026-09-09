@@ -17,7 +17,7 @@ export class Pen extends Object{
     update(delta){
 
     }
-    use(){
+    use(source, target){
         
     }
 }

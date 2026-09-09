@@ -136,9 +136,8 @@ export class Enemy {
   }
   useObject(player){
     if (this.object){
-      this.mesh.rightForeArmGroup.rotation.x = 0;
-      this.mesh.rightForeArmGroup.rotateX(this.object.getAttachmentPoint().onUserGroupRotateX);
       this.object.use(
+        this,
         player);
     }
   }

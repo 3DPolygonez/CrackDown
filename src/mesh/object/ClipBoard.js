@@ -43,7 +43,7 @@ export class ClipBoard extends Object{
     update(delta){
       
     }
-    use(){
+    use(source, target){
         
     }
 }
