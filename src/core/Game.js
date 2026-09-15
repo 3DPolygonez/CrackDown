@@ -162,7 +162,7 @@ export class Game {
     this.enemySystem = new EnemySystem(
       this.debugSystem,
       this.scene,
-      50,
+      40,
       [this.player1, this.player2],
       this.bulletSystem,
       this.blastSystem.blasts,

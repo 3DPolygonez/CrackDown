@@ -21,7 +21,7 @@ export class EnemySystem {
 
     this.enemies = [];
 
-    this.spawnInterval = 6;
+    this.spawnInterval = 2;
     this.spawnTimer = this.spawnInterval;
 
     this.spawnEnemy();
