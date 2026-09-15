@@ -414,9 +414,9 @@ export class Input {
     if (Math.abs(diffX) > Math.abs(diffY)) {
       if (Math.abs(diffX) > this.swipeThreshold) {
         if (diffX > 0) {
-          this.#lastKey = "Digit2";
-        } else {
           this.#lastKey = "Digit1";
+        } else {
+          this.#lastKey = "Digit2";
         }
       }
     }
