@@ -105,7 +105,7 @@ export class EnemySystem {
     enemy.setBaseSpeed(this.designMode ? 4 : [2, 4, 6][Math.floor(Math.random() * 3)]);
 
     if (!this.designMode){
-      let rndObject = 2;//Math.floor(Math.random() * 4)
+      let rndObject = Math.floor(Math.random() * 4)
       let item = null;
       if (rndObject == 1){
         item = new Box(this.debugSystem);
