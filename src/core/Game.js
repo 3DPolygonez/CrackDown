@@ -194,7 +194,9 @@ export class Game {
       this.renderer,
       this.input,
       this.player1.get3DObject(),
-      15);
+      15,
+      1,
+      200);
 
     //  configure floor
     const textureLoader = new THREE.TextureLoader();
