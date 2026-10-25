@@ -4,7 +4,7 @@ export class PersonDefinition {
     constructor(properties = {}) {
         this.baseTexturePath = properties.baseTexturePath || "./resources/textures/person/soldier";
 
-        this.includeHead = properties.includeHead != undefined ? properties.includeHead : true;
+        this.includeHead = properties.includeHead != undefined ? properties.includeHead : false;
         this.includeFace = properties.includeFace != undefined ? properties.includeFace : true;
         this.includeChest = properties.includeChest != undefined ? properties.includeChest : true;
         this.includeRightArm = properties.includeRightArm != undefined ? properties.includeRightArm : true;
@@ -16,6 +16,7 @@ export class PersonDefinition {
         this.includeWaist = properties.includeWaist != undefined ? properties.includeWaist : true;
         this.includeRightLeg = properties.includeRightLeg != undefined ? properties.includeRightLeg : true;
         this.includeLeftLeg = properties.includeLeftLeg != undefined ? properties.includeLeftLeg : true;
+        this.includeBackpack = properties.includeBackpack != undefined ? properties.includeBackpack : false;
 
         this.headWidth = properties.headWidth || 12;
         this.headHeight = properties.headHeight || 12;
@@ -37,7 +38,7 @@ export class PersonDefinition {
 
         this.waistWidth = properties.waistWidth || 10;
         this.waistHeight = properties.waistHeight || 4;
-        this.waistDepth = properties.waistDepth || 10;
+        this.waistDepth = properties.waistDepth || 9;
         this.waistPositionY = properties.waistPositionY || 11;
         this.waistPositionZ = properties.waistPositionZ || 0;
 

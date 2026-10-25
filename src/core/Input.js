@@ -207,6 +207,13 @@ export class Input {
         this.changeCharacter("Speed");
       })
     }
+    const chkIncludeHead = document.getElementById('chkIncludeHead');
+    if (chkIncludeHead){
+      chkIncludeHead.addEventListener('change', (e) => {
+        e.preventDefault();
+        this.changeCharacter("Include");
+      })
+    }
     const chkIncludeFace = document.getElementById('chkIncludeFace');
     if (chkIncludeFace){
       chkIncludeFace.addEventListener('change', (e) => {
@@ -351,6 +358,7 @@ export class Input {
       let value = {
         mesh: document.getElementById('ddlMesh').value,
         speed: document.getElementById('ddlSpeed').value,
+        includeHead: document.getElementById('chkIncludeHead').checked,
         includeFace: document.getElementById('chkIncludeFace').checked,
         includeChest: document.getElementById('chkIncludeChest').checked,
         includeRightArm: document.getElementById('chkIncludeRightArm').checked,

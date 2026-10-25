@@ -146,7 +146,7 @@ export class Game {
         new Room(
             "main room TR", 
             5, -15, 
-            10, 2, 10),
+            10, 10, 10),
         new Room(
             "main room BL", 
             -15, 5, 

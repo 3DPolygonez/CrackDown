@@ -13,13 +13,12 @@ import { CollisionSystem } from '../systems/CollisionSystem';
 import { EnemySystem } from '../systems/EnemySystem';
 import { EnvironmentSystem } from '../systems/EnvironmentSystem';
 import { CameraSystem } from '../systems/CameraSystem';
-import { NodeSystem } from '../systems/NodeSystem';
 import { VisionSystem } from '../systems/VisionSystem';
 import { AttachmentSystem } from '../systems/AttachmentSystem';
-import { WaypointManager } from '../entities//managers/WaypointManager'
 
 import { Soldier } from '../mesh/npc/Soldier';
 import { Engineer } from '../mesh/npc/Engineer';
+import { OfficeWorker } from '../mesh/npc/OfficeWorker';
 import { Scientist } from '../mesh/npc/Scientist';
 import { Blank } from '../mesh/npc/Blank';
 import { Box } from '../mesh/object/Box';
@@ -209,6 +208,12 @@ export class Character {
             enemy.maxSpeed,
             args.value);
           break;
+        case "OfficeWorker":
+          mesh = new OfficeWorker(
+            this.debugSystem, 
+            enemy.maxSpeed,
+            args.value);
+          break;
         case "Soldier":
           mesh = new Soldier(
             this.debugSystem, 
@@ -231,6 +236,7 @@ export class Character {
       enemy.setMesh(mesh);
     }
     else{
+      enemy.mesh.head.visible = args.value.includeHead;
       enemy.mesh.face.visible = args.value.includeFace;
       enemy.mesh.chest.visible = args.value.includeChest;
       enemy.mesh.waist.visible = args.value.includeWaist;

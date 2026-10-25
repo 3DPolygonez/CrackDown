@@ -2,6 +2,7 @@ import { Enemy } from '../entities/Enemy';
 import { Blast } from '../entities/Blast';
 import { Soldier } from '../mesh/npc/Soldier';
 import { Engineer } from '../mesh/npc/Engineer';
+import { OfficeWorker } from '../mesh/npc/OfficeWorker';
 import { Scientist } from '../mesh/npc/Scientist';
 import { Box } from '../mesh/object/Box';
 import { Smg } from '../mesh/object/Smg';
@@ -99,9 +100,10 @@ export class EnemySystem {
         :
         [
           new Engineer(this.debugSystem, this.maxSpeed), 
+          new OfficeWorker(this.debugSystem, this.maxSpeed), 
           new Soldier(this.debugSystem, this.maxSpeed), 
           new Scientist(this.debugSystem, this.maxSpeed)
-        ][Math.floor(Math.random() * 3)]);
+        ][Math.floor(Math.random() * 4)]);
     enemy.setBaseSpeed(this.designMode ? 4 : [2, 4, 6][Math.floor(Math.random() * 3)]);
 
     if (!this.designMode){

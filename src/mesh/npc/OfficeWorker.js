@@ -1,0 +1,16 @@
+import { Person } from './Person.js';
+import { PersonDefinition } from './PersonDefinition.js';
+
+export class OfficeWorker extends Person {
+    constructor(debugSystem, maxSpeed, definition = {}) {
+        super(
+            debugSystem,
+            maxSpeed,
+            new PersonDefinition(
+            {
+                baseTexturePath: "./resources/textures/person/officeWorker",
+                ...definition
+            }));
+        this.name = "OfficeWorker";
+    }
+}

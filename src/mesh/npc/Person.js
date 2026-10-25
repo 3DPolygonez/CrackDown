@@ -172,7 +172,8 @@ export class Person {
         this.head.position.z = definition.headPositionZ;
         this.head.castShadow = true;
         this.head.receiveShadow = true;
-        //this.headGroup.add(this.head);
+        this.head.visible = definition.includeHead;
+        this.headGroup.add(this.head);
     
         this.face = new THREE.Mesh(
           new THREE.BoxGeometry(definition.faceWidth, definition.faceHeight, definition.faceDepth), faceMaterial);
@@ -331,7 +332,8 @@ export class Person {
         this.backpack.position.z = -8;
         this.backpack.castShadow = true;
         this.backpack.receiveShadow = true;
-        //this.group.add(this.backpack);
+        this.backpack.visible = definition.includeBackpack;
+        this.group.add(this.backpack);
 
         this.detectionState = new THREE.Mesh(
           new THREE.SphereGeometry(6),
@@ -342,6 +344,7 @@ export class Person {
           }));
         this.detectionState.position.y = this.head.position.y + definition.detectionStateHeight;
         this.detectionState.receiveShadow = true;
+        this.detectionState.visible = false;
         this.headGroup.add(this.detectionState);
 
         this.group.add(this.headGroup);

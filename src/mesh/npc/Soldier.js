@@ -9,6 +9,8 @@ export class Soldier extends Person {
             new PersonDefinition(
             {
                 baseTexturePath: "./resources/textures/person/soldier",
+                includeHead: false,
+                includeBackpack: true,
                 ...definition
             }));
         this.name = "Soldier";
