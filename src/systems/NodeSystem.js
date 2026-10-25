@@ -32,9 +32,11 @@ export class NodeSystem{
         }
         //  read from the environment system to build the solid objects
         for (const item of environmentSystem.items) {
-            for (let x = 0; x < item.mesh.width; x++){
-                for (let z = 0; z < item.mesh.depth; z++){
-                    this.setSolidNode(x + item.mesh.x + this.xOffset, z + item.mesh.z + this.zOffset)
+            if (item.mesh.isObstacle){
+                for (let x = 0; x < item.mesh.width; x++){
+                    for (let z = 0; z < item.mesh.depth; z++){
+                        this.setSolidNode(x + item.mesh.x + this.xOffset, z + item.mesh.z + this.zOffset)
+                    }
                 }
             }
         }

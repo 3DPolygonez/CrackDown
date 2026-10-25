@@ -14,7 +14,7 @@ import { EnemySystem } from '../systems/EnemySystem';
 import { EnvironmentSystem } from '../systems/EnvironmentSystem';
 import { Room } from "../entities/Room";
 import { Wall } from "../entities/Wall";
-import { Window } from "../entities/Window";
+import { Grass } from "../entities/Grass";
 import { CameraSystem } from '../systems/CameraSystem';
 import { NodeSystem } from '../systems/NodeSystem';
 import { VisionSystem } from '../systems/VisionSystem';
@@ -89,9 +89,9 @@ export class Game {
       this.scene,
       this.bulletSystem.bullets,
       this.blastSystem.blasts);
-    this.player1.group.position.x = -13;
-    this.player1.group.position.z = -13;
-    this.scene.add(this.player1.get3DObject());
+    this.player1.group.position.x = -10;
+    this.player1.group.position.z = -10;
+    //this.scene.add(this.player1.get3DObject());
 
     this.player2 = new Player(
       "Player 2",
@@ -137,12 +137,9 @@ export class Game {
             40, 1, 1),
         new Wall(
             "left wall", 
-            -20, -15, 
-            1, 1, 34),
-        new Room(
-            "main room TL", 
-            -15, -15, 
-            10, 1, 10),
+            -20, -19, 
+            1, 1, 38),
+
         new Room(
             "main room TR", 
             5, -15, 
@@ -154,7 +151,43 @@ export class Game {
         new Room(
             "main room BR", 
             5, 5, 
-            10, 3, 10)
+            10, 3, 10),
+        new Grass(
+            "grass garden", 
+            -14, -15, 
+            8, 1),
+        new Grass(
+            "grass garden", 
+            -15, -14, 
+            1, 8),
+        new Grass(
+            "grass garden", 
+            -6, -14, 
+            1, 8),
+        new Grass(
+            "grass garden", 
+            -14, -6, 
+            8, 1),
+        new Grass(
+            "grass garden", 
+            -13, -13, 
+            6, 6),
+        new Room(
+            "main room corner", 
+            -15, -15, 
+            1, 20, 1, false),
+        new Room(
+            "main room corner", 
+            -15, -6, 
+            1, 20, 1, false),
+        new Room(
+            "main room corner", 
+            -6, -15, 
+            1, 20, 1, false),
+        new Room(
+            "main room corner", 
+            -6, -6, 
+            1, 20, 1, false),
     ]);
 
     this.attachmentSystem = new AttachmentSystem(this.debugSystem);

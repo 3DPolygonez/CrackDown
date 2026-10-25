@@ -45,6 +45,7 @@ export class Player {
     this.meshRightTrack.position.y = 0.1;
     this.meshRightTrack.position.z = 0;
     this.group.add(this.meshRightTrack);
+    this.group.scale.set(0.25, 0.25, 0.25);
   }
   getPosition(){
     return this.group.position;

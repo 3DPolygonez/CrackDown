@@ -1,12 +1,13 @@
 import * as THREE from 'three';
 
 export class BuildingBlock {
-    constructor(x, z, width, height, depth, recessed, opacity, baseColor) {
+    constructor(x, z, width, height, depth, recessed, opacity, baseColor, isObstacle = true) {
         this.x = x;
         this.z = z;
         this.width = width;
         this.height = height;
         this.depth = depth;
+        this.isObstacle = isObstacle;
         this.group = new THREE.Group();
         
         const textureLoader = new THREE.TextureLoader();
