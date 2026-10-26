@@ -16,6 +16,7 @@ import { CameraSystem } from '../systems/CameraSystem';
 import { VisionSystem } from '../systems/VisionSystem';
 import { AttachmentSystem } from '../systems/AttachmentSystem';
 
+import { Security } from '../mesh/npc/Security';
 import { Soldier } from '../mesh/npc/Soldier';
 import { Engineer } from '../mesh/npc/Engineer';
 import { OfficeWorker } from '../mesh/npc/OfficeWorker';
@@ -216,6 +217,12 @@ export class Character {
           break;
         case "Soldier":
           mesh = new Soldier(
+            this.debugSystem, 
+            enemy.maxSpeed,
+            args.value);
+          break;
+        case "Security":
+          mesh = new Security(
             this.debugSystem, 
             enemy.maxSpeed,
             args.value);

@@ -16,10 +16,8 @@ import { Room } from "../entities/Room";
 import { Wall } from "../entities/Wall";
 import { Grass } from "../entities/Grass";
 import { CameraSystem } from '../systems/CameraSystem';
-import { NodeSystem } from '../systems/NodeSystem';
 import { VisionSystem } from '../systems/VisionSystem';
 import { AttachmentSystem } from '../systems/AttachmentSystem';
-import { WaypointManager } from '../entities//managers/WaypointManager'
 
 export class Game {
   constructor() {
