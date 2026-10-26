@@ -149,7 +149,7 @@ export class Character {
     const floor = new THREE.Mesh(
         new THREE.PlaneGeometry(this.environmentSystem.width, this.environmentSystem.depth),
         new THREE.MeshStandardMaterial({
-          color: "#4b9c6b"
+          color: "red",
         })
       );
     floor.receiveShadow = true;

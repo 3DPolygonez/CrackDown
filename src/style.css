@@ -57,6 +57,9 @@ canvas {
 select {
   width: 100%
 }
+input[type=range] {
+  width: 100%
+}
 label {
   color: #ffffff;
   white-space: nowrap;

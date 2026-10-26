@@ -37,7 +37,7 @@ export class Input {
     }
     const ddlSpeed = document.getElementById('ddlSpeed');
     if (ddlSpeed){
-      ddlSpeed.addEventListener('change', (e) => {
+      ddlSpeed.addEventListener('input', (e) => {
         e.preventDefault();
         this.changeCharacter("Speed");
       })

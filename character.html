@@ -17,16 +17,6 @@
     <div id="app"></div>
     <script type="module" src="/src/character.js"></script>
     <div id="character-control-container">
-      <label>speed</label>
-      <input type="range" id="ddlSpeed" min="0" max="6" step="2" value="4"/>
-      <label>model</label>
-      <select id="ddlMesh">
-        <option value="Engineer" selected>Engineer</option>
-        <option value="OfficeWorker">Office Worker</option>
-        <option value="Soldier">Soldier</option>
-        <option value="Scientist">Scientist</option>
-        <option value="Blank">Blank</option>
-      </select>
       <label>include</label><br/>
       <label><input type="checkbox" id="chkIncludeHead"/> helmet</label><br/>
       <label><input type="checkbox" id="chkIncludeFace" checked/> face</label><br/>
@@ -48,6 +38,16 @@
       <label>action</label><br/>
       <label><input type="radio" name="action" id="chkActionHolding" checked/> holding</label><br/>
       <label><input type="radio" name="action" id="chkActionUsing"/> using</label><br/>
+      <label>model</label>
+      <select id="ddlMesh">
+        <option value="Engineer" selected>Engineer</option>
+        <option value="OfficeWorker">Office Worker</option>
+        <option value="Soldier">Soldier</option>
+        <option value="Scientist">Scientist</option>
+        <option value="Blank">Blank</option>
+      </select>
+      <label>speed</label>
+      <input type="range" id="ddlSpeed" min="0" max="6" step="2" value="4"/>
     </div>
     <div id="character-control-result">
       <label id="lblResult"></label>
