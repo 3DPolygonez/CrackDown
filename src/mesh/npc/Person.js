@@ -394,7 +394,7 @@ export class Person {
       }
       //  run the animations
       this.animations.forEach(animation => {
-        animation.animate(armsAndLegsAngle, headAngle, centralBodyAngle, swingSpeed, speed, delta);
+        animation.animate(armsAndLegsAngle, headAngle, centralBodyAngle, swingSpeed, this.maxSpeed, delta);
       });
     }
     idleAnimations() {

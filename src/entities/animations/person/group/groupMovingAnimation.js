@@ -11,9 +11,9 @@ export class GroupMovingAnimation extends BaseAnimation {
             this.mesh.group.position.y = 0;
         }
         else{
-            const bounceHeight = 0.01 * swingSpeed;
+            const bounceHeight = 0.02 * speed;
             const bounce = Math.abs(Math.sin(this.walkCycle));
-            this.mesh.group.position.y = bounce * bounceHeight - bounceHeight / 4;
+            this.mesh.group.position.y = bounce * bounceHeight - bounceHeight / 2.5;
             this.walkCycle += swingSpeed * delta;
         }
     }
