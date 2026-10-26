@@ -6,12 +6,15 @@ export class GroupMovingAnimation extends BaseAnimation {
         this.walkCycle = 0;
     }
     animate(angleX, angleY, angleZ, swingSpeed, speed, delta) {
-        const bounceHeight = 0.02 * speed;
-        const bounce = Math.abs(Math.sin(this.walkCycle));
-        this.mesh.group.position.y = bounce * bounceHeight;
-        if (speed == 0){
+        if (swingSpeed == 0){
             this.walkCycle = 0;
+            this.mesh.group.position.y = 0;
         }
-        this.walkCycle += swingSpeed * delta;
+        else{
+            const bounceHeight = 0.01 * swingSpeed;
+            const bounce = Math.abs(Math.sin(this.walkCycle));
+            this.mesh.group.position.y = bounce * bounceHeight - bounceHeight / 4;
+            this.walkCycle += swingSpeed * delta;
+        }
     }
 }
