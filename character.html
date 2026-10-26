@@ -13,24 +13,19 @@
     <meta name="description" content="Inspired by the 1989 Sega game, Crack Down, this is the beginning of a rethink using Three.JS and a bunch of wonderful javascript for the underlying engine. And this, is the character designer.">
     <title>Giantstride.space Game 1 - Character Designer</title>
   </head>
-  <body id="swipe-zone">
+  <body>
     <div id="app"></div>
     <script type="module" src="/src/character.js"></script>
     <div id="character-control-container">
-      <label>mesh</label>
+      <label>speed</label>
+      <input type="range" id="ddlSpeed" min="0" max="6" step="2" value="4"/>
+      <label>model</label>
       <select id="ddlMesh">
         <option value="Engineer" selected>Engineer</option>
         <option value="OfficeWorker">Office Worker</option>
         <option value="Soldier">Soldier</option>
         <option value="Scientist">Scientist</option>
         <option value="Blank">Blank</option>
-      </select>
-      <label>speed</label>
-      <select id="ddlSpeed">
-        <option value="6">Fast</option>
-        <option value="4" selected>Medium</option>
-        <option value="2">Slow</option>
-        <option value="0">Stopped</option>
       </select>
       <label>include</label><br/>
       <label><input type="checkbox" id="chkIncludeHead"/> helmet</label><br/>
@@ -56,6 +51,9 @@
     </div>
     <div id="character-control-result">
       <label id="lblResult"></label>
+    </div>
+    <div id="swipe-zone">
+      <div id="camera-knob"></div>
     </div>
     <img src="/resources/web/Preview20260816.png" style="display: none"/>
   </body>

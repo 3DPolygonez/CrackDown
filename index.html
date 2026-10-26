@@ -13,22 +13,11 @@
     <meta name="description" content="Inspired by the 1989 Sega game, Crack Down, this is the beginning of a rethink using Three.JS and a bunch of wonderful javascript for the underlying engine.">
     <title>Giantstride.space Game 1</title>
   </head>
-  <body id="swipe-zone">
+  <body>
     <div id="app"></div>
     <script type="module" src="/src/main.js"></script>
-    <div id="cam-container">
-      <button class="dpad-btn" id="cam-change" style="background-color: transparent; border: none;">📷</button>
-    </div>
-    <div id="dpad-container" style="display: none">
-      <button class="dpad-btn" id="dpad-upleft">↖</button>
-      <button class="dpad-btn" id="dpad-up">↑</button>
-      <button class="dpad-btn" id="dpad-upright">↗</button>
-      <button class="dpad-btn" id="dpad-left">←</button>
-      <button class="dpad-btn" id="dpad-random" style="background-color: transparent; border: none;">🧑</button>
-      <button class="dpad-btn" id="dpad-right">→</button>
-      <button class="dpad-btn" id="dpad-downleft">↙</button>
-      <button class="dpad-btn" id="dpad-down">↓</button>
-      <button class="dpad-btn" id="dpad-downright">↘</button>
+    <div id="swipe-zone">
+      <div id="camera-knob"></div>
     </div>
     <img src="/resources/web/Preview20260724.png" style="display: none"/>
   </body>

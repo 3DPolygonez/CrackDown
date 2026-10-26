@@ -6,7 +6,7 @@ export class Input {
     this.swipeStartY = 0;
     this.swipeEndX = 0;
     this.swipeEndY = 0;
-    this.swipeThreshold = 50;// Minimum distance in pixels to be considered a swipe 
+    this.swipeThreshold = 10;// Minimum distance in pixels to be considered a swipe 
     this.onChange = onChange;
     window.addEventListener('keydown', (e) => {
       this.#lastKey = e.code;
@@ -16,111 +16,6 @@ export class Input {
     window.addEventListener('keyup', (e) => {
       this.keys[e.code] = false;
     });
-
-    const upLeftBtn = document.getElementById('dpad-upleft');
-    if (upLeftBtn){
-      upLeftBtn.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        this.#lastKey = "ArrowUp";
-        this.keys["ArrowUp"] = true;
-        this.keys["ArrowLeft"] = true;
-      });
-      upLeftBtn.addEventListener('touchend', (e) => {
-        e.preventDefault();
-        this.keys["ArrowUp"] = false;
-        this.keys["ArrowLeft"] = false;
-      });
-    }
-    const upBtn = document.getElementById('dpad-up');
-    if (upBtn){
-      upBtn.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        this.#lastKey = "ArrowUp";
-        this.keys["ArrowUp"] = true;
-      });
-      upBtn.addEventListener('touchend', (e) => {
-        e.preventDefault();
-        this.keys["ArrowUp"] = false;
-      });
-    }
-    const upRightBtn = document.getElementById('dpad-upright');
-    if (upRightBtn){
-      upRightBtn.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        this.#lastKey = "ArrowUp";
-        this.keys["ArrowUp"] = true;
-        this.keys["ArrowRight"] = true;
-      });
-      upRightBtn.addEventListener('touchend', (e) => {
-        e.preventDefault();
-        this.keys["ArrowUp"] = false;
-        this.keys["ArrowRight"] = false;
-      });
-    }
-    const leftBtn = document.getElementById('dpad-left');
-    if (leftBtn){
-      leftBtn.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        this.#lastKey = "ArrowLeft";
-        this.keys["ArrowLeft"] = true;
-      });
-      leftBtn.addEventListener('touchend', (e) => {
-        e.preventDefault();
-        this.keys["ArrowLeft"] = false;
-      });
-    }
-    const rightBtn = document.getElementById('dpad-right');
-    if (rightBtn){
-      rightBtn.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        this.#lastKey = "ArrowRight";
-        this.keys["ArrowRight"] = true;
-      });
-      rightBtn.addEventListener('touchend', (e) => {
-        e.preventDefault();
-        this.keys["ArrowRight"] = false;
-      });
-    }
-    const downLeftBtn = document.getElementById('dpad-downleft');
-    if (downLeftBtn){
-      downLeftBtn.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        this.#lastKey = "ArrowDown";
-        this.keys["ArrowDown"] = true;
-        this.keys["ArrowLeft"] = true;
-      });
-      downLeftBtn.addEventListener('touchend', (e) => {
-        e.preventDefault();
-        this.keys["ArrowDown"] = false;
-        this.keys["ArrowLeft"] = false;
-      });
-    }
-    const downBtn = document.getElementById('dpad-down');
-    if (downBtn){
-      downBtn.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        this.#lastKey = "ArrowDown";
-        this.keys["ArrowDown"] = true;
-      });
-      downBtn.addEventListener('touchend', (e) => {
-        e.preventDefault();
-        this.keys["ArrowDown"] = false;
-      });
-    }
-    const downRightBtn = document.getElementById('dpad-downright');
-    if (downRightBtn){
-      downRightBtn.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        this.#lastKey = "ArrowDown";
-        this.keys["ArrowDown"] = true;
-        this.keys["ArrowRight"] = true;
-      });
-      downRightBtn.addEventListener('touchend', (e) => {
-        e.preventDefault();
-        this.keys["ArrowDown"] = false;
-        this.keys["ArrowRight"] = false;
-      });
-    }
     const randomBtn = document.getElementById('dpad-random');
     if (randomBtn){
       randomBtn.addEventListener('touchstart', (e) => {
@@ -132,67 +27,7 @@ export class Input {
         e.preventDefault();
         this.keys["KeyR"] = false;
       });
-    }
-    const camZoomInBtn = document.getElementById('cam-zoomin');
-    if (camZoomInBtn){
-      camZoomInBtn.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        this.#lastKey = "Digit3";
-        this.keys["Digit3"] = true;
-      });
-      camZoomInBtn.addEventListener('touchend', (e) => {
-        e.preventDefault();
-        this.keys["Digit3"] = false;
-      });
-    }
-    const camZoomOutBtn = document.getElementById('cam-zoomout');
-    if (camZoomOutBtn){
-      camZoomOutBtn.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        this.#lastKey = "Digit4";
-        this.keys["Digit4"] = true;
-      });
-      camZoomOutBtn.addEventListener('touchend', (e) => {
-        e.preventDefault();
-        this.keys["Digit4"] = false;
-      });
-    }
-    const nextCameraPosition = document.getElementById('cam-left');
-    if (nextCameraPosition){
-      nextCameraPosition.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        this.#lastKey = "Digit1";
-        this.keys["Digit1"] = true;
-      });
-      nextCameraPosition.addEventListener('touchend', (e) => {
-        e.preventDefault();
-        this.keys["Digit1"] = false;
-      });
-    }
-    const prevCameraPosition = document.getElementById('cam-right');
-    if (prevCameraPosition){
-      prevCameraPosition.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        this.#lastKey = "Digit2";
-        this.keys["Digit2"] = true;
-      });
-      prevCameraPosition.addEventListener('touchend', (e) => {
-        e.preventDefault();
-        this.keys["Digit2"] = false;
-      });
-    }
-    const changeCameraPosition = document.getElementById('cam-change');
-    if (changeCameraPosition){
-      changeCameraPosition.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        this.#lastKey = "KeyT";
-        this.keys["KeyT"] = true;
-      });
-      changeCameraPosition.addEventListener('touchend', (e) => {
-        e.preventDefault();
-        this.keys["KeyT"] = false;
-      });
-    }
+    }  
     const ddlMesh = document.getElementById('ddlMesh');
     if (ddlMesh){
       ddlMesh.addEventListener('change', (e) => {
@@ -338,18 +173,24 @@ export class Input {
       tracker.addEventListener('touchstart', (e) => {
         this.swipeStartX = e.touches[0].clientX;
         this.swipeStartY = e.touches[0].clientY;
+        let transform = `translate(0px, 0px)`;
+        document.getElementById("camera-knob").style.transform = transform;
       }, { passive: true });
 
       tracker.addEventListener('touchmove', (e) => {
         this.swipeEndX = e.changedTouches[0].clientX;
         this.swipeEndY = e.changedTouches[0].clientY;
         this.handleVerticalSwipe();
+        let transform = `translate(${this.swipeEndX - this.swipeStartX}px, ${this.swipeEndY - this.swipeStartY}px)`;
+        document.getElementById("camera-knob").style.transform = transform;
       }, { passive: true });
 
       tracker.addEventListener('touchend', (e) => {
         this.keys["Digit3"] = false;
         this.keys["Digit4"] = false;
         this.handleHorizontalSwipe();
+        let transform = `translate(0px, 0px)`;
+        document.getElementById("camera-knob").style.transform = transform;
       }, { passive: true });
     }
   }
