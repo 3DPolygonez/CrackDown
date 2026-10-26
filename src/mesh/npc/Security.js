@@ -10,6 +10,7 @@ export class Security extends Person {
             {
                 baseTexturePath: "./resources/textures/person/security",
                 includeHead: false,
+                includeBackpack: true,
                 ...definition
             }));
         this.name = "Security";

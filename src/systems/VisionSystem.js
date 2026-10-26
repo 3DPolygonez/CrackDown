@@ -25,44 +25,47 @@ export class VisionSystem{
         }
     }
     canSee(observer, target){
-        //  setup vectors
-        const observerPosition = observer.getPosition(); // posA
-        const targetPosition = target.getPosition();     // posB   
-    
-        const direction = new THREE.Vector3();
-        direction.subVectors(targetPosition, observerPosition);
-
-        const distance = direction.length();
-        direction.normalize();
-
-        const lookDirection = new THREE.Vector3();
-        observer.mesh.headGroup.getWorldDirection(lookDirection);
+        if (target.visible == true){
+            //  setup vectors
+            const observerPosition = observer.getPosition(); // posA
+            const targetPosition = target.getPosition();     // posB   
         
-        //  set the max view distance and vision angle
-        const maxDistance = 100;
-        const maxAngleCos = Math.cos(THREE.MathUtils.degToRad(45));
+            const direction = new THREE.Vector3();
+            direction.subVectors(targetPosition, observerPosition);
 
-        //  check if within distance and cone angle
-        const dotProduct = lookDirection.dot(direction);
-        let isVisible = (distance <= maxDistance) && (dotProduct >= maxAngleCos);
+            const distance = direction.length();
+            direction.normalize();
 
-        if (isVisible){
-            //  raycast
-            this.raycaster.set(observerPosition, direction);
+            const lookDirection = new THREE.Vector3();
+            observer.mesh.headGroup.getWorldDirection(lookDirection);
+            
+            //  set the max view distance and vision angle
+            const maxDistance = 100;
+            const maxAngleCos = Math.cos(THREE.MathUtils.degToRad(45));
 
-            //  get an array of intersections with potential obstacles. sorted by cloest first
-            const intersections = this.raycaster.intersectObjects(this.obstacles, true);
+            //  check if within distance and cone angle
+            const dotProduct = lookDirection.dot(direction);
+            let isVisible = (distance <= maxDistance) && (dotProduct >= maxAngleCos);
 
-            if (intersections.length > 0){
-                //  get the closest intersection point
-                const closestHit = intersections[0];
+            if (isVisible){
+                //  raycast
+                this.raycaster.set(observerPosition, direction);
 
-                //  if the closest obstacle is closer than our target, the line of site is interrupted
-                if (closestHit.distance < distance){
-                    isVisible = false;
+                //  get an array of intersections with potential obstacles. sorted by cloest first
+                const intersections = this.raycaster.intersectObjects(this.obstacles, true);
+
+                if (intersections.length > 0){
+                    //  get the closest intersection point
+                    const closestHit = intersections[0];
+
+                    //  if the closest obstacle is closer than our target, the line of site is interrupted
+                    if (closestHit.distance < distance){
+                        isVisible = false;
+                    }
                 }
             }
+            return isVisible;
         }
-        return isVisible;
+        return false;
     }
 }

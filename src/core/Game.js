@@ -89,7 +89,8 @@ export class Game {
       this.blastSystem.blasts);
     this.player1.group.position.x = -10;
     this.player1.group.position.z = -10;
-    //this.scene.add(this.player1.get3DObject());
+    this.player1.group.visible = false;
+    this.scene.add(this.player1.get3DObject());
 
     this.player2 = new Player(
       "Player 2",
