@@ -19,10 +19,11 @@ export class PersonDefinition {
         this.includeBackpack = properties.includeBackpack != undefined ? properties.includeBackpack : false;
 
         this.headWidth = properties.headWidth || 12;
-        this.headHeight = properties.headHeight || 12;
+        this.headHeight = properties.headHeight || 4;
         this.headDepth = properties.headDepth || 12;
-        this.headPositionY = properties.headPositionY || 26;
+        this.headPositionY = properties.headPositionY || 30;
         this.headPositionZ = properties.headPositionZ || 2;
+        this.headVisorColour = properties.headVisorColour || "#0094FF";
 
         this.faceWidth = properties.faceWidth || 10;
         this.faceHeight = properties.faceHeight || 10;

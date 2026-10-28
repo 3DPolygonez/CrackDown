@@ -244,6 +244,8 @@ export class Character {
     }
     else{
       enemy.mesh.head.visible = args.value.includeHead;
+      enemy.mesh.headBack.visible = args.value.includeHead;
+      enemy.mesh.headVisor.visible = args.value.includeHead;
       enemy.mesh.face.visible = args.value.includeFace;
       enemy.mesh.chest.visible = args.value.includeChest;
       enemy.mesh.waist.visible = args.value.includeWaist;

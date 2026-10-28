@@ -9,7 +9,7 @@ export class Security extends Person {
             new PersonDefinition(
             {
                 baseTexturePath: "./resources/textures/person/security",
-                includeHead: false,
+                includeHead: true,
                 includeBackpack: true,
                 ...definition
             }));

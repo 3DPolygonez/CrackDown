@@ -161,7 +161,7 @@ export class Person {
         const rightLegMaterial = rightLegTextures.map(t => new THREE.MeshStandardMaterial({ map: t }));
         const leftLegMaterial = leftLegTextures.map(t => new THREE.MeshStandardMaterial({ map: t }));
 
-        const material = new THREE.MeshPhongMaterial({ color: "#333333" });
+        const material = new THREE.MeshPhongMaterial({ color: "#444444" });
 
         this.group = new THREE.Group();
         this.headGroup = new THREE.Group;
@@ -174,6 +174,32 @@ export class Person {
         this.head.receiveShadow = true;
         this.head.visible = definition.includeHead;
         this.headGroup.add(this.head);
+
+        this.headBack = new THREE.Mesh(
+          new THREE.BoxGeometry(definition.headWidth, definition.headHeight, definition.headDepth / 2), material);
+        this.headBack.position.y = definition.headPositionY - 4;
+        this.headBack.position.z = definition.headPositionZ - definition.headDepth / 4;
+        this.headBack.castShadow = true;
+        this.headBack.receiveShadow = true;
+        this.headBack.visible = definition.includeHead;
+        this.headGroup.add(this.headBack);
+
+        this.headVisor = new THREE.Mesh(
+          new THREE.BoxGeometry(
+            definition.headWidth, 
+            definition.headHeight + 2, 
+            definition.headDepth / 2 + 1), 
+            new THREE.MeshStandardMaterial({ 
+              color: definition.headVisorColour,
+              transparent: true, 
+              opacity: 0.375
+            }));
+        this.headVisor.position.y = definition.headPositionY - 4 - 1;
+        this.headVisor.position.z = definition.headPositionZ + definition.headDepth / 4 + 0.5;
+        this.headVisor.castShadow = true;
+        this.headVisor.receiveShadow = true;
+        this.headVisor.visible = definition.includeHead;
+        this.headGroup.add(this.headVisor);
     
         this.face = new THREE.Mesh(
           new THREE.BoxGeometry(definition.faceWidth, definition.faceHeight, definition.faceDepth), faceMaterial);
